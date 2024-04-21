@@ -3,10 +3,12 @@ using Serilog;
 using Swappa.Server.Configurations;
 using Swappa.Server.Extensions;
 using Swappa.Server.Filters;
+using Swappa.Shared.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 Configurations.ConfigureLogging();
 //builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<ApiResponseDto>();
 builder.Services.ConfigureCors();
 builder.Services.ConfigureMongoIdentity(builder.Configuration);
 builder.Host.UseSerilog();

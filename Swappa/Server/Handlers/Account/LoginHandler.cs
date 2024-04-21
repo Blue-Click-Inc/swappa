@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Swappa.Data.Contracts;
+using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Account;
 using Swappa.Shared.DTOs;
-using Swappa.Shared.DTOs.Extensions;
 
 namespace Swappa.Server.Handlers.Account
 {
@@ -11,17 +12,28 @@ namespace Swappa.Server.Handlers.Account
     {
         private readonly ILogger<LoginHandler> logger;
         private readonly IRepositoryManager repository;
+        private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
+        private readonly ApiResponseDto response;
 
-        public LoginHandler(ILogger<LoginHandler> logger, IRepositoryManager repository)
+        public LoginHandler(
+            ILogger<LoginHandler> logger, 
+            IRepositoryManager repository,
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
+            ApiResponseDto response)
         {
             this.logger = logger;
             this.repository = repository;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.response = response;
         }
 
         public async Task<ResponseModel<string>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             await Task.Run(() => Console.WriteLine());
-            return (new ApiOkResponse<string>("Login successful")).ProcessResponse<string>();
+            return response.Process<string>(new ApiOkResponse<string>("Login successful"));
         }
     }
 }
