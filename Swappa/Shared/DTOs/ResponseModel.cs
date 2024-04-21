@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Swappa.Entities.Exceptions
+namespace Swappa.Shared.DTOs
 {
     public class ResponseModel<T>
     {

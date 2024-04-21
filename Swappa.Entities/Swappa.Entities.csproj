@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Mongo.Common.Repo" Version="1.0.0" />
     <PackageReference Include="MongoDB.Bson" Version="2.25.0" />
   </ItemGroup>

@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Swappa.Data.Contracts;
-using Swappa.Entities.Exceptions;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Account;
-using Swappa.Server.Handlers;
+using Swappa.Shared.DTOs;
+using Swappa.Shared.DTOs.Extensions;
 
 namespace Swappa.Server.Handlers.Account
 {
@@ -21,7 +21,7 @@ namespace Swappa.Server.Handlers.Account
         public async Task<ResponseModel<string>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             await Task.Run(() => Console.WriteLine());
-            return new ResponseModel<string>();
+            return (new ApiOkResponse<string>("Login successful")).ProcessResponse<string>();
         }
     }
 }

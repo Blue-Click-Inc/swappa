@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Swappa.Entities.Exceptions;
 using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Commands.Account

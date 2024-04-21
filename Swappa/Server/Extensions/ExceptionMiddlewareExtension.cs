@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Swappa.Entities.Exceptions;
+using Swappa.Shared.DTOs;
 using System.Net;
 
 namespace Swappa.Server.Extensions
