@@ -11,7 +11,9 @@ namespace Swappa.Entities.Models
     {
         [Required]
         public string Name { get; set; } = string.Empty;
-        public Gender Gender { get; set; } = Gender.NotSpecified;
+        [Required]
+        public Gender Gender { get; set; }
+        public Status Status { get; set; } = Status.Inactive;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public bool IsDeprecated { get; set; }

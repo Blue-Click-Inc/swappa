@@ -3,8 +3,9 @@ using Swappa.Shared;
 
 namespace Swappa.Server.Controllers
 {
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiversion}/weather")]
     [ApiController]
-    [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

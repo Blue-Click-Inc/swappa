@@ -51,7 +51,7 @@ namespace Swappa.Server.Extensions
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Swappa Api",
-                    Version = "v1",
+                    Version = "v1.0",
                     Description = "Swappa API by Ojo Toba Rufus",
                     Contact = new OpenApiContact
                     {

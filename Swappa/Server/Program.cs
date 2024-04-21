@@ -23,15 +23,11 @@ builder.Services.ConfigureSwagger();
 builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
+
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
-//app.ConfigureExceptionHandler(logger);
+app.ConfigureExceptionHandler(logger);
 
-//app.MapControllers();
-
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
