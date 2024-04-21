@@ -13,6 +13,7 @@ namespace Swappa.Entities.Models
         public string Name { get; set; } = string.Empty;
         [Required]
         public Gender Gender { get; set; }
+        public DateTime LastLogin { get; set; }
         public Status Status { get; set; } = Status.Inactive;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
