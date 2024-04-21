@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Swappa.Shared.DTOs;
+using Swappa.Server.Filters;
+using Swappa.Entities.Responses;
 
 namespace Swappa.Server.Controllers.V1
 {
     [ApiVersion("1.0")]
     [Route("api/v{version:apiversion}/account")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : ApiControllerBase
     {
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto request)
@@ -17,7 +19,7 @@ namespace Swappa.Server.Controllers.V1
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto request)
         {
-            return Ok();
+            return ProcessResponse<bool>(new ApiOkResponse<bool>(true));
         }
 
         [HttpPost("confirm-email")]

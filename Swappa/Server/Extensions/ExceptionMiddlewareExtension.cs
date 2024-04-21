@@ -27,10 +27,11 @@ namespace Swappa.Server.Extensions
                         };
 
                         logger.LogError($"Something went wrong: {contextFeature.Error}");
-                        await context.Response.WriteAsync(new ErrorDetails()
+                        await context.Response.WriteAsync(new ResponseModel<bool>()
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = contextFeature.Error?.Message
+                            Message = contextFeature.Error?.Message,
+                            IsSuccessful = false
                         }.ToString());
                     }
                 });
