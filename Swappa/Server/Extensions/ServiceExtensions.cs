@@ -1,16 +1,28 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Mailjet.Client;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using Swappa.Data.Configurations;
 using Swappa.Data.Contracts;
 using Swappa.Data.Implementations;
+using Swappa.Data.Services;
+using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Models;
+using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Extensions
 {
     public static class ServiceExtensions
     {
+        public static void ConfigureMailJet(this IServiceCollection services, IConfiguration configuration) =>
+            services.AddHttpClient<IMailjetClient, MailjetClient>(client =>
+            {
+                var settings = configuration.GetSection("MailJet");
+                var apiKey = settings["Key"];
+                var apiSecret = settings["Secret"];
+                client.UseBasicAuthentication(apiKey, apiSecret);
+            });
+
         public static void ConfigureCors(this IServiceCollection services) =>
             services.AddCors(options =>
             {
@@ -87,18 +99,12 @@ namespace Swappa.Server.Extensions
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+            services.AddScoped<ApiResponseDto>();
+            services.AddScoped<INotify, Notify>();
+            services.AddScoped<IMedia, Media>();
         }
-
 
         public static void ConfigureMediatR(this IServiceCollection services) =>
             services.AddMediatR(config => config.RegisterServicesFromAssemblies(typeof(Program).Assembly));
-
-        public static void ConfigureVersioning(this IServiceCollection services) =>
-            services.AddApiVersioning(opt =>
-            {
-                opt.ReportApiVersions = true;
-                opt.AssumeDefaultVersionWhenUnspecified = true;
-                opt.DefaultApiVersion = new ApiVersion(1, 0);
-            });
     }
 }

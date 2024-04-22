@@ -62,30 +62,16 @@ namespace Swappa.Server.Handlers.Account
             {
                 _user.LastLogin = DateTime.Now;
                 await userManager.UpdateAsync(_user);
+                return response.Process<TokenDto>(new ApiOkResponse<TokenDto>(null!));
             }
             else
             {
                 logger.LogWarning($"{nameof(LoginHandler)}: Authentication failed. Wrong password or account not activated yet.");
-
-                if (!_user.EmailConfirmed)
-                    return response
-                        .Process<TokenDto>(new BadRequestResponse("Email not confirmed. Please confirm your account before attempting to login"));
-
-                else if (_user.Status == Status.Inactive && !_user.IsDeprecated)
-                    return response
-                        .Process<TokenDto>(new BadRequestResponse("Access denied. Account not deactivated. Please submit a support ticket to reactivate your account."));
-
-                else if (_user.IsDeprecated && _user.Status != Status.Inactive)
-                    return response
-                        .Process<TokenDto>(new BadRequestResponse("Account deactivated. Reactivation link has been sent to your email address."));
-                else
-                    return response.Process<TokenDto>(new BadRequestResponse("Wrong email or password."));
+                return HandleLoginError(_user);
             }
-
-            return response.Process<TokenDto>(new ApiOkResponse<string>("Login successful"));
         }
 
-        public async Task<TokenDto> CreateToken(bool populateExp)
+        private async Task<TokenDto> CreateToken(bool populateExp)
         {
             var signingCredentials = GetSigningCredentials();
 
@@ -136,11 +122,26 @@ namespace Swappa.Server.Handlers.Account
         private string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        private ResponseModel<TokenDto> HandleLoginError(AppUser user)
+        {
+            if (!user.EmailConfirmed)
+                return response
+                    .Process<TokenDto>(new BadRequestResponse("Email not confirmed. Please confirm your account before attempting to login"));
+
+            else if (user.Status == Status.Inactive && !user.IsDeprecated)
+                return response
+                    .Process<TokenDto>(new BadRequestResponse("Access denied. Account not deactivated. Please submit a support ticket to reactivate your account."));
+
+            else if (user.IsDeprecated && user.Status != Status.Inactive)
+                return response
+                    .Process<TokenDto>(new BadRequestResponse("Account deactivated. Reactivation link has been sent to your email address."));
+            else
+                return response.Process<TokenDto>(new BadRequestResponse("Wrong email or password."));
         }
     }
 }

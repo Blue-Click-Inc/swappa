@@ -1,14 +1,12 @@
+using Microsoft.AspNetCore.Mvc;
 using Mongo.Common.MongoDB;
 using Serilog;
 using Swappa.Server.Configurations;
 using Swappa.Server.Extensions;
-using Swappa.Server.Filters;
-using Swappa.Shared.DTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 Configurations.ConfigureLogging();
-//builder.Services.AddScoped<ValidationFilterAttribute>();
-builder.Services.AddScoped<ApiResponseDto>();
+
 builder.Services.ConfigureCors();
 builder.Services.ConfigureMongoIdentity(builder.Configuration);
 builder.Host.UseSerilog();
@@ -16,8 +14,15 @@ builder.Services.ConfigureMongoConnection(builder.Configuration);
 builder.Services.ConfigureMediatR();
 builder.Services.ConfigureController();
 builder.Services.ConfigureServices();
-builder.Services.ConfigureVersioning();
+builder.Services.ConfigureMailJet(builder.Configuration);
 builder.Services.ConfigureCloudinary(builder.Configuration);
+
+builder.Services.AddApiVersioning(opt =>
+{
+    opt.ReportApiVersions = true;
+    opt.AssumeDefaultVersionWhenUnspecified = true;
+    opt.DefaultApiVersion = new ApiVersion(1, 0);
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllersWithViews();

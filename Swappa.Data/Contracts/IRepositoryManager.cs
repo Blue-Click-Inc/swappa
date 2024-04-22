@@ -2,5 +2,6 @@
 {
     public interface IRepositoryManager
     {
+        ITokenRepository Token { get; }
     }
 }

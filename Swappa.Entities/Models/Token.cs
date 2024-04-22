@@ -1,0 +1,17 @@
+﻿using Mongo.Common;
+using Swappa.Entities.Enums;
+
+namespace Swappa.Entities.Models
+{
+    public class Token : IBaseEntity
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid UserId { get; set; }
+        public TokenType Type { get; set; }
+        public string Value { get; set; } = string.Empty;
+        public DateTime ExpiresAt => CreatedAt.AddDays(1);
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public bool IsDeprecated { get; set; }
+    }
+}

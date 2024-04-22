@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Swappa.Shared.DTOs;
-using Swappa.Server.Filters;
-using Swappa.Entities.Responses;
 using MediatR;
 using Swappa.Server.Commands.Account;
 
@@ -17,21 +14,16 @@ namespace Swappa.Server.Controllers.V1
         public AccountController(IMediator mediator) =>
             this.mediator = mediator;
 
-        //[HttpPost("login")]
-        //public async Task<IActionResult> Login([FromBody] LoginDto request)
-        //{
-        //    return Ok();
-        //}
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand command) =>
             Ok(await mediator.Send(command));
 
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto request)
+        public async Task<IActionResult> Register([FromBody] RegisterCommand request)
         {
-            return Ok();
+            request.Origin = HttpContext.Request.Headers["Origin"];
+            return Ok(await mediator.Send(request));
         }
 
         [HttpPost("confirm-email")]

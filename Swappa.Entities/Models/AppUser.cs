@@ -1,5 +1,4 @@
 ﻿using AspNetCore.Identity.MongoDbCore.Models;
-using Mongo.Common;
 using MongoDbGenericRepository.Attributes;
 using Swappa.Entities.Enums;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Swappa.Entities.Models
 {
     [CollectionName("Users")]
-    public class AppUser : MongoIdentityUser<Guid>, IBaseEntity
+    public class AppUser : MongoIdentityUser<Guid>
     {
         [Required]
         public string Name { get; set; } = string.Empty;
@@ -15,8 +14,7 @@ namespace Swappa.Entities.Models
         public Gender Gender { get; set; }
         public DateTime LastLogin { get; set; }
         public Status Status { get; set; } = Status.Inactive;
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
+        public DateTime UpdatedOn { get; set; } = DateTime.Now;
         public bool IsDeprecated { get; set; }
     }
 }
