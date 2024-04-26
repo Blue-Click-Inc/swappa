@@ -1,7 +1,6 @@
 ﻿namespace Swappa.Shared.DTOs
 {
-    public record RoleForCreateDto
+    public record RoleForCreateDto : BaseRoleDto
     {
-        public string RoleName { get; init; } = string.Empty;
     }
 }

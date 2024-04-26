@@ -6,6 +6,7 @@ using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Account;
+using Swappa.Server.Validations.Account;
 using Swappa.Shared.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -52,6 +53,12 @@ namespace Swappa.Server.Handlers.Account
 
         private async Task<ResponseModel<TokenDto>> Validate(LoginCommand request)
         {
+            var validator = new LoginValidator();
+            var validationResult = await validator.ValidateAsync(request);
+            if(!validationResult.IsValid)
+                return response
+                    .Process<TokenDto>(new BadRequestResponse(validationResult.Errors.FirstOrDefault()?.ErrorMessage!));
+
             _user = await userManager.FindByNameAsync(request.Email);
             if (_user == null)
                 return response
@@ -130,16 +137,23 @@ namespace Swappa.Server.Handlers.Account
         private ResponseModel<TokenDto> HandleLoginError(AppUser user)
         {
             if (!user.EmailConfirmed)
+            {
+                //TODO: Resend account confirmation email to the user.
                 return response
-                    .Process<TokenDto>(new BadRequestResponse("Email not confirmed. Please confirm your account before attempting to login"));
+                    .Process<TokenDto>(new BadRequestResponse("Email not confirmed. Please confirm your account before attempting to login. Confirmation link sent to your email."));
+            }
 
             else if (user.Status == Status.Inactive && !user.IsDeprecated)
                 return response
                     .Process<TokenDto>(new BadRequestResponse("Access denied. Account not deactivated. Please submit a support ticket to reactivate your account."));
 
             else if (user.IsDeprecated && user.Status != Status.Inactive)
+            {
+                //TODO: Send a reactivation link to user's email address
                 return response
                     .Process<TokenDto>(new BadRequestResponse("Account deactivated. Reactivation link has been sent to your email address."));
+            }
+
             else
                 return response.Process<TokenDto>(new BadRequestResponse("Wrong email or password."));
         }

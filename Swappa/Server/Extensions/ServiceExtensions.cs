@@ -1,5 +1,7 @@
 ﻿using Mailjet.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using Swappa.Data.Configurations;
@@ -9,6 +11,7 @@ using Swappa.Data.Services;
 using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Models;
 using Swappa.Shared.DTOs;
+using System.Text;
 
 namespace Swappa.Server.Extensions
 {
@@ -106,5 +109,28 @@ namespace Swappa.Server.Extensions
 
         public static void ConfigureMediatR(this IServiceCollection services) =>
             services.AddMediatR(config => config.RegisterServicesFromAssemblies(typeof(Program).Assembly));
+
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+        {
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            var secretKey = jwtSettings["Key"];
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings["ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
+                };
+            });
+        }
     }
 }

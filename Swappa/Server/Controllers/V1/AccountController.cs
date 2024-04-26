@@ -26,11 +26,9 @@ namespace Swappa.Server.Controllers.V1
             return Ok(await mediator.Send(request));
         }
 
-        [HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail()
-        {
-            return Ok();
-        }
+        [HttpPut("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmationCommand request) =>
+            Ok(await mediator.Send(request));
 
         [HttpPut("reset-password")]
         public async Task<IActionResult> ResetPassword()

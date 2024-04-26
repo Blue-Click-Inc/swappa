@@ -9,43 +9,42 @@ using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Account;
 using Swappa.Server.Extensions;
+using Swappa.Server.Validations.Account;
 using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Handlers.Account
 {
     public class RegisterHandler : IRequestHandler<RegisterCommand, ResponseModel<string>>
     {
-        private readonly ILogger<RegisterHandler> logger;
         private readonly IRepositoryManager repository;
         private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
         private readonly ApiResponseDto response;
         private readonly IMapper mapper;
-        private readonly IConfiguration configuration;
         private readonly INotify notify;
 
-        public RegisterHandler(ILogger<RegisterHandler> logger, 
-            IRepositoryManager repository,
+        public RegisterHandler(IRepositoryManager repository,
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager,
             ApiResponseDto response,
             IMapper mapper,
-            IConfiguration configuration,
             INotify notify)
         {
-            this.logger = logger;
             this.repository = repository;
             this.userManager = userManager;
-            this.signInManager = signInManager;
             this.response = response;
             this.mapper = mapper;
-            this.configuration = configuration;
             this.notify = notify;
         }
 
         public async Task<ResponseModel<string>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            //TODO: Do validation
+            if (!request.MatchPassword)
+                return response.Process<string>(new BadRequestResponse("Password and Confirm Password must match."));
+
+            var validator = new RegisterValidator();
+            var validationResult = await validator.ValidateAsync(request);
+            if (!validationResult.IsValid)
+                return response.Process<string>(new BadRequestResponse(validationResult.Errors.FirstOrDefault()?.ErrorMessage!));
+
             var user = await userManager.FindByEmailAsync(request.Email);
             if (user != null)
                 return response
@@ -83,7 +82,7 @@ namespace Swappa.Server.Handlers.Account
         private async Task<ResponseModel<string>> SendConfirmationEmail(AppUser user, StringValues origin)
         {
             var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            var url = origin.BuildUrl(token, user.Id);
+            var url = origin.BuildUrl(token);
             var message = Statics.GetAccountConfirmationTemplate(url, user.Name);
 
             var success = await notify.SendAsync(user.Email, message, "Account Confirmation");
@@ -96,7 +95,8 @@ namespace Swappa.Server.Handlers.Account
                     Value = token
                 };
                 await repository.Token.AddAsync(tokenToAdd);
-                return response.Process<string>(new ApiOkResponse<string>("Registration successful. Please check your email to confirm your account"));
+                return response
+                    .Process<string>(new ApiOkResponse<string>("Registration successful. Please check your email to confirm your account"));
             }
             else
             {
@@ -105,7 +105,8 @@ namespace Swappa.Server.Handlers.Account
                 {
                     await userManager.DeleteAsync(userToDelete);
                 }
-                return response.Process<string>(new BadRequestResponse("Registration failed! Please try again later."));
+                return response
+                    .Process<string>(new BadRequestResponse("Registration failed! Please try again later."));
             }
         }
     }

@@ -9,21 +9,21 @@ namespace Swappa.Server.Handlers.Role
 {
     public class AddRoleHandler : IRequestHandler<AddRoleCommand, ResponseModel<string>>
     {
-        private readonly ILogger<AddRoleHandler> logger;
         private readonly RoleManager<AppRole> roleManager;
         private readonly ApiResponseDto response;
 
-        public AddRoleHandler(ILogger<AddRoleHandler> logger, 
-            RoleManager<AppRole> roleManager,
+        public AddRoleHandler(RoleManager<AppRole> roleManager,
             ApiResponseDto response)
         {
-            this.logger = logger;
             this.roleManager = roleManager;
             this.response = response;
         }
 
         public async Task<ResponseModel<string>> Handle(AddRoleCommand request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrWhiteSpace(request.RoleName))
+                return response.Process<string>(new BadRequestResponse("Role name is required."));
+
             var existing = await roleManager.RoleExistsAsync(request.RoleName);
             if (existing)
                 return response.Process<string>(new BadRequestResponse($"Role {request.RoleName} already exists."));

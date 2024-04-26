@@ -9,6 +9,8 @@ namespace SpringBoardApi.Mapper
         public MappingProfile()
         {
             CreateMap<RegisterDto, AppUser>();
+            CreateMap<AppRole, RoleDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Name));
         }
     }
 }

@@ -15,5 +15,7 @@ namespace Swappa.Shared.DTOs
         public Role Role { get; set; } = Role.User;
         [JsonIgnore]
         public StringValues Origin { get; set; }
+        [JsonIgnore]
+        public bool MatchPassword => Password.Equals(ConfirmPassword);
     }
 }

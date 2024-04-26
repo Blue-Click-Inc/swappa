@@ -11,6 +11,7 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Mailjet.Api" Version="3.0.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.29" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.29" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
@@ -29,11 +30,6 @@
     <ProjectReference Include="..\..\Swappa.Entities\Swappa.Entities.csproj" />
     <ProjectReference Include="..\Client\Swappa.Client.csproj" />
     <ProjectReference Include="..\Shared\Swappa.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Validations\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
 
 

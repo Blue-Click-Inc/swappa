@@ -1,8 +1,10 @@
 ﻿using Mongo.Common;
+using MongoDbGenericRepository.Attributes;
 using Swappa.Entities.Enums;
 
 namespace Swappa.Entities.Models
 {
+    [CollectionName("Tokens")]
     public class Token : IBaseEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
