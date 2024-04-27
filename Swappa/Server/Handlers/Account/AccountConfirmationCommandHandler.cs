@@ -9,13 +9,13 @@ using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Handlers.Account
 {
-    public class AccountConfirmationHandler : IRequestHandler<ConfirmationCommand, ResponseModel<string>>
+    public class AccountConfirmationCommandHandler : IRequestHandler<ConfirmationCommand, ResponseModel<string>>
     {
         private readonly UserManager<AppUser> userManager;
         private readonly IRepositoryManager repository;
         private readonly ApiResponseDto response;
 
-        public AccountConfirmationHandler(UserManager<AppUser> userManager,
+        public AccountConfirmationCommandHandler(UserManager<AppUser> userManager,
             IRepositoryManager repository,
             ApiResponseDto response)
         {

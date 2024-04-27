@@ -15,9 +15,9 @@ using System.Text;
 
 namespace Swappa.Server.Handlers.Account
 {
-    public class LoginHandler : IRequestHandler<LoginCommand, ResponseModel<TokenDto>>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, ResponseModel<TokenDto>>
     {
-        private readonly ILogger<LoginHandler> logger;
+        private readonly ILogger<LoginCommandHandler> logger;
         private readonly IRepositoryManager repository;
         private readonly UserManager<AppUser> userManager;
         private readonly SignInManager<AppUser> signInManager;
@@ -25,8 +25,8 @@ namespace Swappa.Server.Handlers.Account
         private readonly IConfiguration configuration;
         private AppUser? _user;
 
-        public LoginHandler(
-            ILogger<LoginHandler> logger, 
+        public LoginCommandHandler(
+            ILogger<LoginCommandHandler> logger, 
             IRepositoryManager repository,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
@@ -73,7 +73,7 @@ namespace Swappa.Server.Handlers.Account
             }
             else
             {
-                logger.LogWarning($"{nameof(LoginHandler)}: Authentication failed. Wrong password or account not activated yet.");
+                logger.LogWarning($"{nameof(LoginCommandHandler)}: Authentication failed. Wrong password or account not activated yet.");
                 return HandleLoginError(_user);
             }
         }

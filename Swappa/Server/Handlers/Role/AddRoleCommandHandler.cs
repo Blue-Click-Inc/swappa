@@ -7,12 +7,12 @@ using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Handlers.Role
 {
-    public class AddRoleHandler : IRequestHandler<AddRoleCommand, ResponseModel<string>>
+    public class AddRoleCommandHandler : IRequestHandler<AddRoleCommand, ResponseModel<string>>
     {
         private readonly RoleManager<AppRole> roleManager;
         private readonly ApiResponseDto response;
 
-        public AddRoleHandler(RoleManager<AppRole> roleManager,
+        public AddRoleCommandHandler(RoleManager<AppRole> roleManager,
             ApiResponseDto response)
         {
             this.roleManager = roleManager;

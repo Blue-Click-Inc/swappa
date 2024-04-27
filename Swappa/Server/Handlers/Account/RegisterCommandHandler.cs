@@ -14,7 +14,7 @@ using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Handlers.Account
 {
-    public class RegisterHandler : IRequestHandler<RegisterCommand, ResponseModel<string>>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ResponseModel<string>>
     {
         private readonly IRepositoryManager repository;
         private readonly UserManager<AppUser> userManager;
@@ -22,7 +22,7 @@ namespace Swappa.Server.Handlers.Account
         private readonly IMapper mapper;
         private readonly INotify notify;
 
-        public RegisterHandler(IRepositoryManager repository,
+        public RegisterCommandHandler(IRepositoryManager repository,
             UserManager<AppUser> userManager,
             ApiResponseDto response,
             IMapper mapper,

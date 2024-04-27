@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swappa.Server.Commands.Role;
 using Swappa.Server.Queries.Role;
+using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Controllers.V1
 {
@@ -33,16 +34,19 @@ namespace Swappa.Server.Controllers.V1
                 Id = id
             }));
 
-        //[HttpPut]
-        //public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateRoleCommand command)
-        //{
-        //    return Ok();
-        //}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id) =>
+            Ok(await mediator.Send(new DeleteRoleCommand
+            {
+                Id = id
+            }));
 
-        //[HttpDelete]
-        //public async Task<IActionResult> Delete([FromRoute] Guid id)
-        //{
-        //    return Ok();
-        //}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] RoleForUpdateDto command) =>
+            Ok(await mediator.Send(new UpdateRoleCommand
+            {
+                Id = id,
+                RoleName = command.RoleName
+            }));
     }
 }
