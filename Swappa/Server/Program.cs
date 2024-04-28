@@ -37,22 +37,6 @@ builder.Services.ConfigureJWT(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
 
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//}).AddJwtBearer(options =>
-//{
-//    options.RequireHttpsMetadata = false;
-//    options.SaveToken = true;
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuerSigningKey = true,
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("c919b5dc3e1e5b3978d096512479c2d40e795cacbe5052a341e50d67bdbbf40664b36ee8d3a73919d02b23d2fa382fa7e4edc31ef60da269c2b1f77f88912178")),
-//        ValidateIssuer = false,
-//        ValidateAudience = false,
-//    };
-//});
-
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 

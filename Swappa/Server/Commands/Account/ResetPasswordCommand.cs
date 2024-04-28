@@ -1,10 +1,13 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Primitives;
 using Swappa.Shared.DTOs;
+using System.Text.Json.Serialization;
 
 namespace Swappa.Server.Commands.Account
 {
-    public sealed record ResetPasswordCommand : IRequest<ResponseModel<string>>
+    public sealed record ResetPasswordCommand : EmailDto, IRequest<ResponseModel<string>>
     {
-        public EmailDto? Request { get; set; }
+        [JsonIgnore]
+        public StringValues Origin { get; set; }
     }
 }

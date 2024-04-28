@@ -6,6 +6,6 @@ namespace Swappa.Server.Commands.Account
 {
     public sealed record ChangePasswordCommand : IdDto, IRequest<ResponseModel<string>>
     {
-        public ChangePasswordDto? Request { get; set; }
+        public ChangePasswordDto Request { get; set; } = new ChangePasswordDto();
     }
 }

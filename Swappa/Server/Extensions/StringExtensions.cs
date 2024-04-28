@@ -18,7 +18,6 @@ namespace Swappa.Server.Extensions
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query["Token"] = token;
             query["Type"] = tokenType.ToString();
-            //query["UserId"] = userId.ToString();
             uriBuilder.Query = query.ToString();
 
             return uriBuilder.ToString();

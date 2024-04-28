@@ -6,6 +6,7 @@ using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Account;
+using Swappa.Server.Extensions;
 using Swappa.Server.Validations.Account;
 using Swappa.Shared.DTOs;
 using System.IdentityModel.Tokens.Jwt;
@@ -65,8 +66,16 @@ namespace Swappa.Server.Handlers.Account
                     .Process<TokenDto>(new NotFoundResponse($"No user found with this email: {request.Email}"));
 
             var signinResult = await signInManager.PasswordSignInAsync(_user, request.Password, isPersistent: true, false);
-            if (_user.Status != Status.Inactive && signinResult.Succeeded && _user.EmailConfirmed)
+            if (signinResult.Succeeded && _user.EmailConfirmed && _user.DeactivatedOn.IsMaxOrLess())
             {
+                if (_user.Status == Status.Inactive && _user.IsDeprecated) //For users that deactivated, reactivate and log them in
+                {
+                    _user.Status = Status.Active;
+                    _user.IsDeprecated = false;
+                    _user.UpdatedOn = DateTime.Now;
+                    _user.DeactivatedOn = DateTime.MaxValue;
+                }
+
                 _user.LastLogin = DateTime.Now;
                 await userManager.UpdateAsync(_user);
                 return response.Process<TokenDto>(new ApiOkResponse<TokenDto>(null!));
@@ -146,13 +155,6 @@ namespace Swappa.Server.Handlers.Account
             else if (user.Status == Status.Inactive && !user.IsDeprecated)
                 return response
                     .Process<TokenDto>(new BadRequestResponse("Access denied. Account not deactivated. Please submit a support ticket to reactivate your account."));
-
-            else if (user.IsDeprecated && user.Status != Status.Inactive)
-            {
-                //TODO: Send a reactivation link to user's email address
-                return response
-                    .Process<TokenDto>(new BadRequestResponse("Account deactivated. Reactivation link has been sent to your email address."));
-            }
 
             else
                 return response.Process<TokenDto>(new BadRequestResponse("Wrong email or password."));

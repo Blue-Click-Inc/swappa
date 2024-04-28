@@ -2,6 +2,7 @@
 using MediatR;
 using Swappa.Server.Commands.Account;
 using Swappa.Shared.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Swappa.Server.Controllers.V1
 {
@@ -31,13 +32,14 @@ namespace Swappa.Server.Controllers.V1
             Ok(await mediator.Send(request));
 
         [HttpPut("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] EmailDto request) =>
-            Ok(await mediator.Send(new ResetPasswordCommand
-            {
-                Request = request
-            }));
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand request)
+        {
+            request.Origin = HttpContext.Request.Headers["Origin"];
+            return Ok(await mediator.Send(request));
+        }
 
         [HttpPut("change-password/{id}")]
+        [Authorize]
         public async Task<IActionResult> ChangePassword([FromRoute] Guid id, [FromBody] ChangePasswordDto request) =>
             Ok(await mediator.Send(new ChangePasswordCommand
             {
@@ -45,30 +47,23 @@ namespace Swappa.Server.Controllers.V1
                 Request = request
             }));
 
-        [HttpPut("forgot-password/{id}")]
-        public async Task<IActionResult> ForgotPassword([FromRoute] Guid id, [FromBody] ForgotPasswordDto request) =>
+        [HttpPut("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto request) =>
             Ok(await mediator.Send(new ForgotPasswordCommand
             {
-                UserId = id,
                 Request = request
             }));
 
         [HttpPut("deactivate/{id}")]
+        [Authorize]
         public async Task<IActionResult> Deactivate([FromRoute] Guid id) =>
             Ok(await mediator.Send(new DeactivateCommand
             {
                 Id= id
             }));
 
-        [HttpPut("reactivate/{id}")]
-        public async Task<IActionResult> Reactivate([FromRoute] Guid id, TokenDto token) =>
-            Ok(await mediator.Send(new ReactivateCommand
-            {
-                Id = id,
-                Token = token
-            }));
-
-        [HttpPut("toggle-status")]
+        [HttpPut("toggle-status/{id}")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> ToggleStatus([FromRoute] Guid id) =>
             Ok(await mediator.Send(new ToggleStatusCommand
             {

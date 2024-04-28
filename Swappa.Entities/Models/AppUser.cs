@@ -15,6 +15,7 @@ namespace Swappa.Entities.Models
         public DateTime LastLogin { get; set; }
         public Status Status { get; set; } = Status.Inactive;
         public DateTime UpdatedOn { get; set; } = DateTime.Now;
+        public DateTime DeactivatedOn { get; set; } = DateTime.MaxValue;
         public bool IsDeprecated { get; set; }
     }
 }

@@ -3,5 +3,6 @@
     public interface IRepositoryManager
     {
         ITokenRepository Token { get; }
+        IUserRepository User { get; }
     }
 }

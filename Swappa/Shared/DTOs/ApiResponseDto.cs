@@ -30,7 +30,7 @@ namespace Swappa.Shared.DTOs
                 },
                 ApiForbiddenResponse => new ResponseModel<TResult>
                 {
-                    Message = ((ApiUnauthorizedResponse)baseResponse).Message,
+                    Message = ((ApiForbiddenResponse)baseResponse).Message,
                     StatusCode = StatusCodes.Status403Forbidden,
                     IsSuccessful = baseResponse.Success
                 },

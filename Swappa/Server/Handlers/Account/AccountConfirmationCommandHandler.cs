@@ -53,7 +53,7 @@ namespace Swappa.Server.Handlers.Account
                 }
             }
 
-            //TODO: Resent confirmation email.
+            //TODO: Resend confirmation email.
             return response.Process<string>(new BadRequestResponse("Token expired. Another token sent to your email. Please reconfirm to activate your account."));
         }
     }
