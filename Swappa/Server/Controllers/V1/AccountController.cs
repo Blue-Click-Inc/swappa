@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Swappa.Server.Commands.Account;
+using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Controllers.V1
 {
@@ -18,7 +19,6 @@ namespace Swappa.Server.Controllers.V1
         public async Task<IActionResult> Login([FromBody] LoginCommand command) =>
             Ok(await mediator.Send(command));
 
-
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterCommand request)
         {
@@ -31,39 +31,48 @@ namespace Swappa.Server.Controllers.V1
             Ok(await mediator.Send(request));
 
         [HttpPut("reset-password")]
-        public async Task<IActionResult> ResetPassword()
-        {
-            return Ok();
-        }
+        public async Task<IActionResult> ResetPassword([FromBody] EmailDto request) =>
+            Ok(await mediator.Send(new ResetPasswordCommand
+            {
+                Request = request
+            }));
 
-        [HttpPut("change-password")]
-        public async Task<IActionResult> ChangePassword()
-        {
-            return Ok();
-        }
+        [HttpPut("change-password/{id}")]
+        public async Task<IActionResult> ChangePassword([FromRoute] Guid id, [FromBody] ChangePasswordDto request) =>
+            Ok(await mediator.Send(new ChangePasswordCommand
+            {
+                Id = id,
+                Request = request
+            }));
 
-        [HttpPut("forgot-password")]
-        public async Task<IActionResult> ForgotPassword()
-        {
-            return Ok();
-        }
+        [HttpPut("forgot-password/{id}")]
+        public async Task<IActionResult> ForgotPassword([FromRoute] Guid id, [FromBody] ForgotPasswordDto request) =>
+            Ok(await mediator.Send(new ForgotPasswordCommand
+            {
+                UserId = id,
+                Request = request
+            }));
 
-        [HttpPut("deactivate")]
-        public async Task<IActionResult> Deactivate()
-        {
-            return Ok();
-        }
+        [HttpPut("deactivate/{id}")]
+        public async Task<IActionResult> Deactivate([FromRoute] Guid id) =>
+            Ok(await mediator.Send(new DeactivateCommand
+            {
+                Id= id
+            }));
 
-        [HttpPut("reactivate")]
-        public async Task<IActionResult> Reactivate()
-        {
-            return Ok();
-        }
+        [HttpPut("reactivate/{id}")]
+        public async Task<IActionResult> Reactivate([FromRoute] Guid id, TokenDto token) =>
+            Ok(await mediator.Send(new ReactivateCommand
+            {
+                Id = id,
+                Token = token
+            }));
 
         [HttpPut("toggle-status")]
-        public async Task<IActionResult> ToggleStatus([FromQuery] string? token)
-        {
-            return Ok();
-        }
+        public async Task<IActionResult> ToggleStatus([FromRoute] Guid id) =>
+            Ok(await mediator.Send(new ToggleStatusCommand
+            {
+                Id = id
+            }));
     }
 }
