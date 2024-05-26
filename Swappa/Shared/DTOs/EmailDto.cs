@@ -1,7 +1,10 @@
-﻿namespace Swappa.Shared.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Swappa.Shared.DTOs
 {
-    public abstract record EmailDto
+    public record EmailDto
     {
-        public string Email { get; init; } = string.Empty;
+        [EmailAddress, Required]
+        public string Email { get; set; } = string.Empty;
     }
 }

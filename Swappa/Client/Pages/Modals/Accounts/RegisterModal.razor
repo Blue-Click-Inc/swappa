@@ -1,0 +1,95 @@
+﻿@inject IToastService Toast
+@inject IModalService Modal
+
+<PageTitle>Register</PageTitle>
+<div class="row">
+    <div class="border py-3">
+        <EditForm Model="RegisterModel" method="post" OnValidSubmit="RegisterAsync" FormName="register">
+            <DataAnnotationsValidator />
+            <h3>
+                <span class="fa fa-user-plus" aria-hidden="true"></span> Register
+            </h3>
+            <hr />
+            <div class="row">
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="RegisterModel.Name" 
+                        class="form-control" 
+                        autocomplete="Name"
+                        placeholder="John"
+                        aria-required="true" 
+                    />
+                    <label for="Name" class="form-label">Name</label>
+                    <ValidationMessage For="() => RegisterModel.Name" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="RegisterModel.Email" 
+                        class="form-control" 
+                        autocomplete="Email"
+                        placeholder="email@example.com"
+                        aria-required="true"
+                        type="email"
+                    />
+                    <label for="Email" class="form-label">Email</label>
+                    <ValidationMessage For="() => RegisterModel.Email" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputSelect 
+                        @bind-Value="RegisterModel.Gender" 
+                        class="form-control" 
+                        placeholder="Gender"
+                        aria-required="true">
+                        @foreach (var gender in Enum.GetValues(typeof(Gender)))
+                        {
+                        <option value="@gender">@gender.GetDescription()</option>
+                        }
+                    </InputSelect>
+                    <label for="Gender" class="form-label">Select your gender</label>
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="RegisterModel.Password" 
+                        class="form-control" 
+                        placeholder="Password"
+                        aria-required="true"
+                        type="password"
+                    />
+                    <label for="Password" class="form-label">Password</label>
+                    <ValidationMessage For="() => RegisterModel.Password" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="RegisterModel.ConfirmPassword" 
+                        class="form-control"
+                        placeholder="Confirm Password"
+                        aria-required="true"
+                        type="password"
+                    />
+                    <label for="ConfirmPassword" class="form-label">Confirm Password</label>
+                    <ValidationMessage For="() => RegisterModel.ConfirmPassword" class="text-danger" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-0 col-lg-3"></div>
+                <div class="col-md-12 col-lg-6 d-flex justify-content-center">
+                    <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                        <button class="btn btn-primary mx-1 mt-1" disabled="@isLoading">
+                            <span class="fa fa-user-plus" aria-hidden="true"></span> @buttonLabel
+                        </button>
+                        <button type="button" class="btn btn-secondary mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await GoBack())">
+                            <span class="oi oi-arrow-left" aria-hidden="true"></span> Back
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-0 col-lg-3"></div>
+            </div>
+            <div class="row mt-2">
+                <a class="px-1" style="cursor: pointer;" @onclick="(async () => await GoToLogin())">Have an account?</a>
+            </div>
+        </EditForm>
+    </div>
+</div>
+@code {
+
+}

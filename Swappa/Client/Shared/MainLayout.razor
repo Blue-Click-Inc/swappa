@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using Swappa.Client.Pages.Modals.Accounts
+@inherits LayoutComponentBase
+@inject IModalService Modal
 
 <div class="page">
     <div class="sidebar">
@@ -7,9 +9,18 @@
 
     <main>
         <div class="top-row px-4">
-            <a class="px-1" href="https://docs.microsoft.com/aspnet/">Register</a>
-            <a class="px-1" href="https://docs.microsoft.com/aspnet/">Login</a>
-            <a class="px-1" href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+            <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowRegisterModal())">
+                <span class="fa fa-user-plus" aria-hidden="true"></span> Register
+            </a>
+            <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowLoginModal())">
+                <span class="oi oi-account-login btn-to-link" aria-hidden="true"></span> Login
+            </a>
+            <a class="px-1" href="">
+                <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+            </a>
+            <a class="px-2" href="profile">
+                <span class="oi oi-person text-center round-circle p-1" aria-hidden="true"></span>
+            </a>
         </div>
 
         <article class="content px-4">
@@ -17,3 +28,30 @@
         </article>
     </main>
 </div>
+
+@code {
+    private async Task ShowLoginModal()
+    {
+        var confirmationModal = Modal.Show<LoginModal>("");
+        var result = await confirmationModal.Result;
+    }
+
+    private async Task ShowRegisterModal()
+    {
+        var confirmation = Modal.Show<RegisterModal>("");
+        await confirmation.Result;
+    }
+}
+
+<BlazoredToasts 
+    Position="Blazored.Toast.Configuration.ToastPosition.TopRight"
+    Timeout="5"
+    IconType="Blazored.Toast.Configuration.IconType.FontAwesome"
+    SuccessClass="success-toast-override"
+    SuccessIcon="fa fa-thumbs-up"
+    ErrorIcon="fa fa-bug"
+    WarningIcon="fa fa-warning"
+    InfoIcon="fa fa-info-circle"
+    ShowProgressBar="true"
+    PauseProgressOnHover="true">
+</BlazoredToasts>
