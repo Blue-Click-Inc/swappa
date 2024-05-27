@@ -5,7 +5,7 @@
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                     <NotAuthorized>
                         <Alert Style="AlertStyle.Danger">
-                            <ChildContent><span class="oi oi-ban"></span> Sorry, but you're not authorized to access this page.</ChildContent>
+                            <ChildContent><span class="oi oi-ban"></span> Sorry, but you're not authorized to access this page. <a href="/">Back to Home</a></ChildContent>
                         </Alert>
                     </NotAuthorized>
                 </AuthorizeRouteView>

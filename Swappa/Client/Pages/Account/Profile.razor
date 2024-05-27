@@ -1,7 +1,40 @@
 ﻿@page "/profile"
+@attribute [Authorize(Roles = "SuperAdmin")]
 
 <h3>Profile</h3>
+@if (isLoading)
+{
+    <Spinner></Spinner>
+}
+else if(result != null && result.Data.Count() > 0)
+{
+    foreach(var item in result.Data)
+    {
+        <div>
+            <h2>@item.RoleName</h2>
+        </div>
+    }
+}
+else
+{
+    <Alert Style="AlertStyle.Danger">
+        <ChildContent>No data to display.</ChildContent>
+    </Alert>
+}
+<button class="btn btn-primary" type="button" @onclick="(async () => await GetRoles())">Get Records</button>
 
-@code {
-
+    @code {
+    bool isLoading = true;
+    PaginatedListDto<RoleDto> result = null;
+    async Task GetRoles()
+    {
+        try
+        {
+            result = await RoleService.GetRolesAsync();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
 }

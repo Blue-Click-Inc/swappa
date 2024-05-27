@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Blazored.Modal;
 using Blazored.Toast;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -14,6 +15,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri($"{builder.HostEnvironment.BaseAddress}api/v1/") });
 builder.Services.AddBlazoredToast();
 builder.Services.AddBlazoredModal();
+builder.Services.AddBlazoredLocalStorage();
 builder.Services.ConfigureServices();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddAuthorizationCore();

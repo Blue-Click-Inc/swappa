@@ -1,13 +1,12 @@
 ﻿using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
-using Swappa.Client.State;
 using Swappa.Shared.DTOs;
 
 namespace Swappa.Client.Pages.Modals.Accounts
 {
     public partial class LoginModal
     {
-        [CascadingParameter] BlazoredModalInstance Instance { get; set; }
+        [CascadingParameter] BlazoredModalInstance Instance { get; set; } = new();
         public LoginDto LoginModel { get; set; } = new();
         public ResponseModel<TokenDto>? Response { get; set; }
         private bool isLoading = false;
@@ -27,8 +26,9 @@ namespace Swappa.Client.Pages.Modals.Accounts
                 }
                 else
                 {
-                    var authProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
-                    authProvider.UpdateAuthenticationState(Response.Data?.AccessToken!);
+                    await LocalStorage.SetItemAsync("accessToken", Response.Data?.AccessToken);
+                    await LocalStorage.SetItemAsync("refreshToken", Response.Data?.RefreshToken);
+                    await AuthStateProvider.GetAuthenticationStateAsync();
                     await Instance.CloseAsync();
                     Toast.ShowSuccess("Login successful.");
                 }

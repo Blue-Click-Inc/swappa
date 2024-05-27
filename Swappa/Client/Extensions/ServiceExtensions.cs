@@ -8,6 +8,7 @@ namespace Swappa.Client.Extensions
         public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IRoleService, RoleService>();
         }
     }
 }

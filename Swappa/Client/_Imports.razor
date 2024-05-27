@@ -17,14 +17,17 @@
 @using Blazored.Toast.Services
 @using Blazored.Modal
 @using Blazored.Modal.Services
+@using Blazored.LocalStorage
 
 @using Swappa.Client.Pages.Modals
 @using Swappa.Entities.Enums
 @using Swappa.Shared.Extensions
 @using Swappa.Client.Utilities
 @using Swappa.Client.Pages.Components
+@using Swappa.Shared.DTOs
 
 @inject IAccountService AccountService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService Toast
 @inject IModalService Modal
+@inject IRoleService RoleService

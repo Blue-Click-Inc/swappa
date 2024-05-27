@@ -1,6 +1,7 @@
 ﻿@using Swappa.Client.Pages.Modals.Accounts
 @inherits LayoutComponentBase
 @inject IModalService Modal
+@inject ILocalStorageService LocalStorage
 
 <div class="page">
     <div class="sidebar">
@@ -15,11 +16,11 @@
                         <span class="fa fa-user-plus" aria-hidden="true"></span> Register
                     </a>
                     <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowLoginModal())">
-                        <span class="oi oi-account-login btn-to-link" aria-hidden="true"></span> Login
+                        <span class="oi oi-account-login" aria-hidden="true"></span> Login
                     </a>
                 </NotAuthorized>
                 <Authorized>
-                    <a class="px-1" href="">
+                    <a class="px-1" style="cursor: pointer;" @onclick="(async () => await Logout())">
                         <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
                     </a>
                     <a class="px-2" href="profile">
@@ -46,6 +47,12 @@
     {
         var confirmation = Modal.Show<RegisterModal>("");
         await confirmation.Result;
+    }
+
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("accessToken");
+        await AuthStateProvider.GetAuthenticationStateAsync();
     }
 }
 
