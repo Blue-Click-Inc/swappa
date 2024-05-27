@@ -9,18 +9,24 @@
 
     <main>
         <div class="top-row px-4">
-            <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowRegisterModal())">
-                <span class="fa fa-user-plus" aria-hidden="true"></span> Register
-            </a>
-            <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowLoginModal())">
-                <span class="oi oi-account-login btn-to-link" aria-hidden="true"></span> Login
-            </a>
-            <a class="px-1" href="">
-                <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
-            </a>
-            <a class="px-2" href="profile">
-                <span class="oi oi-person text-center round-circle p-1" aria-hidden="true"></span>
-            </a>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowRegisterModal())">
+                        <span class="fa fa-user-plus" aria-hidden="true"></span> Register
+                    </a>
+                    <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowLoginModal())">
+                        <span class="oi oi-account-login btn-to-link" aria-hidden="true"></span> Login
+                    </a>
+                </NotAuthorized>
+                <Authorized>
+                    <a class="px-1" href="">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                    </a>
+                    <a class="px-2" href="profile">
+                        <span class="oi oi-person text-center round-circle p-1" aria-hidden="true"></span>
+                    </a>
+                </Authorized>
+            </AuthorizeView>
         </div>
 
         <article class="content px-4">

@@ -6,13 +6,7 @@
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<button class="btn btn-info" @onclick="@(() => Toast.ShowInfo("Info"))">Info Toast</button>
-<button class="btn btn-success" @onclick="@(() => Toast.ShowSuccess("Success"))">Success Toast</button>
-<button class="btn btn-warning" @onclick="@(() => Toast.ShowWarning("Are you sure"))">Warning Toast</button>
-<button class="btn btn-danger" @onclick="@(() => Toast.ShowError("Error occurred"))">Error Toast</button>
+<Spinner></Spinner>
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 <button type="button" class="btn btn-danger" @onclick="@( async () => await ShowConfirmationModal())">Delete</button>

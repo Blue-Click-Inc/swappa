@@ -1,5 +1,6 @@
 ﻿using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
+using Swappa.Client.State;
 using Swappa.Shared.DTOs;
 
 namespace Swappa.Client.Pages.Modals.Accounts
@@ -8,24 +9,35 @@ namespace Swappa.Client.Pages.Modals.Accounts
     {
         [CascadingParameter] BlazoredModalInstance Instance { get; set; }
         public LoginDto LoginModel { get; set; } = new();
-        private bool isError = false;
+        public ResponseModel<TokenDto>? Response { get; set; }
         private bool isLoading = false;
-        private string message = string.Empty;
         private string buttonLabel = "Login";
 
         private async Task LoginAsync()
         {
-            // Login
-            var result = true;
-            if (result)
+            if(Response == null)
+                isLoading = true;
+
+            Response = await AccountService.LoginAsync(LoginModel);
+            if(Response != null)
             {
-                await Instance.CloseAsync();
-                Toast.ShowSuccess("Login successful.");
+                if (!Response.IsSuccessful)
+                {
+                    Toast.ShowError(Response?.Message!);
+                }
+                else
+                {
+                    var authProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+                    authProvider.UpdateAuthenticationState(Response.Data?.AccessToken!);
+                    await Instance.CloseAsync();
+                    Toast.ShowSuccess("Login successful.");
+                }
             }
             else
             {
-                Toast.ShowError("Wrong username or password.");
+                Toast.ShowError("Something went wrong. Please try again");
             }
+            isLoading = false;
         }
 
         private async Task GoBack()

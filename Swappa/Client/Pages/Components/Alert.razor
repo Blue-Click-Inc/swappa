@@ -1,0 +1,41 @@
+﻿<div class="d-flex align-items-center justify-content-center">
+    <div class="@($"alert alert-{Style.ToString().ToLower()}") mt-5" role="alert">
+        @ChildContent
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    =@<b>DefaultMessage(Style)</b>
+    ;
+
+    [Parameter]
+    public AlertStyle Style { get; set; }
+
+    string DefaultMessage(AlertStyle alertStyle)
+    {
+        string message = string.Empty;
+
+        switch (alertStyle)
+        {
+            case AlertStyle.Success:
+                message = "Operation successful";
+                break;
+            case AlertStyle.Danger:
+                message = "Operation failed";
+                break;
+            case AlertStyle.Info:
+                message = "This is for your info.";
+                break;
+            case AlertStyle.Warning:
+                message =  "Something is not totally right!";
+                break;
+            default:
+                break;
+        }
+
+        return message;
+    }
+}
