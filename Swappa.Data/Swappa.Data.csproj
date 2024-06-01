@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Swappa.Entities\Swappa.Entities.csproj" />
+    <ProjectReference Include="..\Swappa\Shared\Swappa.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -51,10 +51,10 @@ namespace Swappa.Client.Pages.Modals.Accounts
             Modal.Show<RegisterModal>("");
         }
 
-        private async Task GoToForgotPassword()
+        private async Task GoToResetPassword()
         {
             await Instance.CancelAsync();
-            Modal.Show<ForgotPasswordModal>("");
+            Modal.Show<ResetPasswordModal>("");
         }
     }
 }

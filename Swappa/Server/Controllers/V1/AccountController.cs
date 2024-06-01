@@ -28,8 +28,11 @@ namespace Swappa.Server.Controllers.V1
         }
 
         [HttpPut("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(ConfirmationCommand request) =>
-            Ok(await mediator.Send(request));
+        public async Task<IActionResult> ConfirmEmail(ConfirmationCommand request)
+        {
+            request.Origin = HttpContext.Request.Headers["Origin"];
+            return Ok(await mediator.Send(request));
+        }
 
         [HttpPut("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand request)
@@ -48,11 +51,14 @@ namespace Swappa.Server.Controllers.V1
             }));
 
         [HttpPut("forgot-password")]
-        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto request) =>
-            Ok(await mediator.Send(new ForgotPasswordCommand
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto request)
+        {
+            request.Origin = HttpContext.Request.Headers["Origin"];
+            return Ok(await mediator.Send(new ForgotPasswordCommand
             {
                 Request = request
             }));
+        }
 
         [HttpPut("deactivate/{id}")]
         [Authorize]

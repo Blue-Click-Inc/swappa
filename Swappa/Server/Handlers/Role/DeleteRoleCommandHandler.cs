@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Role;
-using Swappa.Server.Extensions;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Server.Handlers.Role
 {

@@ -4,9 +4,9 @@ using Swappa.Shared.DTOs;
 
 namespace Swappa.Client.Pages.Modals.Accounts
 {
-    public partial class ForgotPasswordModal
+    public partial class ResetPasswordModal
     {
-        [CascadingParameter] BlazoredModalInstance Instance { get; set; }
+        [CascadingParameter] BlazoredModalInstance Instance { get; set; } = new();
         public EmailDto ResetPasswordModel { get; set; } = new();
         private bool isError = false;
         private bool isLoading = false;
@@ -15,7 +15,6 @@ namespace Swappa.Client.Pages.Modals.Accounts
 
         private async Task ResetPasswordAsync()
         {
-            // Login
             var result = true;
             if (result)
             {

@@ -3,9 +3,9 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
-using Swappa.Server.Extensions;
 using Swappa.Server.Queries.Role;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Server.Handlers.Role
 {

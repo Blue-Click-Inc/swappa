@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Swappa.Data.Contracts;
+using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
@@ -15,13 +16,15 @@ namespace Swappa.Server.Handlers.Account
         private readonly UserManager<AppUser> userManager;
         private readonly ApiResponseDto response;
         private readonly IRepositoryManager repository;
+        private readonly INotify notify;
 
-        public ForgotPasswordCommandHandler(UserManager<AppUser> userManager, 
-            ApiResponseDto response, IRepositoryManager repository)
+        public ForgotPasswordCommandHandler(UserManager<AppUser> userManager, ApiResponseDto response, 
+            IRepositoryManager repository, INotify notify)
         {
             this.userManager = userManager;
             this.response = response;
             this.repository = repository;
+            this.notify = notify;
         }
 
         public async Task<ResponseModel<string>> Handle(ForgotPasswordCommand command, CancellationToken cancellationToken)
@@ -50,8 +53,9 @@ namespace Swappa.Server.Handlers.Account
                 }
             }
 
-            //TODO: Resend password reset email.
-            return response.Process<string>(new BadRequestResponse("Token expired. Another token sent to your email. Please click on the link to change your password."));
+            var notificationResponse = await notify.SendAccountEmailAsync(user, command.Request.Origin, TokenType.PasswordReset);
+            notificationResponse.Message = "Token expired. Another password reset link sent to your email. Please click on it to change your password.";
+            return notificationResponse;
         }
     }
 }

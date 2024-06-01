@@ -25,9 +25,13 @@
 @using Swappa.Client.Utilities
 @using Swappa.Client.Pages.Components
 @using Swappa.Shared.DTOs
+@using Swappa.Client.Pages.Components.Account
+@using Swappa.Client.Pages.Modals.Accounts
 
 @inject IAccountService AccountService
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService Toast
 @inject IModalService Modal
 @inject IRoleService RoleService
+@inject NavigationManager NavManager
+@inject ILocalStorageService LocalStorage

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Role;
-using Swappa.Server.Extensions;
+using Swappa.Shared.Extensions;
 using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Handlers.Role

@@ -1,20 +1,36 @@
 ﻿using Mailjet.Client;
 using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
+using Swappa.Data.Contracts;
 using Swappa.Data.Services.Interfaces;
+using Swappa.Entities.Enums;
+using Swappa.Entities.Models;
+using Swappa.Entities.Responses;
+using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Data.Services
 {
     public class Notify : INotify
     {
         private readonly IMailjetClient mailClient;
+        private readonly UserManager<AppUser> userManager;
+        private readonly IRepositoryManager repository;
+        private readonly ApiResponseDto response;
         private readonly string emailAddress;
 
-        public Notify(IMailjetClient mailClient, IConfiguration configuration)
+        public Notify(IMailjetClient mailClient, IConfiguration configuration, 
+            UserManager<AppUser> userManager, IRepositoryManager repository,
+            ApiResponseDto response)
         {
             this.mailClient = mailClient;
+            this.userManager = userManager;
+            this.repository = repository;
+            this.response = response;
             var settings = configuration.GetSection("MailJet");
             this.emailAddress = settings["Email"]!;
         }
@@ -125,6 +141,59 @@ namespace Swappa.Data.Services
             }
 
             return response?.IsSuccessStatusCode;
+        }
+
+        public async Task<ResponseModel<string>> SendAccountEmailAsync(AppUser user, StringValues origin, TokenType tokenType)
+        {
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var url = origin.BuildAccountUrl(token, tokenType);
+            var message = Statics.GetAccountConfirmationTemplate(url, user.Name);
+
+            var success = await SendAsync(user.Email, message, tokenType.GetDescription());
+            return await ProcessResponse(success, user, token, tokenType);    
+        }
+
+        private async Task<ResponseModel<string>> ProcessResponse(bool? success, AppUser user, string token, TokenType tokenType)
+        {
+            if (success.GetValueOrDefault())
+            {
+                var tokenToAdd = new Token
+                {
+                    UserId = user.Id,
+                    Type = tokenType,
+                    Value = token
+                };
+                await repository.Token.AddAsync(tokenToAdd);
+                if(tokenType == TokenType.AccountConfirmation)
+                {
+                    return response
+                    .Process<string>(new ApiOkResponse<string>("Registration successful. Please check your email to confirm your account"));
+                }
+                else
+                {
+                    return response
+                    .Process<string>(new ApiOkResponse<string>("Password reset successful. Please check your email to change mail to set a new password password."));
+                }
+
+            }
+            else
+            {
+                if(tokenType == TokenType.AccountConfirmation)
+                {
+                    var userToDelete = await userManager.FindByIdAsync(user.Id.ToString());
+                    if (userToDelete != null)
+                    {
+                        await userManager.DeleteAsync(userToDelete);
+                    }
+                    return response
+                        .Process<string>(new BadRequestResponse("Registration failed! Please try again later."));
+                }
+                else
+                {
+                    return response
+                        .Process<string>(new ApiOkResponse<string>("Password reset failed. Could not send reset toekn. Please try again later."));
+                }
+            }
         }
     }
 }

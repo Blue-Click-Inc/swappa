@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Swappa.Entities.Enums;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -17,6 +16,7 @@ namespace Swappa.Shared.DTOs
         [JsonIgnore]
         public StringValues Origin { get; set; }
         [JsonIgnore]
-        public bool MatchPassword => Password.Equals(ConfirmPassword);
+        public bool MatchPassword => !string.IsNullOrWhiteSpace(Password) && 
+            !string.IsNullOrWhiteSpace(ConfirmPassword) && Password.Equals(ConfirmPassword);
     }
 }

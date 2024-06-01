@@ -4,7 +4,7 @@ using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Account;
-using Swappa.Server.Extensions;
+using Swappa.Shared.Extensions;
 using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Handlers.Account

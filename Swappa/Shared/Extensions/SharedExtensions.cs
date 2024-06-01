@@ -1,4 +1,4 @@
-﻿namespace Swappa.Server.Extensions
+﻿namespace Swappa.Shared.Extensions
 {
     public static class SharedExtensions
     {

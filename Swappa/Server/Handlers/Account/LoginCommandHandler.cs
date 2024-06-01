@@ -6,7 +6,7 @@ using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Account;
-using Swappa.Server.Extensions;
+using Swappa.Shared.Extensions;
 using Swappa.Server.Validations.Account;
 using Swappa.Shared.DTOs;
 using System.IdentityModel.Tokens.Jwt;
