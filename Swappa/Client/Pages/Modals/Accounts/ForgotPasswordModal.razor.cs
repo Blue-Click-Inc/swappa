@@ -7,7 +7,7 @@ namespace Swappa.Client.Pages.Modals.Accounts
     public partial class ForgotPasswordModal
     {
         private bool isLoading = false;
-        private string buttonLabel = "Login";
+        private string buttonLabel = "Save";
         private string pageTitle = "Change Forgotten Password";
 
         [CascadingParameter] BlazoredModalInstance Instance { get; set; } = new();
