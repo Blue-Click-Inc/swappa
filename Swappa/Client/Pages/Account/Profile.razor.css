@@ -1,0 +1,12 @@
+﻿.profile-container {
+    border-radius: 2rem !important;
+    min-height: 70vh !important;
+}
+
+.border-2 {
+    border: 2px solid #3B71CA !important;
+}
+
+.profile-section {
+    min-height: 20vh !important;
+}

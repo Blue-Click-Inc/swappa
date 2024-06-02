@@ -1,29 +1,43 @@
 ﻿@page "/profile"
-@attribute [Authorize(Roles = "SuperAdmin")]
+@attribute [Authorize]
 
-<h3>Profile</h3>
-@if (isLoading)
+@if (!isLoading)
 {
     <Spinner></Spinner>
 }
-else if(result != null && result.Data.Count() > 0)
+else
 {
-    foreach(var item in result.Data)
-    {
-        <div>
-            <h2>@item.RoleName</h2>
+    <div class="m-0">
+        <div class="row py-3 d-flex justify-content-center">
+            <div class="col-sm-0 col-md-3 col-lg-4"></div>
+            <div class="col-sm-12 col-md-6 col-lg-4 profile-container border-2 mt-5">
+                <div class="row profile-section">
+                    <a src=""></a>
+                    <p class="text-muted">Ojo Toba</p>
+                </div>
+                <div class="row profile-section">
+                    <p class="text-muted">Account</p>
+                </div>
+                <div class="row profile-section">
+                    <p class="text-muted">Support</p>
+                </div>
+                @*<div class="row m-0 p-0">
+                    <div class="border bg-success col-sm-12 col-md-4">Left</div>
+                    <div class="border bg-primary col-sm-12 col-md-8">Right</div>
+                </div>*@
+            </div>
+            <div class="col-sm-0 col-md-3 col-lg-4"></div>
         </div>
-    }
-}
+    </div>
+}@*
 else
 {
     <Alert Style="AlertStyle.Danger">
         <ChildContent>No data to display.</ChildContent>
     </Alert>
-}
-<button class="btn btn-primary" type="button" @onclick="(async () => await GetRoles())">Get Records</button>
+}*@
 
-    @code {
+@code {
     bool isLoading = true;
     PaginatedListDto<RoleDto> result = null;
     async Task GetRoles()

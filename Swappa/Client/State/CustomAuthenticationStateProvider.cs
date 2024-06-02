@@ -46,32 +46,6 @@ namespace Swappa.Client.State
             }
         }
 
-        private static List<Claim> DecryptToken(string accessToken)
-        {
-            var result = new List<Claim>();
-            if(string.IsNullOrEmpty(accessToken))
-                return result;
-            accessToken = accessToken.Trim('\'');
-            var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(accessToken);
-
-            foreach (var claim in token.Claims)
-            {
-                if(claim.Type != ClaimTypes.Role)
-                {
-                    result.Add(claim);
-                }
-            }
-
-            var roles = token.Claims.Where(_ => _.Type == ClaimTypes.Role).Select(_ => _.Value).ToList();
-            foreach (var role in roles)
-            {
-                result.Add(new(ClaimTypes.Role, role));
-            }
-
-            return result;
-        }
-
         private static List<Claim>? ParseClaimsFromJwt(string jwt)
         {
             var payload = jwt.Split('.')[1];
