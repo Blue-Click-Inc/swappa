@@ -145,10 +145,33 @@ namespace Swappa.Data.Services
 
         public async Task<ResponseModel<string>> SendAccountEmailAsync(AppUser user, StringValues origin, TokenType tokenType)
         {
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            var token = string.Empty;
+            switch (tokenType)
+            {
+                case TokenType.AccountConfirmation:
+                    token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                    break;
+                case TokenType.PasswordReset:
+                    token = await userManager.GeneratePasswordResetTokenAsync(user);
+                    break;
+                default:
+                    break;
+            }      
+            
             var url = origin.BuildAccountUrl(token, tokenType);
-            var message = Statics.GetAccountConfirmationTemplate(url, user.Name);
-
+            var message = string.Empty;
+            switch (tokenType)
+            {
+                case TokenType.AccountConfirmation:
+                    message = Statics.GetAccountConfirmationTemplate(url, user.Name);
+                    break;
+                case TokenType.PasswordReset:
+                    message = Statics.GetPasswordResetTemplate(url);
+                    break;
+                default:
+                    break;
+            }
+            
             var success = await SendAsync(user.Email, message, tokenType.GetDescription());
             return await ProcessResponse(success, user, token, tokenType);    
         }

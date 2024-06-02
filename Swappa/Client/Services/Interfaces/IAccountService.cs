@@ -8,5 +8,6 @@ namespace Swappa.Client.Services.Interfaces
         Task<ResponseModel<string>?> ConfirmAccountAsync(AccountConfirmationDto account);
         Task<ResponseModel<TokenDto>?> LoginAsync(LoginDto login);
         Task<ResponseModel<string>?> RegisterAsync(RegisterDto register);
+        Task<ResponseModel<string>?> ResetPasswordAsync(EmailDto request);
     }
 }

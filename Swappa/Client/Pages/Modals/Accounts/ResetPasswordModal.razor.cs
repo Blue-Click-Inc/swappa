@@ -6,25 +6,35 @@ namespace Swappa.Client.Pages.Modals.Accounts
 {
     public partial class ResetPasswordModal
     {
-        [CascadingParameter] BlazoredModalInstance Instance { get; set; } = new();
-        public EmailDto ResetPasswordModel { get; set; } = new();
-        private bool isError = false;
         private bool isLoading = false;
         private string message = string.Empty;
         private string buttonLabel = "Reset";
+        private string pageTitle = "Reset Password";
+        [CascadingParameter] BlazoredModalInstance Instance { get; set; } = new();
+        public EmailDto ResetPasswordModel { get; set; } = new();
+        public ResponseModel<string>? Response { get; set; }
 
         private async Task ResetPasswordAsync()
         {
-            var result = true;
-            if (result)
+            if(Response == null)
             {
+                isLoading = true;
+            }
+
+            Response = await AccountService.ResetPasswordAsync(ResetPasswordModel);
+            if (Response != null && Response.IsSuccessful)
+            {
+                message = Response.Data ?? "Operation successful";
                 await Instance.CloseAsync();
-                Toast.ShowSuccess("Login successful.");
+                Toast.ShowSuccess(message);
             }
             else
             {
-                Toast.ShowError("Wrong username or password.");
+                message = Response?.Message ?? "Sorry, an error occurred";
+                Toast.ShowError(message);
             }
+
+            isLoading = false;
         }
 
         private async Task GoBack()
