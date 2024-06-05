@@ -10,21 +10,21 @@ else
     <div class="m-0">
         <div class="row py-3 d-flex justify-content-center">
             <div class="col-sm-0 col-md-3 col-lg-4"></div>
-            <div class="col-sm-12 col-md-6 col-lg-4 profile-container border-2 mt-5">
-                <div class="row profile-section">
-                    <a src=""></a>
-                    <p class="text-muted">Ojo Toba</p>
+            <div class="col-sm-12 col-md-6 col-lg-4 profile-container box-shadow-inset mt-3">
+                <div class="profile-mh-2 mt-3">
+                    <p class="text-center">
+                        <span class="oi oi-person border-2 text-center text-primary round-circle p-3" aria-hidden="true"></span>
+                    </p>
+                    <p class="text-muted fs-6 fw-bold text-center">@UserId</p>
                 </div>
-                <div class="row profile-section">
-                    <p class="text-muted">Account</p>
+                <div class="profile-mh-1">
+                    <h4 class="text-muted fw-bolder fs-6 my-0 py-0">Account</h4>
+                    <BlueUnderlineOnePx />
                 </div>
-                <div class="row profile-section">
-                    <p class="text-muted">Support</p>
+                <div class="profile-mh-3">
+                    <h4 class="text-muted fw-bolder fs-6 my-0 py-0" style="color: #3B71CA;">Support</h4>
+                    <BlueUnderlineOnePx />
                 </div>
-                @*<div class="row m-0 p-0">
-                    <div class="border bg-success col-sm-12 col-md-4">Left</div>
-                    <div class="border bg-primary col-sm-12 col-md-8">Right</div>
-                </div>*@
             </div>
             <div class="col-sm-0 col-md-3 col-lg-4"></div>
         </div>
@@ -39,16 +39,4 @@ else
 
 @code {
     bool isLoading = true;
-    PaginatedListDto<RoleDto> result = null;
-    async Task GetRoles()
-    {
-        try
-        {
-            result = await RoleService.GetRolesAsync();
-        }
-        finally
-        {
-            isLoading = false;
-        }
-    }
 }

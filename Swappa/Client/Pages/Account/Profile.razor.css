@@ -7,6 +7,14 @@
     border: 2px solid #3B71CA !important;
 }
 
-.profile-section {
+.profile-mh-1 {
+    min-height: 35vh !important;
+}
+
+.profile-mh-2 {
     min-height: 20vh !important;
+}
+
+.profile-mh-3 {
+    min-height: 15vh !important;
 }

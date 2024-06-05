@@ -36,11 +36,6 @@ main {
     text-overflow: ellipsis;
 }
 
-.round-circle {
-    border-radius: 50%;
-    border: 1px solid #3B71CA;
-}
-
 @media (max-width: 640.98px) {
     .top-row:not(.auth) {
 /*        display: none;
