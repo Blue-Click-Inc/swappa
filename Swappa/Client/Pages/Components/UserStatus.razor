@@ -1,0 +1,29 @@
+﻿<p class="@($"text-{Style.ToString().ToLower()}") fs-1 text-center p-0 m-0">&#8226;</p>
+
+@code {
+    [Parameter]
+    public Status Status { get; set; }
+
+    public AlertStyle Style => 
+        SetStatus(Status);
+
+    private AlertStyle SetStatus(Status status)
+    {
+        AlertStyle style;
+
+        switch (status)
+        {
+            case Status.Inactive:
+                style = AlertStyle.Danger;
+                break;
+            case Status.Active:
+                style = AlertStyle.Success;
+                break;
+            default:
+                style = AlertStyle.Primary;
+                break;
+        }
+
+        return style;
+    }
+}

@@ -1,0 +1,36 @@
+﻿<p class="fs-6 px-1 text-center p-0 m-0 fa @($"{Class}")" style="color: @Color"></p>
+
+@code {
+    [Parameter]
+    public Gender Gender { get; set; }
+
+    public string Color => 
+        SetValues(Gender).color;
+
+    public string Class =>
+        SetValues(Gender).classText;
+
+    private (string color, string classText) SetValues(Gender gender)
+    {
+        string color = string.Empty;
+        string classText = string.Empty;
+
+        switch (gender)
+        {
+            case Gender.Female:
+                color = "pink";
+                classText = "fa-venus";
+                break;
+            case Gender.Male:
+                color = "blue";
+                classText = "fa-mars";
+                break;
+            default:
+                color = "gray";
+                classText = "fa-genderless";
+                break;
+        }
+
+        return (color, classText);
+    }
+}

@@ -1,0 +1,16 @@
+﻿<div class="d-flex justify-content-center align-items-center">
+    <MutedH4BolderCentered>
+        <ChildContent>@Name</ChildContent>
+    </MutedH4BolderCentered>
+    <UserGender Gender="@Gender"/>
+    <UserStatus Status="@Status" />
+</div>
+
+@code {
+    [Parameter]
+    public string Name { get; set; } = string.Empty;
+    [Parameter]
+    public Status Status { get; set; }
+    [Parameter]
+    public Gender Gender { get; set; }
+}

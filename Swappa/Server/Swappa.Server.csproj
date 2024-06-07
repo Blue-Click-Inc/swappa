@@ -32,5 +32,9 @@
     <ProjectReference Include="..\Shared\Swappa.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\User\" />
+  </ItemGroup>
+
 
 </Project>

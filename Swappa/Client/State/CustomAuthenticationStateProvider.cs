@@ -63,18 +63,5 @@ namespace Swappa.Client.State
 
             return Convert.FromBase64String(base64);
         }
-
-        public static string GetUserId(string jwt)
-        {
-            var userId = string.Empty;
-            var identity = new ClaimsIdentity(ParseClaimsFromJwt(jwt), "jwt");
-            if (identity != null && identity.Claims.Any())
-            {
-                userId = identity.Claims
-                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-            }
-            
-            return userId;
-        }
     }
 }

@@ -28,10 +28,13 @@
 @using Swappa.Client.Pages.Components.Account
 @using Swappa.Client.Pages.Modals.Accounts
 
-@inject IAccountService AccountService
+@inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService Toast
 @inject IModalService Modal
-@inject IRoleService RoleService
 @inject NavigationManager NavManager
 @inject ILocalStorageService LocalStorage
+
+@inject IAccountService AccountService
+@inject IRoleService RoleService
+@inject IUserService UserService
