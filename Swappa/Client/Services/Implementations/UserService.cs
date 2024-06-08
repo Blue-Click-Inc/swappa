@@ -32,6 +32,13 @@ namespace Swappa.Client.Services.Implementations
             return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
         }
 
+        public async Task<ResponseModel<string>?> SendFeedbackAsync(FeedbackForAddDto request)
+        {
+            var response = await httpClient.PostAsJsonAsync<FeedbackForAddDto>($"user/feedback/send", request);
+
+            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+        }
+
         public async Task<Guid> GetLoggedInUserId()
         {
             var state = await authenticationState.GetAuthenticationStateAsync();

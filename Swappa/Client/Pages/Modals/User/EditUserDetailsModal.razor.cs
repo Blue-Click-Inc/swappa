@@ -14,6 +14,7 @@ namespace Swappa.Client.Pages.Modals.User
         private bool isLoading = true;
         private string message = string.Empty;
         private string buttonLabel = "Save";
+        private bool isButtonDisabled = false;
         private string pageTitle = "Edit User Details";
 
         protected override async Task OnInitializedAsync()
@@ -45,30 +46,27 @@ namespace Swappa.Client.Pages.Modals.User
             var userId = await UserService.GetLoggedInUserId();
             if (userId.IsNotEmpty() && UserDetail != null)
             {
-                var response = await UserService.UpdateDetailsAsync(userId, UserDetail);
-                if (response != null && response.IsSuccessful)
+                isButtonDisabled = Response == null;
+
+                Response = await UserService.UpdateDetailsAsync(userId, UserDetail);
+                if (Response != null && Response.IsSuccessful)
                 {
-                    message = response.Data ?? "Operation successful.";
+                    message = Response.Data ?? "Operation successful.";
                     Toast.ShowSuccess(message);
                     await Instance.CloseAsync();
-                    return;
                 }
                 else
                 {
-                    message = response?.Message ?? "An error occured while getting user details for edit. Please try again.";
-                    return;
+                    message = Response?.Message ?? "An error occured while getting user details for edit. Please try again.";
+                    Toast.ShowError(message);
                 }
             }
             else
             {
                 Toast.ShowError("Invalid userId supplied. Please try again.");
-                return;
             }
-        }
 
-        async Task GoBack()
-        {
-            await Instance.CancelAsync();
+            isButtonDisabled = false;
         }
     }
 }

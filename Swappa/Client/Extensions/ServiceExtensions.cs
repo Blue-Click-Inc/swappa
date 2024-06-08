@@ -10,6 +10,7 @@ namespace Swappa.Client.Extensions
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ISharedService, SharedService>();
         }
     }
 }

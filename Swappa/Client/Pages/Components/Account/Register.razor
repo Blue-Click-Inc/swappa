@@ -4,7 +4,7 @@
         <EditForm Model="RegisterModel" method="post" OnValidSubmit="RegisterAsync" FormName="register">
             <DataAnnotationsValidator />
             <h3>
-                <span class="fa fa-user-plus" aria-hidden="true"></span> Register
+                <span class="fa fa-user-plus text-muted fw-bold" aria-hidden="true"> Register</span>
             </h3>
             <hr />
             <div class="row">
@@ -94,7 +94,7 @@
                         <button class="btn btn-primary mx-1 mt-1" disabled="@isLoading">
                             <span class="fa fa-user-plus" aria-hidden="true"></span> @buttonLabel
                         </button>
-                        <button type="button" class="btn btn-secondary mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await GoBack())">
+                        <button type="button" class="btn btn-secondary mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
                             <span class="oi oi-arrow-left" aria-hidden="true"></span> Back
                         </button>
                     </div>
@@ -107,7 +107,3 @@
         </EditForm>
     </div>
 </div>
-
-@code {
-    
-}

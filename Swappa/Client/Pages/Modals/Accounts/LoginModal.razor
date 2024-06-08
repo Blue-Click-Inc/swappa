@@ -4,7 +4,7 @@
         <EditForm Model="LoginModel" method="post" OnValidSubmit="LoginAsync" FormName="login">
             <DataAnnotationsValidator />
             <h3>
-                <span class="oi oi-account-login pointer" aria-hidden="true"></span> Login
+                <span class="oi oi-account-login pointer text-muted fw-bold" aria-hidden="true"> Login</span>
             </h3>
             <hr />
             <div class="row">
@@ -40,7 +40,7 @@
                         <button class="btn btn-primary mx-1 mt-1" disabled="@isLoading">
                             <span class="oi oi-account-login" aria-hidden="true"></span> @buttonLabel
                         </button>
-                        <button type="button" class="btn btn-secondary mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await GoBack())">
+                        <button type="button" class="btn btn-secondary mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
                             <span class="oi oi-arrow-left" aria-hidden="true"></span> Back
                         </button>
                     </div>

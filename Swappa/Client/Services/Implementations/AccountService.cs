@@ -72,5 +72,30 @@ namespace Swappa.Client.Services.Implementations
 
             return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
         }
+
+        /// <summary>
+        /// Client side service for changing user password
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ResponseModel<string>?> ChangePasswordAsync(Guid id, ChangePasswordDto request)
+        {
+            var response = await httpClient.PutAsJsonAsync($"account/change-password/{id}", request);
+            
+            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+        }
+
+        /// <summary>
+        /// Client side service for account deactivation
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ResponseModel<string>?> DeactivateAccountAsync(Guid id)
+        {
+            var response = await httpClient.PutAsJsonAsync($"account/deactivate/{id}", new object());
+
+            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+        }
     }
 }

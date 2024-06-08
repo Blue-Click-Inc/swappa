@@ -48,11 +48,6 @@ namespace Swappa.Client.Pages.Components.Account
             isLoading = false;
         }
 
-        private async Task GoBack()
-        {
-            await Instance.CancelAsync();
-        }
-
         private async Task GoToLogin()
         {
             await Instance.CancelAsync();

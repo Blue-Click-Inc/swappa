@@ -32,5 +32,12 @@ namespace Swappa.Server.Controllers.V1
                 UserId = id,
                 Command = command
             }));
+
+        [HttpPost("feedback/send")]
+        public async Task<IActionResult> SendFeedback([FromBody] FeedbackForAddDto request) =>
+            Ok(await mediator.Send(new SendUserFeedbackCommand
+            {
+                Request = request
+            }));
     }
 }

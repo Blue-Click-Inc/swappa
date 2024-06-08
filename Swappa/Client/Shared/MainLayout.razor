@@ -24,7 +24,7 @@
                     </a>
                 </NotAuthorized>
                 <Authorized>
-                    <a class="px-1" style="cursor: pointer;" @onclick="(async () => await Logout())">
+                    <a class="px-1" style="cursor: pointer;" @onclick="(async () => await SharedService.LogoutAsync())">
                         <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
                     </a>
                     <a class="px-2" href="profile">
@@ -57,12 +57,6 @@
     {
         var confirmation = Modal.Show<RegisterModal>("");
         await confirmation.Result;
-    }
-
-    private async Task Logout()
-    {
-        await LocalStorage.RemoveItemAsync("accessToken");
-        await AuthStateProvider.GetAuthenticationStateAsync();
     }
 }
 

@@ -40,20 +40,15 @@ namespace Swappa.Client.Pages.Modals.Accounts
             isLoading = false;
         }
 
-        private async Task GoBack()
-        {
-            await Instance.CancelAsync();
-        }
-
         private async Task GoToRegister()
         {
-            await Instance.CancelAsync();
+            await SharedService.CancelModalAsync(Instance);
             Modal.Show<RegisterModal>("");
         }
 
         private async Task GoToResetPassword()
         {
-            await Instance.CancelAsync();
+            await SharedService.CancelModalAsync(Instance);
             Modal.Show<ResetPasswordModal>("");
         }
     }

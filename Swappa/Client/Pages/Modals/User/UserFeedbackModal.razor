@@ -1,5 +1,64 @@
-﻿<h3>UserFeedbackModal</h3>
-
-@code {
-
-}
+﻿<PageTitle>@pageTitle</PageTitle>
+<div class="row">
+    <div class="box-shadow-inset border-radius-2rem p-3">
+        <EditForm Model="Feedback" method="post" OnValidSubmit="SendAsync" FormName="feedback">
+            <DataAnnotationsValidator />
+            <h3>
+                <span class="fa fa-paper-plane text-muted fw-bold" aria-hidden="true"> Leave Us A Feedback</span>
+            </h3>
+            <hr />
+            <div class="row">
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="Feedback.UserEmail" 
+                        class="form-control" 
+                        autocomplete="UserEmail"
+                        placeholder="email@example.com"
+                        aria-required="true"
+                        type="email"
+                        disabled
+                    />
+                    <label for="UserEmail" class="form-label">Email Address</label>
+                    <ValidationMessage For="() => Feedback.UserEmail" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputSelect 
+                        @bind-Value="Feedback.Rating" 
+                        class="form-control" 
+                        placeholder="Rating"
+                        aria-required="true">
+                        @foreach (var rating in Enum.GetValues(typeof(FeedbackRating)))
+                        {
+                            <option value="@rating">@rating.GetDescription()</option>
+                        }
+                    </InputSelect>
+                    <label for="Gender" class="form-label">Rate us</label>
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputTextArea 
+                        @bind-Value="Feedback.Feedback" 
+                        class="form-control h-100"
+                        rows = "7"
+                        placeholder="Let's hear from you'"
+                        aria-required="true"></InputTextArea>
+                    <label for="Feedback" class="form-label">Let's hear from you</label>
+                    <ValidationMessage For="() => Feedback.Feedback" class="text-danger" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-0 col-lg-3"></div>
+                <div class="col-md-12 col-lg-6 d-flex justify-content-center">
+                    <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                        <button class="btn btn-primary mx-1 mt-1" disabled="@isLoading">
+                            <span class="fa fa-paper-plane" aria-hidden="true"></span> @buttonLabel
+                        </button>
+                        <button type="button" class="btn btn-secondary mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
+                            <span class="oi oi-arrow-left" aria-hidden="true"></span> Back
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-0 col-lg-3"></div>
+            </div>
+        </EditForm>
+    </div>
+</div>

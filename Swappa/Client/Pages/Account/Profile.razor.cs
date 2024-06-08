@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Blazored.Modal;
+using Microsoft.JSInterop;
 using Swappa.Client.Pages.Modals.Accounts;
 using Swappa.Client.Pages.Modals.User;
 using Swappa.Shared.DTOs;
@@ -10,13 +11,20 @@ namespace Swappa.Client.Pages.Account
     {
         private string _message = "Something went wrong.";
         private bool isLoading = true;
+        private ModalParameters parameters = null!;
 
         public UserDetailsDto? Data { get; set; }
+        public string PageTitle => Data?.Name ?? "Profile Page";
 
         protected override async Task OnInitializedAsync()
         {
             var userId = await UserService.GetLoggedInUserId();
             await GetUserDetails(userId);
+            parameters = new ModalParameters
+            {
+                { "Id", userId }
+            };
+
             await base.OnInitializedAsync();
         }
 
@@ -60,7 +68,7 @@ namespace Swappa.Client.Pages.Account
 
         public async Task ChangePassword(Guid id)
         {
-            var confirmationModal = Modal.Show<ChangePasswordModal>("");
+            var confirmationModal = Modal.Show<ChangePasswordModal>("", parameters);
             var result = await confirmationModal.Result;
             if (result.Confirmed)
             {
@@ -70,17 +78,23 @@ namespace Swappa.Client.Pages.Account
 
         public async Task DeactivateAccount(Guid id)
         {
-            var confirmationModal = Modal.Show<DeactivateAccountModal>("");
+            var confirmationModal = Modal.Show<DeactivateAccountModal>("", parameters);
             var result = await confirmationModal.Result;
             if (result.Confirmed)
             {
-                await GetUserDetails(id);
+                await SharedService.LogoutAsync();
+                SharedService.GoTo("/", true, true);
             }
         }
 
         public async Task LeaveFeedback(Guid id)
         {
-            var confirmationModal = Modal.Show<UserFeedbackModal>("");
+            var emailParam = new ModalParameters
+            {
+                { "Email", Data.Email }
+            };
+
+            var confirmationModal = Modal.Show<UserFeedbackModal>("", emailParam);
             var result = await confirmationModal.Result;
             if (result.Confirmed)
             {

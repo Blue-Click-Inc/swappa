@@ -27,7 +27,8 @@ namespace Swappa.Client.Pages.Components.Account
                 string.IsNullOrWhiteSpace(_token) || !tokenTypeString.TryParseValue(out _tokenType))
             {
                 Toast.ShowError("Invalid verification paramters.");
-                NavManager.NavigateTo("/", replace: true);
+                SharedService.GoTo("/", true, true);
+                //NavManager.NavigateTo("/", replace: true);
             }
             else
             {
@@ -61,12 +62,13 @@ namespace Swappa.Client.Pages.Components.Account
             {
                 var errorMessage = response != null ?
                     response.Message :
-                    "" ?? string.Empty;
+                    "An error occurred. Please try again";
 
                 Toast.ShowError(errorMessage!);
             }
 
-            NavManager.NavigateTo("/", replace: true);
+            SharedService.GoTo("/", true, true);
+            //NavManager.NavigateTo("/", replace: true);
             return;
         }
 

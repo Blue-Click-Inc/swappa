@@ -18,6 +18,9 @@ a, .btn-link {
     border-color: #1861ac;
 }
 /* CSS styling written: START */
+.blue-text-color {
+    color: #3B71CA !important;
+}
 .round-circle {
     border-radius: 50%;
     border: 1px solid #3B71CA;
