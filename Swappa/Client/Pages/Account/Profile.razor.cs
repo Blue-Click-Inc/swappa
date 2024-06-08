@@ -1,4 +1,6 @@
 ﻿using Microsoft.JSInterop;
+using Swappa.Client.Pages.Modals.Accounts;
+using Swappa.Client.Pages.Modals.User;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
 
@@ -44,6 +46,46 @@ namespace Swappa.Client.Pages.Account
 
             Data = result.Data;
             isLoading = false;
+        }
+
+        public async Task GoToUserDetailsEdit(Guid id)
+        {
+            var confirmationModal = Modal.Show<EditUserDetailsModal>("");
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetUserDetails(id);
+            }
+        }
+
+        public async Task ChangePassword(Guid id)
+        {
+            var confirmationModal = Modal.Show<ChangePasswordModal>("");
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetUserDetails(id);
+            }
+        }
+
+        public async Task DeactivateAccount(Guid id)
+        {
+            var confirmationModal = Modal.Show<DeactivateAccountModal>("");
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetUserDetails(id);
+            }
+        }
+
+        public async Task LeaveFeedback(Guid id)
+        {
+            var confirmationModal = Modal.Show<UserFeedbackModal>("");
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetUserDetails(id);
+            }
         }
     }
 }

@@ -25,6 +25,13 @@ namespace Swappa.Client.Services.Implementations
             return response;
         }
 
+        public async Task<ResponseModel<string>?> UpdateDetailsAsync(Guid id, UserDetailsForUpdateDto request)
+        {
+            var response = await httpClient.PutAsJsonAsync<UserDetailsForUpdateDto>($"user/details/{id}", request);
+
+            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+        }
+
         public async Task<Guid> GetLoggedInUserId()
         {
             var state = await authenticationState.GetAuthenticationStateAsync();

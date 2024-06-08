@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swappa.Server.Commands.User;
 using Swappa.Server.Queries.User;
+using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Controllers.V1
 {
@@ -21,6 +23,14 @@ namespace Swappa.Server.Controllers.V1
             Ok(await mediator.Send(new GetUserByIdQuery
             {
                 Id = id
+            }));
+
+        [HttpPut("details/{id}")]
+        public async Task<IActionResult> UpdateDetails([FromRoute] Guid id, [FromBody] UserDetailsForUpdateDto command) =>
+            Ok(await mediator.Send(new UpdateUserDetailCommand
+            {
+                UserId = id,
+                Command = command
             }));
     }
 }

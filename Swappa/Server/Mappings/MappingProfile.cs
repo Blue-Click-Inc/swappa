@@ -14,6 +14,7 @@ namespace SpringBoardApi.Mapper
             CreateMap<RoleForUpdateDto, AppRole>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.RoleName));
             CreateMap<AppUser, UserDetailsDto>();
+            CreateMap<UserDetailsForUpdateDto, AppUser>();
         }
     }
 }

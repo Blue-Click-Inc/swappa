@@ -6,5 +6,6 @@ namespace Swappa.Client.Services.Interfaces
     {
         Task<ResponseModel<UserDetailsDto>?> GetUserByIdAsync(Guid id);
         Task<Guid> GetLoggedInUserId();
+        Task<ResponseModel<string>?> UpdateDetailsAsync(Guid id, UserDetailsForUpdateDto request);
     }
 }

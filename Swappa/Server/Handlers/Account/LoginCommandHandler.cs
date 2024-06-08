@@ -129,7 +129,7 @@ namespace Swappa.Server.Handlers.Account
             (
             issuer: jwtSettings["ValidIssuer"],
             claims: claims,
-            expires: DateTime.UtcNow.AddHours(Convert.ToDouble(jwtSettings["Expires"])),
+            expires: DateTime.UtcNow.AddDays(Convert.ToDouble(jwtSettings["Expires"])),
             signingCredentials: signingCredentials
             );
             return tokenOptions;

@@ -31,17 +31,17 @@ else if (!isLoading && Data != null)
                     <MutedUnderlinedLeftAligned Text="Account" />
                     <div class="">
                         <p class="m-0 py-1">
-                            <a href="" class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;">
+                            <a class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await GoToUserDetailsEdit(Data.Id))>
                                 <span> Edit Details</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
                             </a>
                         </p>
                         <p class="m-0 py-1">
-                            <a href="" class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;">
+                            <a class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await ChangePassword(Data.Id))>
                                 <span>Change Password</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
                             </a>
                         </p>
                         <p class="m-0 py-1">
-                            <a href="" class="text-danger fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;">
+                            <a class="text-danger fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await DeactivateAccount(Data.Id))>
                                 <span>Deactivate Account</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
                             </a>
                         </p>
@@ -56,7 +56,7 @@ else if (!isLoading && Data != null)
                            </a>
                        </p>
                        <p class="m-0">
-                           <a href="/feedback" class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;">
+                           <a class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await LeaveFeedback(Data.Id))>
                                <span>Feedback</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
                            </a>
                        </p>
