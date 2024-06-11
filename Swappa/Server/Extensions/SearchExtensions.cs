@@ -1,5 +1,6 @@
 ﻿using Mongo.Common;
 using Swappa.Shared.Extensions;
+using System.Linq.Expressions;
 
 namespace Swappa.Server.Extensions
 {
@@ -10,7 +11,7 @@ namespace Swappa.Server.Extensions
             if (!startDate.IsValid() || !endDate.IsValid())
                 return list;
 
-            return list.Where(l => l.CreatedAt.IsBetween(startDate, endDate));
+            return list.Where(l => l.CreatedAt >= startDate && l.CreatedAt <= endDate.ToEndOfDay());
         }
     }
 }

@@ -25,6 +25,9 @@
             return false;
         }
 
+        public static DateTime ToEndOfDay(this DateTime target) =>
+            new DateTime(target.Year, target.Month, target.Day, 23, 59, 59, 0);
+
         public static DateTime MinimumDate() =>
             MinDate;
 

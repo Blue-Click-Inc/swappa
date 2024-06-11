@@ -15,8 +15,8 @@ namespace Swappa.Data.Implementations
         public async Task AddAsync(UserFeedback userFeedback) =>
             await CreateAsync(userFeedback);
 
-        public IQueryable<UserFeedback> FindAsQueryable(Expression<Func<UserFeedback, bool>> expression) =>
-            GetAsQueryable(expression);
+        public IQueryable<UserFeedback> FindAsQueryable(Expression<Func<UserFeedback, bool>> expression = null!) =>
+            expression != null ? GetAsQueryable(expression) : GetAsQueryable();
 
         public async Task<UserFeedback?> FindAsync(Expression<Func<UserFeedback, bool>> expression) =>
             await GetAsync(expression);
