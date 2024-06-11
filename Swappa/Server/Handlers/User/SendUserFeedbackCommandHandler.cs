@@ -48,6 +48,8 @@ namespace Swappa.Server.Handlers.User
 
             var feedback = mapper.Map<UserFeedback>(command.Request);
             feedback.UserName = user.Name;
+
+            await repository.Feedback.AddAsync(feedback);
             return response.Process<string>(new ApiOkResponse<string>("Feedback successfully sent."));
         }
     }

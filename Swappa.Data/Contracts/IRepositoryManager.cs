@@ -4,5 +4,6 @@
     {
         ITokenRepository Token { get; }
         IUserRepository User { get; }
+        IUserFeedbackRepository Feedback { get; }
     }
 }

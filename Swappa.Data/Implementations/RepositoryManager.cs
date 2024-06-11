@@ -11,6 +11,7 @@ namespace Swappa.Data.Implementations
     {
         private readonly Lazy<ITokenRepository> _tokenRepository;
         private readonly Lazy<IUserRepository> _userRepository;
+        private readonly Lazy<IUserFeedbackRepository> _feedbackRepository;
 
         public RepositoryManager(IOptions<MongoDbSettings> mongoSetting, 
             IOptions<CloudinarySettings> cloudSetting, IConfiguration configuration,
@@ -20,10 +21,12 @@ namespace Swappa.Data.Implementations
                 new TokenRepository(mongoSetting));
             _userRepository = new Lazy<IUserRepository>(() =>
                 new UserRepository(contextAccessor));
+            _feedbackRepository = new Lazy<IUserFeedbackRepository>(() =>
+                new UserFeedbackRepository(mongoSetting));
         }
 
         public ITokenRepository Token => _tokenRepository.Value;
-
         public IUserRepository User => _userRepository.Value;
+        public IUserFeedbackRepository Feedback => _feedbackRepository.Value;
     }
 }

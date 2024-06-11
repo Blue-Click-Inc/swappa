@@ -10,7 +10,7 @@ namespace Swappa.Server.Controllers.V1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiversion}/user")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -39,5 +39,9 @@ namespace Swappa.Server.Controllers.V1
             {
                 Request = request
             }));
+
+        [HttpGet("feedback/all")]
+        public async Task<IActionResult> GetUserFeedbacks([FromQuery] GetUsersFeedbackQuery request) =>
+            Ok(await mediator.Send(request));
     }
 }
