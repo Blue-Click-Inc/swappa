@@ -35,9 +35,10 @@ namespace Swappa.Server.Handlers.User
                 .FindAsQueryable(l => !l.IsDeprecated)
                 .FilterByDate(request.StartDate, request.EndDate));
 
-            var feedbacksDictionary = mapper.Map<IEnumerable<UserFeedbackDto>>(feedbackQuery)
-                .GroupBy(x => x.UserEmail)
-                .ToDictionary(f => f.Key, f => f.ToList());
+            var feedbacksDictionary = await Task.Run(() => 
+                mapper.Map<IEnumerable<UserFeedbackDto>>(feedbackQuery)
+                    .GroupBy(x => x.UserEmail)
+                    .ToDictionary(f => f.Key, f => f.ToList()));
 
             var data = ToUserFeedbackDto(feedbacksDictionary) ?? new List<UserFeedbackCountDto>();
             var pagedList = PagedList<UserFeedbackCountDto>.ToPagedList(data, request.PageNumber, request.PageSize);

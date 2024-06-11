@@ -41,7 +41,11 @@ namespace Swappa.Server.Controllers.V1
             }));
 
         [HttpGet("feedback/all")]
-        public async Task<IActionResult> GetUserFeedbacks([FromQuery] GetUsersFeedbackQuery request) =>
+        public async Task<IActionResult> GetUsersFeedbacks([FromQuery] GetUsersFeedbackQuery request) =>
+            Ok(await mediator.Send(request));
+
+        [HttpGet("feedback/user")]
+        public async Task<IActionResult> GetUserFeedbacks([FromQuery] GetFeedbacksByUserQuery request) =>
             Ok(await mediator.Send(request));
     }
 }
