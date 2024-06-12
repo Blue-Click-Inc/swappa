@@ -3,7 +3,7 @@ using Swappa.Shared.DTOs;
 
 namespace Swappa.Server.Queries.User
 {
-    public class GetUsersFeedbackQuery : PageAndDateDto, IRequest<ResponseModel<PaginatedListDto<UserFeedbackCountDto>>>
+    public class GetUsersFeedbackQuery : PageAndDateDto, IRequest<ResponseModel<PaginatedListDto<UserFeedbackDto>>>
     {
     }
 }
