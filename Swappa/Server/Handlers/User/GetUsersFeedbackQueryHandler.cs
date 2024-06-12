@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Swappa.Data.Contracts;
+using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Extensions;
 using Swappa.Server.Queries.User;
@@ -31,18 +32,29 @@ namespace Swappa.Server.Handlers.User
                     .Process<PaginatedListDto<UserFeedbackCountDto>>(new BadRequestResponse("The End Date must be later than the Start Date"));
             }
 
-            var feedbackQuery = await Task.Run(() => repository.Feedback
-                .FindAsQueryable(l => !l.IsDeprecated)
-                .FilterByDate(request.StartDate, request.EndDate));
+            var userFeedbackDistinctEmailQuery = await Task.Run(() =>
+                repository.Feedback
+                    .FindAsQueryable(f => !f.IsDeprecated)
+                    .FilterByDate(request.StartDate, request.EndDate)
+                    .OrderByDescending(f => f.CreatedAt)
+                    .GroupBy(f => f.UserEmail)
+                    .Skip((request.PageNumber - 1) * request.PageSize)
+                    .Take(request.PageSize));
 
-            var feedbacksDictionary = await Task.Run(() => 
-                mapper.Map<IEnumerable<UserFeedbackDto>>(feedbackQuery)
+            var userFeedbackDistinctEmail = userFeedbackDistinctEmailQuery
+                .Select(x => x.Key).ToList();
+
+            var feedbacks = repository.Feedback
+                    .FindAsQueryable(f => !f.IsDeprecated && userFeedbackDistinctEmail.Contains(f.UserEmail))
+                    .FilterByDate(request.StartDate, request.EndDate);
+
+            var feedbacksDictionary = await Task.Run(() =>
+                mapper.Map<IEnumerable<UserFeedbackDto>>(feedbacks)
                     .GroupBy(x => x.UserEmail)
                     .ToDictionary(f => f.Key, f => f.ToList()));
 
             var data = ToUserFeedbackDto(feedbacksDictionary) ?? new List<UserFeedbackCountDto>();
-            var pagedList = PagedList<UserFeedbackCountDto>.ToPagedList(data, request.PageNumber, request.PageSize);
-            var pagedDataFeedbacks = PaginatedListDto<UserFeedbackCountDto>.Paginate(pagedList, pagedList.MetaData);
+            var pagedDataFeedbacks = PaginatedListDto<UserFeedbackCountDto>.Paginate(data, new MetaData(userFeedbackDistinctEmail.Count, request.PageSize, request.PageNumber));
             return response.Process<PaginatedListDto<UserFeedbackCountDto>>(new ApiOkResponse<PaginatedListDto<UserFeedbackCountDto>>(pagedDataFeedbacks));
         }
 
