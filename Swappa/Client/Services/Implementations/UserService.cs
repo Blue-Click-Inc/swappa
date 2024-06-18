@@ -2,6 +2,7 @@
 using Swappa.Client.Services.Interfaces;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
+using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
 
@@ -11,11 +12,15 @@ namespace Swappa.Client.Services.Implementations
     {
         private readonly HttpClient httpClient;
         private readonly AuthenticationStateProvider authenticationState;
+        private readonly HttpInterceptorService httpInterceptor;
 
-        public UserService(HttpClient httpClient, AuthenticationStateProvider authenticationState)
+        public UserService(HttpClient httpClient, 
+            AuthenticationStateProvider authenticationState,
+            HttpInterceptorService httpInterceptor)
         {
             this.httpClient = httpClient;
             this.authenticationState = authenticationState;
+            this.httpInterceptor = httpInterceptor;
         }
 
         public async Task<ResponseModel<UserDetailsDto>?> GetUserByIdAsync(Guid id)
@@ -36,7 +41,13 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.PostAsJsonAsync<FeedbackForAddDto>($"user/feedback/send", request);
 
-            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public async Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>?> GetUsersFeedbacks(PageAndDateDto request)
+        {
+            var response = await httpClient.GetAsync($"user/feedback/all?PageSize={request.PageSize}&PageNumber={request.PageNumber}&StartDate={request.StartDate}&EndDate={request.EndDate}");
+            return await httpInterceptor.Process<ResponseModel<PaginatedListDto<UserFeedbackDto>>>(response);
         }
 
         public async Task<Guid> GetLoggedInUserId()

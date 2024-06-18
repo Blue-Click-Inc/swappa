@@ -10,7 +10,7 @@ namespace Swappa.Server.Controllers.V1
     [ApiVersion("1.0")]
     [Route("api/v{version:apiversion}/user")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IMediator mediator;
@@ -33,6 +33,7 @@ namespace Swappa.Server.Controllers.V1
                 Command = command
             }));
 
+        [Authorize(Roles = "Regular")]
         [HttpPost("feedback/send")]
         public async Task<IActionResult> SendFeedback([FromBody] FeedbackForAddDto request) =>
             Ok(await mediator.Send(new SendUserFeedbackCommand
@@ -40,12 +41,30 @@ namespace Swappa.Server.Controllers.V1
                 Request = request
             }));
 
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpGet("feedback/all")]
         public async Task<IActionResult> GetUsersFeedbacks([FromQuery] GetUsersFeedbackQuery request) =>
             Ok(await mediator.Send(request));
 
+        [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpGet("feedback/user")]
         public async Task<IActionResult> GetUserFeedbacks([FromQuery] GetFeedbacksByUserQuery request) =>
             Ok(await mediator.Send(request));
+
+        [Authorize(Roles = "SuperAdmin")]
+        [HttpDelete("feedback/delete/{id}")]
+        public async Task<IActionResult> DeleteUserFeedback([FromRoute] Guid id) =>
+            Ok(await mediator.Send(new DeleteUserFeedbackCommand
+            {
+                Id = id
+            }));
+
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        [HttpPatch("feedback/toggle/{id}")]
+        public async Task<IActionResult> ToggleUserFeedback([FromRoute] Guid id) =>
+            Ok(await mediator.Send(new ToggleFeedbackDeprecationCommand
+            {
+                Id = id
+            }));
     }
 }

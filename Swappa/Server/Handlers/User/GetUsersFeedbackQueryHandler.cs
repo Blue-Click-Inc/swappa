@@ -44,20 +44,5 @@ namespace Swappa.Server.Handlers.User
             var pagedData = PaginatedListDto<UserFeedbackDto>.Paginate(dataList, pagedList.MetaData);
             return response.Process<PaginatedListDto<UserFeedbackDto>>(new ApiOkResponse<PaginatedListDto<UserFeedbackDto>>(pagedData));
         }
-
-        private List<UserFeedbackCountDto>? ToUserFeedbackDto(Dictionary<string, List<UserFeedbackDto>>? feedbacks)
-        {
-            var result = new List<UserFeedbackCountDto>();
-            if(feedbacks != null)
-            {
-                foreach (var feedback in feedbacks)
-                {
-                    var feedbacksDto = new UserFeedbackCountDto(feedback.Key, feedback.Value);
-                    result.Add(feedbacksDto);
-                }
-            }
-            return result?.OrderByDescending(f => f.Latest)
-                .ToList();
-        }
     }
 }

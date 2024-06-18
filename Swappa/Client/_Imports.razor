@@ -7,6 +7,7 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Http
 @using Microsoft.JSInterop
 @using Swappa.Client
+@using Swappa.Client.Services.Implementations
 @using Swappa.Client.Services.Interfaces
 @using Swappa.Client.Shared
 @using Microsoft.AspNetCore.Components.Authorization
@@ -27,12 +28,14 @@
 @using Swappa.Shared.DTOs
 @using Swappa.Client.Pages.Components.Account
 @using Swappa.Client.Pages.Modals.Accounts
+@using Swappa.Client.Pages.Components.Vehicle
 
 @inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider
 @inject IToastService Toast
 @inject IModalService Modal
 @inject NavigationManager NavManager
+@inject HttpInterceptorService Interceptor
 @inject ILocalStorageService LocalStorage
 
 @inject IAccountService AccountService

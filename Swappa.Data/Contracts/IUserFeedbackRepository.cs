@@ -7,6 +7,8 @@ namespace Swappa.Data.Contracts
     {
         Task AddAsync(UserFeedback userFeedback);
         Task DeleteAsync(Expression<Func<UserFeedback, bool>> expression);
+        Task EditAsync(Expression<Func<UserFeedback, bool>> expression, UserFeedback feedback);
+        Task<bool> Exists(Expression<Func<UserFeedback, bool>> expression);
         IQueryable<UserFeedback> FindAsQueryable(Expression<Func<UserFeedback, bool>> expression = null!);
         Task<UserFeedback?> FindAsync(Expression<Func<UserFeedback, bool>> expression);
     }

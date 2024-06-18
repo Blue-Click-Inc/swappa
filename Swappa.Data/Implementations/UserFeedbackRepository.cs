@@ -23,5 +23,11 @@ namespace Swappa.Data.Implementations
 
         public async Task DeleteAsync(Expression<Func<UserFeedback, bool>> expression) =>
             await RemoveAsync(expression);
+
+        public async Task EditAsync(Expression<Func<UserFeedback, bool>> expression, UserFeedback feedback) =>
+            await UpdateAsync(expression, feedback);
+
+        public async Task<bool> Exists(Expression<Func<UserFeedback, bool>> expression) =>
+            await ExistsAsync(expression);
     }
 }

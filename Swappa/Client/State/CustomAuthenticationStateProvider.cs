@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace Swappa.Client.State
 {
@@ -12,7 +13,8 @@ namespace Swappa.Client.State
         private readonly ILocalStorageService localStorage;
         private readonly HttpClient httpClient;
 
-        public CustomAuthenticationStateProvider(ILocalStorageService localStorage, HttpClient httpClient)
+        public CustomAuthenticationStateProvider(ILocalStorageService localStorage, 
+            HttpClient httpClient)
         {
             this.localStorage = localStorage;
             this.httpClient = httpClient;
