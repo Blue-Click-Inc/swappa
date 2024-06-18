@@ -15,13 +15,13 @@
                     <SinglePillCardDash 
                         Background="FeedbackRating.Average" 
                         CardTitle="Total Users' Feedbacks" 
-                        PillContent="1,345, 649">
+                        PillContent="@count">
                     </SinglePillCardDash>
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
                     <SinglePillCardDash 
-                        Background="FeedbackRating.Excellent"
-                        PillContent="@FeedbackRating.Excellent.GetDescription()"
+                        Background="@averageRating"
+                        PillContent="@averageRating.GetDescription()"
                         CardTitle="Average Rating">
                     </SinglePillCardDash>
                 </div>

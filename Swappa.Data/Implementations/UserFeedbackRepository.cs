@@ -29,5 +29,8 @@ namespace Swappa.Data.Implementations
 
         public async Task<bool> Exists(Expression<Func<UserFeedback, bool>> expression) =>
             await ExistsAsync(expression);
+
+        public async Task<long> Count(Expression<Func<UserFeedback, bool>> expression) =>
+            await CountAsync(expression);
     }
 }

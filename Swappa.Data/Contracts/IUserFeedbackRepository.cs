@@ -6,6 +6,7 @@ namespace Swappa.Data.Contracts
     public interface IUserFeedbackRepository
     {
         Task AddAsync(UserFeedback userFeedback);
+        Task<long> Count(Expression<Func<UserFeedback, bool>> expression);
         Task DeleteAsync(Expression<Func<UserFeedback, bool>> expression);
         Task EditAsync(Expression<Func<UserFeedback, bool>> expression, UserFeedback feedback);
         Task<bool> Exists(Expression<Func<UserFeedback, bool>> expression);

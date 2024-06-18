@@ -50,6 +50,12 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<UserFeedbackDto>>>(response);
         }
 
+        public async Task<ResponseModel<FeedbackDashboardDto>?> FeedbackDashboardData()
+        {
+            var response = await httpClient.GetAsync($"user/feedback/dashboard");
+            return await httpInterceptor.Process<ResponseModel<FeedbackDashboardDto>>(response);
+        }
+
         public async Task<Guid> GetLoggedInUserId()
         {
             var state = await authenticationState.GetAuthenticationStateAsync();

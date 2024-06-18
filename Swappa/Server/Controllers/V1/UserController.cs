@@ -33,7 +33,7 @@ namespace Swappa.Server.Controllers.V1
                 Command = command
             }));
 
-        [Authorize(Roles = "Regular")]
+        [Authorize(Roles = "User")]
         [HttpPost("feedback/send")]
         public async Task<IActionResult> SendFeedback([FromBody] FeedbackForAddDto request) =>
             Ok(await mediator.Send(new SendUserFeedbackCommand
@@ -66,5 +66,10 @@ namespace Swappa.Server.Controllers.V1
             {
                 Id = id
             }));
+
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        [HttpGet("feedback/dashboard")]
+        public async Task<IActionResult> FeedbackDashboard() =>
+            Ok(await mediator.Send(new FeedbackDashboardQuery()));
     }
 }
