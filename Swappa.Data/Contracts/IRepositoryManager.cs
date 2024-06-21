@@ -5,5 +5,6 @@
         ITokenRepository Token { get; }
         IUserRepository User { get; }
         IUserFeedbackRepository Feedback { get; }
+        ILocationService Location { get; }
     }
 }
