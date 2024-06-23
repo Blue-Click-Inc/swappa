@@ -1,6 +1,7 @@
 ﻿using Blazored.Modal;
 using Microsoft.JSInterop;
 using Swappa.Client.Pages.Modals.Accounts;
+using Swappa.Client.Pages.Modals.Location;
 using Swappa.Client.Pages.Modals.User;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
@@ -69,6 +70,36 @@ namespace Swappa.Client.Pages.Account
         public async Task ChangePassword(Guid id)
         {
             var confirmationModal = Modal.Show<ChangePasswordModal>("", parameters);
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetUserDetails(id);
+            }
+        }
+
+        public async Task UpdateLocation(Guid id)
+        {
+            var parameters = new ModalParameters
+            {
+                { "EntityId", Data.Id }
+            };
+
+            var confirmationModal = Modal.Show<UpdateLocationModal>("", parameters);
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetUserDetails(id);
+            }
+        }
+
+        public async Task AddLocation(Guid id)
+        {
+            var parameters = new ModalParameters
+            {
+                { "EntityId", Data.Id }
+            };
+
+            var confirmationModal = Modal.Show<AddLocationModal>("", parameters);
             var result = await confirmationModal.Result;
             if (result.Confirmed)
             {

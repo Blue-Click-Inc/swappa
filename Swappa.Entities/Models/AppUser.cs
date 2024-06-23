@@ -12,6 +12,7 @@ namespace Swappa.Entities.Models
         public string Name { get; set; } = string.Empty;
         [Required]
         public Gender Gender { get; set; }
+        public EntityLocation? Location { get; set; }
         public DateTime LastLogin { get; set; }
         public Status Status { get; set; } = Status.Inactive;
         public DateTime UpdatedOn { get; set; } = DateTime.Now;

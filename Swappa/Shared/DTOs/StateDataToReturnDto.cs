@@ -6,7 +6,6 @@ namespace Swappa.Shared.DTOs
     {
         [JsonIgnore]
         public string _Id { get; set; } = string.Empty;
-        public string Id => _Id;
         public string Country { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

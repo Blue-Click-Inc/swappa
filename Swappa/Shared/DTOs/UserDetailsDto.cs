@@ -9,6 +9,7 @@ namespace Swappa.Shared.DTOs
         public string Email { get; set; } = string.Empty;
         public Gender Gender { get; set; }
         public string Roles { get; set; } = string.Empty;
+        public LocationToReturnDto? Location { get; set; }
         public DateTime CreatedOn { get; set; }
         public DateTime LastLogin { get; set; }
         public Status Status { get; set; }

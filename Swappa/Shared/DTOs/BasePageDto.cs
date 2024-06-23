@@ -5,10 +5,10 @@ namespace Swappa.Shared.DTOs
     public abstract class BasePageDto : IPageDto
     {
         const int minPageSize = 1;
-        const int maxPageSize = 1000;
+        const int maxPageSize = 10000;
 
         private int _pageNumber = 1;
-        private int _pageSize = 10;
+        private int _pageSize = 1000;
 
         public int PageNumber
         {

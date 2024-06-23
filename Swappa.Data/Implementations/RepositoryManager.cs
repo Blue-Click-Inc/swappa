@@ -25,7 +25,7 @@ namespace Swappa.Data.Implementations
             _feedbackRepository = new Lazy<IUserFeedbackRepository>(() =>
                 new UserFeedbackRepository(mongoSetting));
             _locationService = new Lazy<ILocationService>(() =>
-                new LocationService(configuration));
+                new LocationService(configuration, mongoSetting));
         }
 
         public ITokenRepository Token => _tokenRepository.Value;

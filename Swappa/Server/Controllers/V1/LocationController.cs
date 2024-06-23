@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swappa.Server.Commands.Location;
 using Swappa.Server.Queries.Location;
 using Swappa.Shared.DTOs;
 
@@ -26,5 +28,22 @@ namespace Swappa.Server.Controllers.V1
                 CountryId = countryId
             }));
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Create(AddLocationCommand request) =>
+            Ok(await mediatr.Send(request));
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> Update(UpdateLocationCommand request) =>
+            Ok(await mediatr.Send(request));
+
+        [HttpDelete("{id}")]
+        [Authorize]
+        public async Task<IActionResult> Delete(Guid id) =>
+            Ok(await mediatr.Send(new DeleteLocationCommand
+            {
+                Id = id
+            }));
     }
 }

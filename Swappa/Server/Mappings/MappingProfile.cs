@@ -17,6 +17,7 @@ namespace SpringBoardApi.Mapper
             CreateMap<UserDetailsForUpdateDto, AppUser>();
             CreateMap<FeedbackForAddDto, UserFeedback>();
             CreateMap<UserFeedback, UserFeedbackDto>();
+            CreateMap<EntityLocation, LocationToReturnDto>();
         }
     }
 }

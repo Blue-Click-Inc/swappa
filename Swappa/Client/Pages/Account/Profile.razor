@@ -16,6 +16,12 @@ else if (!isLoading && Data != null)
                 <div class="mt-3">
                     <ProfileUserCircle />
                     <ProfileHeader Name="@Data?.Name" Status="@Data.Status" Gender="@Data.Gender" />
+                    @if(Data?.Location != null)
+                    {
+                        <div class="text-center">
+                            <span class="oi oi-map-marker"> @Data.Location.State, @Data.Location.Country</span>
+                        </div>
+                    }
                     <div class="d-flex flex-row justify-content-between m-0 p-0">
                         <div class="text-center text-muted m-0 p-0" style="font-size: 0.9rem;">
                             <p class="oi oi-calendar my-0 py-0"></p>
@@ -42,6 +48,22 @@ else if (!isLoading && Data != null)
                                 <span>Change Password</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
                             </a>
                         </p>
+                        @if(Data?.Location != null)
+                        {
+                            <p class="m-0 py-1">
+                                <a class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await UpdateLocation(Data.Id))>
+                                    <span>Update Location</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
+                                </a>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="m-0 py-1">
+                                <a class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await AddLocation(Data.Id))>
+                                    <span>Add Location</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
+                                </a>
+                            </p>
+                        }
                         <p class="m-0 py-1">
                             <a class="text-danger fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await DeactivateAccount(Data.Id))>
                                 <span>Deactivate Account</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>

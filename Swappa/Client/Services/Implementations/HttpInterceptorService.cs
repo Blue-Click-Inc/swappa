@@ -26,8 +26,8 @@ namespace Swappa.Client.Services.Implementations
         {
             T? result = null!;
             if (!httpResponse.IsSuccessStatusCode && 
-                (httpResponse.StatusCode == HttpStatusCode.Unauthorized || 
-                httpResponse.StatusCode == HttpStatusCode.Forbidden))
+                (httpResponse.StatusCode != HttpStatusCode.BadRequest || 
+                httpResponse.StatusCode == HttpStatusCode.NotFound))
             {
                 ProcessResponse(httpResponse.StatusCode);
             }

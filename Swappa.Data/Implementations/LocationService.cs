@@ -1,17 +1,22 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Mongo.Common.MongoDB;
+using Mongo.Common.Settings;
 using Refit;
 using Swappa.Data.Contracts;
 using Swappa.Data.Services.Interfaces;
+using Swappa.Entities.Models;
 using Swappa.Shared.DTOs;
+using System.Linq.Expressions;
 
 namespace Swappa.Data.Implementations
 {
-    public class LocationService : ILocationService
+    public class LocationService : Repository<EntityLocation>, ILocationService
     {
         private readonly ICountryService countryService;
         private readonly IStateService stateService;
 
-        public LocationService(IConfiguration configuration)
+        public LocationService(IConfiguration configuration, IOptions<MongoDbSettings> option) : base(option)
         {
             var baseUrl = configuration.GetSection("LocationService")["BaseUrl"] ?? string.Empty;
             this.countryService = RestService.For<ICountryService>(baseUrl);
@@ -45,12 +50,12 @@ namespace Swappa.Data.Implementations
             return data;
         }
 
-        public async Task CreateAsync(CountryDataDto request)
+        public async Task AddAsync(CountryDataDto request)
         {
             await countryService.Post(request);
         }
 
-        public async Task UpdateAsync(string countryId, CountryDataDto request)
+        public async Task EditAsync(string countryId, CountryDataDto request)
         {
             await countryService.Put(countryId, request);
         }
@@ -60,6 +65,23 @@ namespace Swappa.Data.Implementations
             await countryService.Delete(countryId);
         }
 
+        #endregion
+
+        #region Entity Location Section
+        public async Task AddAsync(EntityLocation entity) =>
+            await CreateAsync(entity);
+
+        public async Task EditAsync(Expression<Func<EntityLocation, bool>> expression, EntityLocation entity) =>
+            await UpdateAsync(expression, entity);
+
+        public async Task DeleteAsync(Expression<Func<EntityLocation, bool>> expression) =>
+            await RemoveAsync(expression);
+
+        public async Task<EntityLocation?> GetByConditionAsync(Expression<Func<EntityLocation, bool>> expression) =>
+            await GetAsync(expression);
+
+        public async Task<bool> Exists(Expression<Func<EntityLocation, bool>> expression) =>
+            await ExistsAsync(expression);
         #endregion
     }
 }
