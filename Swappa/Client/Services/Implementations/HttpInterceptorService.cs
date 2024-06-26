@@ -27,7 +27,7 @@ namespace Swappa.Client.Services.Implementations
             T? result = null!;
             if (!httpResponse.IsSuccessStatusCode && 
                 (httpResponse.StatusCode != HttpStatusCode.BadRequest || 
-                httpResponse.StatusCode == HttpStatusCode.NotFound))
+                httpResponse.StatusCode != HttpStatusCode.NotFound))
             {
                 ProcessResponse(httpResponse.StatusCode);
             }

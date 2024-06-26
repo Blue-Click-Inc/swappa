@@ -1,9 +1,11 @@
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Mongo.Common.MongoDB;
+using RedisCache.Common.Repository.Extensions;
 using Serilog;
 using Swappa.Server.Configurations;
 using Swappa.Server.Extensions;
-using System.Text;
+using Swappa.Server.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 Configurations.ConfigureLogging();
@@ -32,6 +34,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureJWT(builder.Configuration);
+builder.Services.ConfigureRedis(builder.Configuration.GetSection("Redis").GetValue<string>("Connection") ?? string.Empty)
+    .ConfigureCacheRepository();
+
+builder.Services.ConfigureHangfireClient(builder.Configuration);
+builder.Services.ConfigureHangfireServer();
 
 builder.Services.AddHttpContextAccessor();
 
@@ -65,7 +72,10 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseHangfireDashboard("/jobs", new DashboardOptions
+{
+    Authorization = new[] { new HangfireAuthorizationFilter(builder.Configuration) },
+});
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");

@@ -91,7 +91,7 @@ namespace Swappa.Client.Pages.Modals.Location
             {
                 if (Response.IsSuccessful)
                 {
-                    Toast.ShowSuccess(Response.Message ?? string.Empty);
+                    Toast.ShowSuccess(Response.Data ?? string.Empty);
                     await Instance.CloseAsync();
                     return;
                 }

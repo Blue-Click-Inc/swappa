@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Mongo.Common.Settings;
+using RedisCache.Common.Repository;
 using Swappa.Data.Configurations;
 using Swappa.Data.Contracts;
 
@@ -16,7 +17,7 @@ namespace Swappa.Data.Implementations
 
         public RepositoryManager(IOptions<MongoDbSettings> mongoSetting, 
             IOptions<CloudinarySettings> cloudSetting, IConfiguration configuration,
-            IHttpContextAccessor contextAccessor)
+            IHttpContextAccessor contextAccessor, ICacheCommonRepository redisCache)
         {
             _tokenRepository = new Lazy<ITokenRepository>(() =>
                 new TokenRepository(mongoSetting));
@@ -25,13 +26,12 @@ namespace Swappa.Data.Implementations
             _feedbackRepository = new Lazy<IUserFeedbackRepository>(() =>
                 new UserFeedbackRepository(mongoSetting));
             _locationService = new Lazy<ILocationService>(() =>
-                new LocationService(configuration, mongoSetting));
+                new LocationService(configuration, mongoSetting, redisCache));
         }
 
         public ITokenRepository Token => _tokenRepository.Value;
         public IUserRepository User => _userRepository.Value;
         public IUserFeedbackRepository Feedback => _feedbackRepository.Value;
-
         public ILocationService Location => _locationService.Value;
     }
 }

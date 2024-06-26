@@ -18,9 +18,7 @@ else if (!isLoading && Data != null)
                     <ProfileHeader Name="@Data?.Name" Status="@Data.Status" Gender="@Data.Gender" />
                     @if(Data?.Location != null)
                     {
-                        <div class="text-center">
-                            <span class="oi oi-map-marker"> @Data.Location.State, @Data.Location.Country</span>
-                        </div>
+                        <InlineLocation Location="Data.Location"></InlineLocation>
                     }
                     <div class="d-flex flex-row justify-content-between m-0 p-0">
                         <div class="text-center text-muted m-0 p-0" style="font-size: 0.9rem;">
@@ -71,21 +69,23 @@ else if (!isLoading && Data != null)
                         </p>
                     </div>
                 </div>
-                <div class="mb-3">
-                   <MutedUnderlinedLeftAligned Text="Support" />
-                   <div class="mb-2">
-                       <p class="m-0 py-1">
-                           <a href="tel:+2348035222858" class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;">
-                               <span>Call us</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
-                           </a>
-                       </p>
-                       <p class="m-0">
-                           <a class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await LeaveFeedback(Data.Id))>
-                               <span>Feedback</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
-                           </a>
-                       </p>
-                   </div>
-                </div>
+                <AuthorizeView Roles="User">
+                    <div class="mb-3">
+                        <MutedUnderlinedLeftAligned Text="Support" />
+                        <div class="mb-2">
+                            <p class="m-0 py-1">
+                                <a href="tel:+2348035222858" class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;">
+                                    <span>Call us</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
+                                </a>
+                            </p>
+                            <p class="m-0">
+                                <a class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await LeaveFeedback(Data.Id))>
+                                    <span>Feedback</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </AuthorizeView>
             </div>
             <div class="col-sm-0 col-md-3"></div>
         </div>

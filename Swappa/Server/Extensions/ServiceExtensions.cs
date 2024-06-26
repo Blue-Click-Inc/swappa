@@ -1,4 +1,7 @@
-﻿using Mailjet.Client;
+﻿using Hangfire;
+using Hangfire.Console;
+using Hangfire.RecurringJobExtensions;
+using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +13,7 @@ using Swappa.Data.Implementations;
 using Swappa.Data.Services;
 using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Models;
+using Swappa.Server.Filters;
 using Swappa.Shared.DTOs;
 using System.Text;
 
@@ -17,6 +21,36 @@ namespace Swappa.Server.Extensions
 {
     public static class ServiceExtensions
     {
+        public static void ConfigureHangfireClient(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHangfire((provider, config) =>
+            {
+                config
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(configuration.GetSection("Hangfire").GetValue<string>("Database"))
+                .WithJobExpirationTimeout(TimeSpan.FromMinutes(5))
+                .UseConsole()
+                .UseRecurringJob(typeof(IRecurringJobService))
+                .UseFilter(provider.GetRequiredService<HangfireLogAttribute>())
+                .UseFilter(new AutomaticRetryAttribute()
+                {
+                    Attempts = 15,
+                    OnAttemptsExceeded = AttemptsExceededAction.Delete
+                });
+            });
+        }
+
+        public static void ConfigureHangfireServer(this IServiceCollection services)
+        {
+            services.AddHangfireServer(options =>
+            {
+                options.Queues = new[] { "recurring", "default" };
+                options.SchedulePollingInterval = TimeSpan.FromMinutes(1);
+            });
+        }
+
         public static void ConfigureMailJet(this IServiceCollection services, IConfiguration configuration) =>
             services.AddHttpClient<IMailjetClient, MailjetClient>(client =>
             {
@@ -105,6 +139,8 @@ namespace Swappa.Server.Extensions
             services.AddScoped<ApiResponseDto>();
             services.AddScoped<INotify, Notify>();
             services.AddScoped<IMedia, Media>();
+            services.AddSingleton<HangfireLogAttribute>();
+            services.AddScoped<IRecurringJobService, RecurringJobService>();
         }
 
         public static void ConfigureMediatR(this IServiceCollection services) =>

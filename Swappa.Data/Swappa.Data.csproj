@@ -8,9 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+    <PackageReference Include="Hangfire.Console" Version="1.4.3" />
+    <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.4" />
     <PackageReference Include="Mailjet.Api" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Mongo.Common.Repo" Version="1.0.0" />
+    <PackageReference Include="RedisCache.Common.Repository" Version="1.0.0" />
     <PackageReference Include="Refit" Version="7.1.0" />
   </ItemGroup>
 

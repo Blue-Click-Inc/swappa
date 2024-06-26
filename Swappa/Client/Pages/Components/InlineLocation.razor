@@ -1,0 +1,8 @@
+﻿<p class="text-muted mt-0 text-center p-0 m-0 mb-2" style="font-size: 0.8rem;">
+    <span class="oi oi-map-marker"></span>  @Location.State, @Location.Country
+</p>
+
+@code {
+    [Parameter]
+    public LocationToReturnDto Location { get; set; } = new();
+}
