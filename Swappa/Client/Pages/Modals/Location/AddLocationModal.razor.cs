@@ -1,5 +1,6 @@
 ﻿using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
+using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 
 namespace Swappa.Client.Pages.Modals.Location
@@ -14,6 +15,8 @@ namespace Swappa.Client.Pages.Modals.Location
         BlazoredModalInstance Instance { get; set; } = new();
         [Parameter]
         public Guid EntityId { get; set; }
+        [Parameter]
+        public EntityType EntityType { get; set; }
         public BaseLocationDto Location { get; set; } = new();
         public List<CountryDataToReturnDto>? Countries { get; set; } = new();
         public List<StateDataToReturnDto>? States { get; set; } = new();
@@ -34,6 +37,7 @@ namespace Swappa.Client.Pages.Modals.Location
                 }
             }
             Location.EntityId = EntityId;
+            Location.EntityType = EntityType;
             await base.OnInitializedAsync();
         }
 

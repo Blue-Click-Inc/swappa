@@ -20,6 +20,8 @@ namespace Swappa.Server.Validations.Location
                 .MinimumLength(5).WithMessage("{PropertyName} field must be at least 5 characters.");
             RuleFor(x => x.EntityId)
                 .NotEmpty().WithMessage("{PropertyName} field is required.");
+            RuleFor(x => x.EntityType)
+                .IsInEnum().WithMessage("Please enter a valid entity type");
         }
     }
 }

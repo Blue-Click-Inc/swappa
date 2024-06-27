@@ -5,6 +5,6 @@ namespace Swappa.Server.Commands.Location
 {
     public class DeleteLocationCommand : IRequest<ResponseModel<string>>
     {
-        public Guid Id { get; set; }
+        public Guid EntityId { get; set; }
     }
 }

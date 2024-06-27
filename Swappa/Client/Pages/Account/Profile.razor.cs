@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using Swappa.Client.Pages.Modals.Accounts;
 using Swappa.Client.Pages.Modals.Location;
 using Swappa.Client.Pages.Modals.User;
+using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
 
@@ -81,7 +82,8 @@ namespace Swappa.Client.Pages.Account
         {
             var parameters = new ModalParameters
             {
-                { "EntityId", Data.Id }
+                { "EntityId", Data.Id },
+                { "EntityType", EntityType.User }
             };
 
             var confirmationModal = Modal.Show<UpdateLocationModal>("", parameters);
@@ -96,7 +98,8 @@ namespace Swappa.Client.Pages.Account
         {
             var parameters = new ModalParameters
             {
-                { "EntityId", Data.Id }
+                { "EntityId", Data.Id },
+                { "EntityType", EntityType.User }
             };
 
             var confirmationModal = Modal.Show<AddLocationModal>("", parameters);

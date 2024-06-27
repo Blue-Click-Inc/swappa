@@ -63,8 +63,9 @@ namespace Swappa.Server.Handlers.Location
             return new EntityLocation
             {
                 EntityId = request.EntityId,
-                State = state.Name,
-                Country = country.Name,
+                EntityType = request.EntityType,
+                StateId = state._Id,
+                CountryId = country._Id,
                 City = request.City,
                 PostalCode = request.PostalCode
             };

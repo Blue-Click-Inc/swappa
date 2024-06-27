@@ -41,7 +41,7 @@ namespace Swappa.Client.State
                 NotifyAuthenticationStateChanged(Task.FromResult(state));
                 return state;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return await Task.FromResult(new AuthenticationState(claimPrincipal));
             }

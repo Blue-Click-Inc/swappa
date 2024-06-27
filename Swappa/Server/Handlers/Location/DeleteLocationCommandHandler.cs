@@ -21,15 +21,15 @@ namespace Swappa.Server.Handlers.Location
 
         public async Task<ResponseModel<string>> Handle(DeleteLocationCommand request, CancellationToken cancellationToken)
         {
-            if(request == null || request.Id.IsEmpty())
+            if(request == null || request.EntityId.IsEmpty())
             {
                 return response.Process<string>(new BadRequestResponse("Invalid request. Request parameters can not be null"));
             }
 
-            var location = await repository.Location.GetByConditionAsync(l => l.Id.Equals(request.Id));
+            var location = await repository.Location.GetByConditionAsync(l => l.EntityId.Equals(request.EntityId));
             if(location == null)
             {
-                return response.Process<string>(new NotFoundResponse($"No location record found with the Id: {request.Id}"));
+                return response.Process<string>(new NotFoundResponse($"No location record found with the Id: {request.EntityId}"));
             }
 
             await repository.Location.DeleteAsync(l => l.Id.Equals(location.Id));

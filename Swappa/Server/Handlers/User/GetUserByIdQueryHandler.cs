@@ -56,7 +56,18 @@ namespace Swappa.Server.Handlers.User
             var location = await repository.Location.GetByConditionAsync(l => l.EntityId.Equals(user.Id));
             if(location != null)
             {
-                userDetails.Location = mapper.Map<LocationToReturnDto>(location);
+                var country = await repository.Location.GetAsync(location.CountryId);
+                var state = await repository.Location.GetOneAsync(location.StateId);
+                if(country != null && state != null)
+                {
+                    userDetails.Location = new LocationToReturnDto
+                    {
+                        Id = location.Id,
+                        Country = country.Name,
+                        State = state.Name,
+                        PostalCode = location.PostalCode
+                    };
+                }
             }
             return response.Process<UserDetailsDto>(new ApiOkResponse<UserDetailsDto>(userDetails));
         }

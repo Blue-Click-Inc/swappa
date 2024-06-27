@@ -5,7 +5,6 @@ using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Location;
 using Swappa.Server.Validations.Location;
 using Swappa.Shared.DTOs;
-using Swappa.Shared.Extensions;
 
 namespace Swappa.Server.Handlers.Location
 {
@@ -53,8 +52,8 @@ namespace Swappa.Server.Handlers.Location
                 return response.Process<string>(new NotFoundResponse($"No location record found with the EntityId: {request.EntityId}"));
             }
 
-            locationToUpdate.State = state.Name;
-            locationToUpdate.Country = country.Name;
+            locationToUpdate.StateId = state._Id;
+            locationToUpdate.CountryId = country._Id;
             locationToUpdate.City = request.City;
             locationToUpdate.PostalCode = request.PostalCode;
             locationToUpdate.UpdatedAt = DateTime.UtcNow;

@@ -34,9 +34,21 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
+        public async Task<ResponseModel<BaseLocationDto>?> GetAsync(Guid entityId)
+        {
+            var response = await httpClient.GetAsync($"location/{entityId}");
+            return await httpInterceptor.Process<ResponseModel<BaseLocationDto>>(response);
+        }
+
         public async Task<ResponseModel<string>?> UpdateAsync(BaseLocationDto request)
         {
             var response = await httpClient.PutAsJsonAsync<BaseLocationDto>($"location", request);
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> DeleteAsync(Guid entityId)
+        {
+            var response = await httpClient.DeleteAsync($"location/{entityId}");
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
     }

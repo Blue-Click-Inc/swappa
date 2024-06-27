@@ -33,17 +33,25 @@ namespace Swappa.Server.Controllers.V1
         public async Task<IActionResult> Create(AddLocationCommand request) =>
             Ok(await mediatr.Send(request));
 
+        [HttpGet("{entityId}")]
+        [Authorize]
+        public async Task<IActionResult> Get([FromRoute]Guid entityId) =>
+            Ok(await mediatr.Send(new GetEntityLocationQuery
+            {
+                EntityId = entityId
+            }));
+
         [HttpPut]
         [Authorize]
         public async Task<IActionResult> Update(UpdateLocationCommand request) =>
             Ok(await mediatr.Send(request));
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{entityId}")]
         [Authorize]
-        public async Task<IActionResult> Delete(Guid id) =>
+        public async Task<IActionResult> Delete(Guid entityId) =>
             Ok(await mediatr.Send(new DeleteLocationCommand
             {
-                Id = id
+                EntityId = entityId
             }));
     }
 }
