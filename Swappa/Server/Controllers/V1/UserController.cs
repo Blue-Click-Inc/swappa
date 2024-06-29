@@ -52,7 +52,7 @@ namespace Swappa.Server.Controllers.V1
             Ok(await mediator.Send(request));
 
         [Authorize(Roles = "SuperAdmin")]
-        [HttpDelete("feedback/delete/{id}")]
+        [HttpDelete("feedback/{id}")]
         public async Task<IActionResult> DeleteUserFeedback([FromRoute] Guid id) =>
             Ok(await mediator.Send(new DeleteUserFeedbackCommand
             {

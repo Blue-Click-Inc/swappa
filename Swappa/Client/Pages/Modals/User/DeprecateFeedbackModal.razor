@@ -1,0 +1,28 @@
+﻿<PageTitle>@PageTitle</PageTitle>
+
+<div class="row">
+    <div class="box-shadow-inset border-radius-2rem p-3">
+        <h3>
+            <span class="text-warning" aria-hidden="true">@PageTitle</span>
+        </h3>
+        <hr />
+        <Alert Style="AlertStyle.Warn">
+            <ChildContent><span class="fa fa-exclamation--triangle"></span> This action will @Action.ToLower() this record.
+            </ChildContent>
+        </Alert>
+        <div class="row">
+            <div class="col-md-0 col-lg-2"></div>
+                <div class="col-md-12 col-lg-8 d-flex justify-content-center">
+                    <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                        <button class="btn btn-warning mx-1 mt-1" disabled="@isLoading" type="button" @onclick="(async () => await DoAsync())">
+                            <span class="oi @(iconClass)" aria-hidden="true"></span> @Action
+                        </button>
+                        <button type="button" class="btn btn-secondary mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
+                            <span class="oi oi-arrow-left" aria-hidden="true"></span> Back
+                        </button>
+                    </div>
+                </div>
+            <div class="col-md-0 col-lg-2"></div>
+       </div>
+    </div>
+</div>

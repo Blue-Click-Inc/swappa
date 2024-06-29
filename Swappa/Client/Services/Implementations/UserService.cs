@@ -23,23 +23,49 @@ namespace Swappa.Client.Services.Implementations
             this.httpInterceptor = httpInterceptor;
         }
 
+        #region Users
+        public async Task<Guid> GetLoggedInUserId()
+        {
+            var state = await authenticationState.GetAuthenticationStateAsync();
+            var stringId = state?.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+            return stringId.ToGuid();
+        }
+
         public async Task<ResponseModel<UserDetailsDto>?> GetUserByIdAsync(Guid id)
         {
-            var response = await httpClient.GetFromJsonAsync<ResponseModel<UserDetailsDto>>($"user/{id}");
+            var response = await httpClient.GetAsync($"user/{id}");
 
-            return response;
+            return await httpInterceptor.Process<ResponseModel<UserDetailsDto>>(response); ;
         }
 
         public async Task<ResponseModel<string>?> UpdateDetailsAsync(Guid id, UserDetailsForUpdateDto request)
         {
             var response = await httpClient.PutAsJsonAsync<UserDetailsForUpdateDto>($"user/details/{id}", request);
 
-            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
+        #endregion
+
+        #region Feedbacks
         public async Task<ResponseModel<string>?> SendFeedbackAsync(FeedbackForAddDto request)
         {
             var response = await httpClient.PostAsJsonAsync<FeedbackForAddDto>($"user/feedback/send", request);
+
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> ToggleFeedbackAsync(Guid id)
+        {
+            var response = await httpClient.PatchAsync($"user/feedback/toggle/{id}", null);
+
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> DeleteFeedbackAsync(Guid id)
+        {
+            var response = await httpClient.DeleteAsync($"user/feedback/{id}");
 
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
@@ -56,12 +82,6 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<FeedbackDashboardDto>>(response);
         }
 
-        public async Task<Guid> GetLoggedInUserId()
-        {
-            var state = await authenticationState.GetAuthenticationStateAsync();
-            var stringId = state?.User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
-
-            return stringId.ToGuid();
-        }
+        #endregion
     }
 }

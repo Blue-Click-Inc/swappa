@@ -10,5 +10,7 @@ namespace Swappa.Client.Services.Interfaces
         Task<ResponseModel<string>?> SendFeedbackAsync(FeedbackForAddDto request);
         Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>?> GetUsersFeedbacks(PageAndDateDto request);
         Task<ResponseModel<FeedbackDashboardDto>?> FeedbackDashboardData();
+        Task<ResponseModel<string>?> ToggleFeedbackAsync(Guid id);
+        Task<ResponseModel<string>?> DeleteFeedbackAsync(Guid id);
     }
 }

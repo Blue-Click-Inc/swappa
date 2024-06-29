@@ -33,7 +33,7 @@ namespace Swappa.Server.Handlers.User
             }
 
             var feedbacks = repository.Feedback
-                    .FindAsQueryable(f => !f.IsDeprecated)
+                    .FindAsQueryable(f => true)
                     .OrderByDescending((f) => f.CreatedAt)
                     .FilterByDate(request.StartDate, request.EndDate);
 

@@ -34,11 +34,12 @@ namespace Swappa.Server.Handlers.User
                 return response.Process<string>(new BadRequestResponse($"No feedback record found with Id: {request.Id}."));
             }
 
+            var action = !feedback.IsDeprecated ? "deprecated" : "restored";
             feedback.IsDeprecated = !feedback.IsDeprecated;
             await repository.Feedback
                 .EditAsync(f => f.Id.Equals(request.Id), feedback);
 
-            return response.Process<string>(new ApiOkResponse<string>("Feedback record successfully deleted."));
+            return response.Process<string>(new ApiOkResponse<string>($"Feedback record successfully {action}."));
         }
     }
 }

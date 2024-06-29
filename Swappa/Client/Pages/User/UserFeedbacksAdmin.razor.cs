@@ -1,4 +1,6 @@
-﻿using Swappa.Entities.Enums;
+﻿using Blazored.Modal;
+using Swappa.Client.Pages.Modals.User;
+using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 
 namespace Swappa.Client.Pages.User
@@ -13,14 +15,8 @@ namespace Swappa.Client.Pages.User
 
         protected override async Task OnInitializedAsync()
         {
-            var dashboard = await UserService.FeedbackDashboardData();
-            if(dashboard != null && dashboard.IsSuccessful)
-            {
-                count = StringifyCount(dashboard.Data.TotalFeedbacks);
-                averageRating = dashboard.Data.AverageRating;
-            }
+            await GetDashboard();
             await GetFeedbacks();
-            
             await base.OnInitializedAsync();
         }
 
@@ -28,6 +24,68 @@ namespace Swappa.Client.Pages.User
         {
             var feedbacks = await UserService.GetUsersFeedbacks(Query);
             Data = feedbacks;
+        }
+
+        private async Task GetDashboard()
+        {
+            var dashboard = await UserService.FeedbackDashboardData();
+            if (dashboard != null && dashboard.IsSuccessful)
+            {
+                count = StringifyCount(dashboard.Data.TotalFeedbacks);
+                averageRating = dashboard.Data.AverageRating;
+            }
+        }
+
+        public async Task DeleteFeedback(Guid id)
+        {
+            var parameters = new ModalParameters
+            {
+                { "Id", id }
+            };
+
+            var confirmationModal = Modal.Show<DeleteFeedbackModal>("", parameters);
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetDashboard();
+                await GetFeedbacks();
+            }
+        }
+
+        public async Task DeprecateFeedback(Guid id, string action)
+        {
+            var parameters = new ModalParameters
+            {
+                { "Id", id },
+                { "Action", action }
+            };
+
+            var confirmationModal = Modal.Show<DeprecateFeedbackModal>("", parameters);
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetDashboard();
+                await GetFeedbacks();
+            }
+        }
+
+        private string DepText(UserFeedbackDto feedbackDto)
+        {
+            if (!feedbackDto.IsDeprecated)
+            {
+                return " Deprecate";
+            }
+            else
+            {
+                return " Restore";
+            }
+        }
+
+        Status GetStatus(bool isDeprecated)
+        {
+            return isDeprecated ?
+                Status.Inactive :
+                Status.Active;
         }
 
         private string StringifyCount(long count)

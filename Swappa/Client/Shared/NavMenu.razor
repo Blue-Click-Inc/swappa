@@ -10,23 +10,14 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <NavLink class="nav-link px-3" href="" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        @*<AuthorizeView>
-            <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="counter">
-                        <span class="oi oi-plus" aria-hidden="true"></span> Counter
-                    </NavLink>
-                </div>
-            </Authorized>
-        </AuthorizeView>*@
-        <AuthorizeView Roles="SuperAdmin">
+        <AuthorizeView Roles="SuperAdmin, Admin">
             <Authorized>
                <div class="nav-item px-3">
-                    <a class="nav-link" style="cursor: pointer;" @onclick="ToggleAdminSubMenu">
+                    <a class="nav-link px-3" style="cursor: pointer;" @onclick="ToggleAdminSubMenu">
                         <span class="oi oi-lock-locked" aria-hidden="true"></span> Admin. Center
                     </a>
                     @if (expandSubMenu)
@@ -43,17 +34,17 @@
             </Authorized>
         </AuthorizeView>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="about">
+            <NavLink class="nav-link px-3" href="about">
                 <span class="oi oi-info" aria-hidden="true"></span> About Us
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="contact">
+            <NavLink class="nav-link px-3" href="contact">
                 <span class="oi oi-chat" aria-hidden="true"></span> Contact Us
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="faq">
+            <NavLink class="nav-link px-3" href="faq">
                 <span class="oi oi-question-mark" aria-hidden="true"></span> FAQ
             </NavLink>
         </div>
