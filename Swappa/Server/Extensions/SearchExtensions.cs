@@ -1,4 +1,5 @@
 ﻿using Mongo.Common;
+using Swappa.Entities.Models;
 using Swappa.Shared.Extensions;
 
 namespace Swappa.Server.Extensions
@@ -11,6 +12,16 @@ namespace Swappa.Server.Extensions
                 return list;
 
             return list.Where(l => l.CreatedAt >= startDate && l.CreatedAt <= endDate.ToEndOfDay());
+        }
+
+        public static IQueryable<AppUser> Search(this IQueryable<AppUser> users, string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return users;
+
+            var lowerCaseTerm = searchTerm.Trim().ToLower();
+            return users.Where(u => u.Name.ToLower().Contains(lowerCaseTerm)
+                        || u.Email.ToLower().Contains(lowerCaseTerm));
         }
     }
 }

@@ -62,12 +62,16 @@
                                         <DropdownToggleButton Color="ButtonColor.Primary"></DropdownToggleButton>
                                         <DropdownMenu>
                                             <DropdownItem Type="DropdownItemType.Link" @onclick="@(async () => await DeprecateFeedback(feedback.Id, DepText(feedback).Trim()))">
-                                                <Button Color="ButtonColor.Warning" Outline="true"><Icon Name="IconName.ArrowCounterclockwise" />@DepText(feedback)</Button>
+                                                <Button Color="ButtonColor.Warning" Outline="true">
+                                                    <Icon Name="IconName.ArrowCounterclockwise" />@DepText(feedback)
+                                                </Button>
                                             </DropdownItem>
                                             <AuthorizeView Roles="SuperAdmin">
                                                 <Authorized>
                                                     <DropdownItem Type="DropdownItemType.Link" @onclick="@(async () => await DeleteFeedback(feedback.Id))">
-                                                        <Button Color="ButtonColor.Danger" Outline="true"><Icon Name="IconName.Trash" /> Delete </Button>
+                                                        <Button Color="ButtonColor.Danger" Outline="true">
+                                                            <Icon Name="IconName.Trash" /> Delete 
+                                                        </Button>
                                                     </DropdownItem>
                                                 </Authorized>
                                             </AuthorizeView>

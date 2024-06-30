@@ -1,0 +1,85 @@
+﻿@page "/admin/users"
+
+<PageTitle>@pageTitle</PageTitle>
+<div class="container">
+  <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
+        @if(isLoading)
+        {
+            <div class="text-center align-self-center top-50 m-auto">
+                <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
+            </div>
+        }
+        else
+        {
+            <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
+                <div class="col-12 col-lg-4">
+                    <SinglePillCardDash 
+                        Background="FeedbackRating.Good" 
+                        CardTitle="Total Users" 
+                        PillContent="@TotalUsers.ToString("D")">
+                    </SinglePillCardDash>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <SinglePillCardDash 
+                        Background="FeedbackRating.Excellent"
+                        PillContent="@ActiveUsers.ToString("D")"
+                        CardTitle="Total Active Users">
+                    </SinglePillCardDash>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <SinglePillCardDash 
+                        Background="FeedbackRating.None"
+                        PillContent="@InactiveUsers.ToString("D")"
+                        CardTitle="Total Inactive Users">
+                    </SinglePillCardDash>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-borderless caption-top">
+                    <caption>User Manager</caption>
+                    <thead>
+                        <tr>
+                            <th style="background: #002147; color: white;"></th>
+                            <th style="background: #002147; color: white;">Name</th>
+                            <th style="background: #002147; color: white;">Email</th>
+                            <th style="background: #002147; color: white;">Gender</th>
+                            <th style="background: #002147; color: white;">Registered On</th>
+                            <th style="background: #002147; color: white;">Last Login</th>
+                            <th style="background: #002147; color: white;">Deactivated On</th>
+                            <th style="background: #002147; color: white;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       @foreach(var user in UserData.Data)
+                        {
+                            var deactivationDate = user.DeactivatedOn.Date.Equals(DateTime.MaxValue.Date) ? 
+                                "N/A" : 
+                                user.DeactivatedOn.ToString("g");
+
+                            var lastLogin = user.LastLogin.Date.Equals(DateTime.MinValue.Date) ? 
+                                "N/A" : 
+                                user.LastLogin.ToString("g");
+
+                            <tr class="box-shadow-inset">
+                                <td>
+                                    <UserStatus Status="@user.Status"></UserStatus>
+                                </td>
+                                <td>@user.Name</td>
+                                <td>@user.Email</td>
+                                <td>@user.Gender.GetDescription()</td>
+                                <td>@user.CreatedOn.ToString("g")</td>
+                                <td>@lastLogin</td>
+                                <td>@deactivationDate</td>
+                                <td>
+                                    <Button Color="ButtonColor.Secondary" Outline="true">
+                                        <Icon Name="IconName.Eye" />
+                                    </Button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Swappa.Shared.DTOs;
-using System.ComponentModel.DataAnnotations;
 
 namespace Swappa.Server.Queries.User
 {

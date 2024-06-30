@@ -18,6 +18,16 @@ namespace Swappa.Server.Controllers.V1
         public UserController(IMediator mediator) =>
             this.mediator = mediator;
 
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        [HttpGet("")]
+        public async Task<IActionResult> GetUsers([FromQuery] GetPagedUserListQuery request) =>
+            Ok(await mediator.Send(request));
+
+        [HttpGet("dashboard")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> GetDashboardData() =>
+            Ok(await mediator.Send(new GetUserDashboardQuery()));
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] Guid id) =>
             Ok(await mediator.Send(new GetUserByIdQuery

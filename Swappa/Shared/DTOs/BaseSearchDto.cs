@@ -1,6 +1,6 @@
 ﻿namespace Swappa.Shared.DTOs
 {
-    public abstract class BaseSearchDto : BasePageDto
+    public class SearchDto : BasePageDto
     {
         public string SearchBy { get; set; } = string.Empty;
     }

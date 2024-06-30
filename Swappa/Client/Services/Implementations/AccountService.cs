@@ -1,4 +1,5 @@
 ﻿using Swappa.Client.Services.Interfaces;
+using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 using System.Net.Http.Json;
 
@@ -25,7 +26,7 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.PostAsJsonAsync("account/login", request);
 
-            return await response.Content.ReadFromJsonAsync<ResponseModel<TokenDto>>();
+            return await httpInterceptor.Process<ResponseModel<TokenDto>>(response);
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.PostAsJsonAsync("account/register", request);
 
-            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.PutAsJsonAsync("account/confirm-email", request);
 
-            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
         /// <summary>
@@ -61,7 +62,7 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.PutAsJsonAsync("account/forgot-password", request);
 
-            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.PutAsJsonAsync("account/reset-password", request);
 
-            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
         /// <summary>
@@ -86,7 +87,7 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.PutAsJsonAsync($"account/change-password/{id}", request);
             
-            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
         /// <summary>
@@ -98,7 +99,45 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.PutAsJsonAsync($"account/deactivate/{id}", new object());
 
-            return await response.Content.ReadFromJsonAsync<ResponseModel<string>>();
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        /// <summary>
+        /// Toggle User status
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ResponseModel<string>?> ToggleStatus(Guid id)
+        {
+            var response = await httpClient.PutAsJsonAsync($"toggle-status/{id}", new object());
+
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        /// <summary>
+        /// Assigns user to role
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public async Task<ResponseModel<string>?> AssignToRole(Guid userId, SystemRole role)
+        {
+            var response = await httpClient.PutAsJsonAsync($"{userId}/assign-role/{role}", new object());
+
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        /// <summary>
+        /// Remove user from role
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public async Task<ResponseModel<string>?> RemoveFromRole(Guid userId, SystemRole role)
+        {
+            var response = await httpClient.PutAsJsonAsync($"{userId}/remove-role/{role}", new object());
+
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
     }
 }

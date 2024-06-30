@@ -46,6 +46,21 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
+        public async Task<ResponseModel<UserDashboardDataDto>?> GetUserDashboardAsync()
+        {
+            var response = await httpClient.GetAsync($"user/dashboard");
+
+            return await httpInterceptor.Process<ResponseModel<UserDashboardDataDto>>(response);
+        }
+
+        public async Task<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>?> GetPagedUsersAsync(SearchDto request)
+        {
+            //https://localhost:7027/api/v1/user?SearchBy=u&PageNumber=1&PageSize=100
+            var response = await httpClient.GetAsync($"user");
+
+            return await httpInterceptor.Process<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>>(response);
+        }
+
         #endregion
 
         #region Feedbacks
