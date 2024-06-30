@@ -7,10 +7,13 @@ namespace Swappa.Client.Services.Implementations
     public class AccountService : IAccountService
     {
         private readonly HttpClient httpClient;
+        private readonly HttpInterceptorService httpInterceptor;
 
-        public AccountService(HttpClient httpClient)
+        public AccountService(HttpClient httpClient,
+           HttpInterceptorService httpInterceptor)
         {
             this.httpClient = httpClient;
+            this.httpInterceptor = httpInterceptor;
         }
 
         /// <summary>

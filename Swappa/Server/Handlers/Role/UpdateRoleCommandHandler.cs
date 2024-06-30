@@ -34,6 +34,7 @@ namespace Swappa.Server.Handlers.Role
                 return response.Process<string>(new BadRequestResponse($"No role record found with Id: {request.Id}"));
 
             mapper.Map(request, role);
+            role.Name.RemoveSpaceAndCapitalize();
             await roleManager.UpdateAsync(role);
 
             return response.Process<string>(new ApiOkResponse<string>("Role successfully updated."));

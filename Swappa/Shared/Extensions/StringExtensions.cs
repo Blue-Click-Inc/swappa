@@ -7,6 +7,23 @@ namespace Swappa.Shared.Extensions
 {
     public static class StringExtensions
     {
+        public static string RemoveSpaceAndCapitalize(this string text)
+        {
+            if(text.Contains(" "))
+            {
+                var result = string.Empty;
+                var words = text.Split(" ");
+
+                foreach (var word in words)
+                {
+                    result += Capitalize(word);
+                }
+
+                return result;
+            }
+            return text;
+        }
+
         public static string Capitalize(this string text)
         {
             return Regex.Replace(text.ToLower().Trim(), "^[a-z]", m => m.Value.ToUpper());

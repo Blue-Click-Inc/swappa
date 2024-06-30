@@ -3,6 +3,7 @@ using MediatR;
 using Swappa.Server.Commands.Account;
 using Swappa.Shared.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Swappa.Entities.Enums;
 
 namespace Swappa.Server.Controllers.V1
 {
@@ -74,6 +75,24 @@ namespace Swappa.Server.Controllers.V1
             Ok(await mediator.Send(new ToggleStatusCommand
             {
                 Id = id
+            }));
+
+        [HttpPut("{userId}/assign-role/{role}")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> AddToRole([FromRoute] Guid userId, [FromRoute] SystemRole role) =>
+            Ok(await mediator.Send(new AddToRoleCommand
+            {
+                UserId = userId,
+                Role = role
+            }));
+
+        [HttpPut("{userId}/remove-role/{role}")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> RemoveFromRole([FromRoute] Guid userId, [FromRoute] SystemRole role) =>
+            Ok(await mediator.Send(new RemoveFromRoleCommand
+            {
+                UserId = userId,
+                Role = role
             }));
     }
 }

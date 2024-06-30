@@ -52,5 +52,21 @@ namespace Swappa.Shared.Extensions
             }
             return isParsed;
         }
+
+        public static List<TEnum> ParseValues<TEnum>(this IList<string> values) where TEnum : Enum
+        {
+            var result = new List<TEnum>();
+            foreach (var value in values)
+            {
+                var isParsed = Enum.TryParse(typeof(TEnum), value, out object? output);
+                if (isParsed)
+                {
+                    var @enum = (TEnum)output!;
+                    result.Add(@enum);
+                }
+            }
+            
+            return result;
+        }
     }
 }

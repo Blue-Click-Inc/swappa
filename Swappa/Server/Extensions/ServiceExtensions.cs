@@ -139,6 +139,7 @@ namespace Swappa.Server.Extensions
             services.AddScoped<ApiResponseDto>();
             services.AddScoped<INotify, Notify>();
             services.AddScoped<IMedia, Media>();
+            services.AddScoped<ICommon, Common>();
             services.AddSingleton<HangfireLogAttribute>();
             services.AddScoped<IRecurringJobService, RecurringJobService>();
         }

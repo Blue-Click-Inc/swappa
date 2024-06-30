@@ -1,0 +1,40 @@
+﻿<PageTitle>@pageTitle</PageTitle>
+
+ <div class="row">
+    <div class="box-shadow-inset border-radius-2rem p-3">
+        <EditForm Model="Model" method="post" OnValidSubmit="SaveAsync" FormName="addRole">
+            <DataAnnotationsValidator />
+            <h3>
+                <span class="text-muted fw-bold" aria-hidden="true"> 
+                    <Icon Name="IconName.Save"></Icon> Add Role
+                </span>
+            </h3>
+            <hr />
+            <div class="row">
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="Model.RoleName" 
+                        class="form-control" 
+                        autocomplete="RoleName"
+                        aria-required="true" 
+                    />
+                    <label for="City" class="form-label">Role Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-0 col-lg-2"></div>
+                <div class="col-md-12 col-lg-8 d-flex justify-content-center">
+                    <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                        <Button Color="ButtonColor.Primary" Outline="true" Type="ButtonType.Submit" Class="mx-1 mt-1" Disabled="@isLoading">
+                            <Icon Name="IconName.Save" /> @buttonLabel
+                        </Button>
+                        <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 mt-1" Disabled="@isLoading" @onclick="(async () => await SharedService.CancelModalAsync(Instance))">
+                            <Icon Name="IconName.ArrowLeft" /> Back
+                        </Button>
+                    </div>
+                </div>
+                <div class="col-md-0 col-lg-2"></div>
+            </div>
+        </EditForm>
+    </div>
+</div>

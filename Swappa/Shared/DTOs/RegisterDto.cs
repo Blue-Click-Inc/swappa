@@ -12,7 +12,7 @@ namespace Swappa.Shared.DTOs
         [Compare("Password", ErrorMessage = "Password and Compare Password fields must match")]
         public string ConfirmPassword { get; set; } = string.Empty;
         public Gender Gender { get; set; } = Gender.NotSpecified;
-        public Role Role { get; set; } = Role.User;
+        public SystemRole Role { get; set; } = SystemRole.User;
         [JsonIgnore]
         public StringValues Origin { get; set; }
         [JsonIgnore]

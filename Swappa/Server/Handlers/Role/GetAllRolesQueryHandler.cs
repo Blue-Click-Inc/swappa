@@ -10,11 +10,15 @@ namespace Swappa.Server.Handlers.Role
     public class GetAllRolesQueryHandler : IRequestHandler<GetAllRolesQuery, PaginatedListDto<RoleDto>>
     {
         private readonly RoleManager<AppRole> roleManager;
+        private readonly UserManager<AppUser> userManager;
         private readonly IMapper mapper;
 
-        public GetAllRolesQueryHandler(RoleManager<AppRole> roleManager, IMapper mapper)
+        public GetAllRolesQueryHandler(RoleManager<AppRole> roleManager,
+            UserManager<AppUser> userManager,
+            IMapper mapper)
         {
             this.roleManager = roleManager;
+            this.userManager = userManager;
             this.mapper = mapper;
         }
 
@@ -25,6 +29,10 @@ namespace Swappa.Server.Handlers.Role
                 .ToList());
 
             var dto = mapper.Map<IEnumerable<RoleDto>>(roles);
+            foreach (var item in dto)
+            {
+                item.NumberOfUser = (await userManager.GetUsersInRoleAsync(item.RoleName)).LongCount();
+            }
             var pagedList = PagedList<RoleDto>.ToPagedList(dto, request.PageNumber, request.PageSize);
 
             return PaginatedListDto<RoleDto>.Paginate(pagedList, pagedList.MetaData);

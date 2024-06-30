@@ -4,6 +4,7 @@ using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Role;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Server.Handlers.Role
 {
@@ -30,7 +31,7 @@ namespace Swappa.Server.Handlers.Role
 
             var result = await roleManager.CreateAsync(new AppRole
             {
-                Name = request.RoleName,
+                Name = request.RoleName.RemoveSpaceAndCapitalize(),
                 NormalizedName = request.RoleName.ToUpper()
             });
 

@@ -4,7 +4,7 @@ using Swappa.Shared.DTOs.Interfaces;
 
 namespace Swappa.Server.Commands.Role
 {
-    public sealed record UpdateRoleCommand : RoleForUpdateDto, IBaseIdDto, IRequest<ResponseModel<string>>
+    public sealed class UpdateRoleCommand : RoleForUpdateDto, IBaseIdDto, IRequest<ResponseModel<string>>
     {
         public Guid Id { get; set; }
     }

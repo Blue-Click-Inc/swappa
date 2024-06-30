@@ -75,9 +75,9 @@
                             autocomplete="Role"
                             placeholder="Role"
                             aria-required="true">
-                            @foreach (var role in Enum.GetValues(typeof(Role)))
+                            @foreach (var role in Enum.GetValues(typeof(SystemRole)))
                             {
-                                if((Role)role != Role.User)
+                                if((SystemRole)role != SystemRole.User)
                                 {
                                     <option value="@role">@role.GetDescription()</option>
                                 }

@@ -2,8 +2,9 @@
 
 namespace Swappa.Shared.DTOs
 {
-    public record RoleDto : BaseRoleDto, IBaseIdDto
+    public class RoleDto : BaseRoleDto, IBaseIdDto
     {
         public Guid Id { get; set; }
+        public long NumberOfUser { get; set; }
     }
 }
