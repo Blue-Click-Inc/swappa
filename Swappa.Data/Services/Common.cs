@@ -25,7 +25,7 @@ namespace Swappa.Data.Services
             return GetUserId();
         }
 
-        public async Task<IList<SystemRole>> GetUserRoles()
+        public async Task<List<SystemRole>> GetUserRoles()
         {
             var userId = GetUserId();
             var user = await userManager.FindByIdAsync(userId);
@@ -34,7 +34,7 @@ namespace Swappa.Data.Services
                 return new List<SystemRole>();
             }
             
-            return (await userManager.GetRolesAsync(user)).ParseValues<SystemRole>();
+            return (await userManager.GetRolesAsync(user)).ToList().ParseValues<SystemRole>();
         }
 
         /// <summary>

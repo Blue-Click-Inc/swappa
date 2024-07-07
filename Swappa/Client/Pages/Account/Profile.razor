@@ -26,12 +26,12 @@ else if (!isLoading && Data != null)
                         <div class="text-center text-muted m-0 p-0" style="font-size: 0.9rem;">
                             <p class="oi oi-calendar my-0 py-0"></p>
                             <p class="my-0 py-0">Joined</p>
-                            <p style="font-size: 0.8rem;">@Data.CreatedOn.ToString("M"), @Data.CreatedOn.ToString("yyyy") @Data.CreatedOn.ToString("t")</p>
+                            <p style="font-size: 0.8rem;">@Data.CreatedOn.CommaSeparatedDateTime()</p>
                         </div>
                         <div class="text-center text-muted m-0 p-0" style="font-size: 0.9rem;">
                             <p class="oi oi-calendar my-0 py-0"></p>
                             <p class="my-0 py-0">Updated</p>
-                            <p style="font-size: 0.8rem;">@Data.UpdatedOn.ToString("M"), @Data.UpdatedOn.ToString("yyyy") @Data.UpdatedOn.ToString("t")</p>
+                            <p style="font-size: 0.8rem;">@Data.UpdatedOn.CommaSeparatedDateTime()</p>
                         </div>
                     </div>
                 </div>

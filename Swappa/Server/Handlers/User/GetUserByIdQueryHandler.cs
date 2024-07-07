@@ -2,6 +2,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Swappa.Data.Contracts;
+using Swappa.Data.Services.Interfaces;
+using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Queries.User;
@@ -17,18 +19,20 @@ namespace Swappa.Server.Handlers.User
         private readonly ApiResponseDto response;
         private readonly IRepositoryManager repository;
         private readonly IMapper mapper;
+        private readonly ICommon common;
 
         public GetUserByIdQueryHandler(UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
             ApiResponseDto response, 
             IRepositoryManager repository,
-            IMapper mapper)
+            IMapper mapper, ICommon common)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.response = response;
             this.repository = repository;
             this.mapper = mapper;
+            this.common = common;
         }
 
         public async Task<ResponseModel<UserDetailsDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
@@ -45,13 +49,11 @@ namespace Swappa.Server.Handlers.User
             }
 
             var userDetails = mapper.Map<UserDetailsDto>(user);
-            var userRoles = roleManager.Roles
+            userDetails.UserRoles = roleManager.Roles
                 .Where(r => user.Roles.Contains(r.Id))
-                .ToList();
-            if (userRoles.IsNotNullOrEmpty())
-            {
-                userDetails.Roles = string.Join(",", userRoles);
-            }
+                .Select(r => r.Name)
+                .ToList()
+                .ParseValues<SystemRole>();
 
             var location = await repository.Location.GetByConditionAsync(l => l.EntityId.Equals(user.Id));
             if(location != null)

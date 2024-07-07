@@ -25,6 +25,21 @@
             return false;
         }
 
+        /// <summary>
+        /// Formats date objects in this format: January 1, 2000. 12:00 AM
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static string CommaSeparatedDateTime(this DateTime target)
+        {
+            if(target.IsValid() && !target.Date.Equals(MaxDate.Date))
+            {
+                return $"{target:M}, {target:yyyy}. {target:t}";
+            }
+
+            return "N/A";
+        }
+
         public static DateTime ToEndOfDay(this DateTime target) =>
             new DateTime(target.Year, target.Month, target.Day, 23, 59, 59, 0);
 

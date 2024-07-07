@@ -109,7 +109,7 @@ namespace Swappa.Client.Services.Implementations
         /// <returns></returns>
         public async Task<ResponseModel<string>?> ToggleStatus(Guid id)
         {
-            var response = await httpClient.PutAsJsonAsync($"toggle-status/{id}", new object());
+            var response = await httpClient.PutAsJsonAsync($"account/toggle-status/{id}", new object());
 
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
@@ -122,7 +122,7 @@ namespace Swappa.Client.Services.Implementations
         /// <returns></returns>
         public async Task<ResponseModel<string>?> AssignToRole(Guid userId, SystemRole role)
         {
-            var response = await httpClient.PutAsJsonAsync($"{userId}/assign-role/{role}", new object());
+            var response = await httpClient.PutAsJsonAsync($"account/{userId}/assign-role/{role}", new object());
 
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
@@ -135,7 +135,7 @@ namespace Swappa.Client.Services.Implementations
         /// <returns></returns>
         public async Task<ResponseModel<string>?> RemoveFromRole(Guid userId, SystemRole role)
         {
-            var response = await httpClient.PutAsJsonAsync($"{userId}/remove-role/{role}", new object());
+            var response = await httpClient.PutAsJsonAsync($"account/{userId}/remove-role/{role}", new object());
 
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }

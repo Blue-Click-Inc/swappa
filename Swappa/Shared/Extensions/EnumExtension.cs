@@ -24,9 +24,9 @@ namespace Swappa.Shared.Extensions
             throw new ArgumentException("Item not found.", nameof(value));
         }
 
-        public static bool IsInEnum<T>(this object value) where T : Enum
+        public static bool IsInEnum<TEnum>(this object value) where TEnum : Enum
         {
-            if (Enum.IsDefined(typeof(T), value))
+            if (Enum.IsDefined(typeof(TEnum), value))
             {
                 return true;
             }
@@ -41,32 +41,53 @@ namespace Swappa.Shared.Extensions
 
         public static bool TryParseValue<TEnum>(this string value, out TEnum @enum) where TEnum : Enum
         {
-            var isParsed = Enum.TryParse(typeof(TEnum), value, out object? result);
-            if (isParsed)
+            @enum = default!;
+            if (Enum.TryParse(typeof(TEnum), value, out object? result))
             {
                 @enum = (TEnum)result!;
+                return true;
             }
-            else
-            {
-                @enum = default!;
-            }
-            return isParsed;
+            return false;
         }
 
-        public static List<TEnum> ParseValues<TEnum>(this IList<string> values) where TEnum : Enum
+        public static List<TEnum> ParseValues<TEnum>(this List<string> values) where TEnum : Enum
         {
             var result = new List<TEnum>();
-            foreach (var value in values)
+            values.ForEach(e =>
             {
-                var isParsed = Enum.TryParse(typeof(TEnum), value, out object? output);
-                if (isParsed)
+                if(Enum.TryParse(typeof(TEnum), e, true, out object? output))
                 {
-                    var @enum = (TEnum)output!;
-                    result.Add(@enum);
+                    result.Add((TEnum)output!);
                 }
-            }
+            });
             
             return result;
+        }
+
+        public static List<TEnum> ParseValues<TEnum>(this List<int> values) where TEnum : Enum
+        {
+            var result = new List<TEnum>();
+            values.ForEach(e =>
+            {
+                if (e.TryParseValue<TEnum>(out TEnum @enum))
+                {
+                    result.Add(@enum);
+                }
+            });
+
+            return result;
+        }
+
+        public static bool TryParseValue<TEnum>(this int target, out TEnum @enum) where TEnum : Enum
+        {
+            @enum = default!;
+            if (target.IsInEnum<TEnum>())
+            {
+                @enum = (TEnum)Enum.ToObject(typeof(TEnum), target);
+                return true;
+            }
+
+            return false;
         }
     }
 }

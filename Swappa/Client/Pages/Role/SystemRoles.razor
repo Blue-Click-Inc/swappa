@@ -1,4 +1,5 @@
 ﻿@page "/admin/roles"
+@attribute [Authorize(Roles = "SuperAdmin, Admin")]
 
 <PageTitle>System Roles</PageTitle>
 <div class="container">

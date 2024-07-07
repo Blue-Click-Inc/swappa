@@ -1,0 +1,63 @@
+﻿<PageTitle>@pageTitle</PageTitle>
+
+@if(isLoading && !isError)
+{
+    <div class="text-center align-self-center top-50 m-auto">
+        <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
+    </div>
+}
+else if(isError)
+{
+    <Alert Color="AlertColor.Danger">
+        <h4 class="alert-heading">Error!</h4>
+        <span class="fa fa-bug"></span> @message
+    </Alert>
+}
+else
+{
+    <div class="m-0 box-shadow-inset p-3">
+        <div>
+            <ProfileUserCircle />
+            <ProfileHeader Name="@UserData?.Name" Status="@UserData.Status" Gender="@UserData.Gender" />
+            @if(UserData?.Location != null)
+            {
+                <InlineLocation Location="UserData.Location"></InlineLocation>
+            }
+            <div class="d-flex flex-column justify-content-between m-0 p-0">
+               <div class="w-100 mb-2">
+                   <BlueUnderlineOnePx />
+                   <KeyValueMutedDisplay Key="Email" Value="@UserData?.Email" />
+               </div>
+               <div class="w-100 mb-2">
+                   <BlueUnderlineOnePx />
+                   <KeyValueMutedDisplay Key="Roles" Value="@roles" />
+               </div>
+                <div class="w-100 mb-2">
+                   <BlueUnderlineOnePx />
+                   <KeyValueMutedDisplay Key="Registered" Value="@UserData?.CreatedOn.CommaSeparatedDateTime()" />
+               </div>
+               <div class="w-100 mb-2">
+                   <BlueUnderlineOnePx />
+                   <KeyValueMutedDisplay Key="Last Login" Value="@UserData?.LastLogin.CommaSeparatedDateTime()" />
+               </div>
+                <div class="w-100 mb-2">
+                   <BlueUnderlineOnePx />
+                   <KeyValueMutedDisplay Key="Deactivation Date" Value="@UserData?.DeactivatedOn.CommaSeparatedDateTime()" />
+                   <BlueUnderlineOnePx />
+               </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-center">
+                    <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                        <Button Color="GetColor()" Outline="true" Type="ButtonType.Submit" Class="mx-1 mt-1" Disabled="@isBusy" @onclick="(async () => await ToggleStatus(UserData?.Id))">
+                            <Icon Name="GetIconName()" /> @toggleButtonLabel
+                        </Button>
+                        <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 mt-1" Disabled="@isBusy" @onclick="(async () => await SharedService.CancelModalAsync(Instance))">
+                            <Icon Name="IconName.ArrowLeft" /> Back
+                        </Button>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </div>
+}

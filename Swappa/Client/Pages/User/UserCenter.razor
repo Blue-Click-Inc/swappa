@@ -42,7 +42,6 @@
                             <th style="background: #002147; color: white;"></th>
                             <th style="background: #002147; color: white;">Name</th>
                             <th style="background: #002147; color: white;">Email</th>
-                            <th style="background: #002147; color: white;">Gender</th>
                             <th style="background: #002147; color: white;">Registered On</th>
                             <th style="background: #002147; color: white;">Last Login</th>
                             <th style="background: #002147; color: white;">Deactivated On</th>
@@ -52,27 +51,19 @@
                     <tbody>
                        @foreach(var user in UserData.Data)
                         {
-                            var deactivationDate = user.DeactivatedOn.Date.Equals(DateTime.MaxValue.Date) ? 
-                                "N/A" : 
-                                user.DeactivatedOn.ToString("g");
-
-                            var lastLogin = user.LastLogin.Date.Equals(DateTime.MinValue.Date) ? 
-                                "N/A" : 
-                                user.LastLogin.ToString("g");
-
-                            <tr class="box-shadow-inset">
-                                <td>
-                                    <UserStatus Status="@user.Status"></UserStatus>
-                                </td>
+                            <tr class="text-decoration-none">
+                                <td class="text-@GetStatusClass(user.Status) text-center p-0 m-0" style="font-size: 2rem;">&#8226;</td>
                                 <td>@user.Name</td>
                                 <td>@user.Email</td>
-                                <td>@user.Gender.GetDescription()</td>
                                 <td>@user.CreatedOn.ToString("g")</td>
-                                <td>@lastLogin</td>
-                                <td>@deactivationDate</td>
-                                <td>
-                                    <Button Color="ButtonColor.Secondary" Outline="true">
+                                <td>@user.LastLogin.CommaSeparatedDateTime()</td>
+                                <td>@user.DeactivatedOn.CommaSeparatedDateTime()</td>
+                                <td class="d-flex justify-content-end">
+                                    <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1" @onclick=@(async () => await OpenUserDetailModal(user.Id))>
                                         <Icon Name="IconName.Eye" />
+                                    </Button>
+                                    <Button Color="ButtonColor.Dark" Outline="true" Class="mx-1" @onclick="(async () => await OpenRoleManagerModal(user.Id))">
+                                        <Icon Name="IconName.ShieldShaded" />
                                     </Button>
                                 </td>
                             </tr>

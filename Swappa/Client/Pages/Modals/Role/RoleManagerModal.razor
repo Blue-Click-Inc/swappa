@@ -1,0 +1,68 @@
+﻿@attribute [Authorize(Roles = "SuperAdmin, Admin")]
+<PageTitle>@pageTitle</PageTitle>
+
+@if(isLoading && !isError)
+{
+    <div class="text-center align-self-center top-50 m-auto">
+        <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
+    </div>
+}
+else if(isError)
+{
+    <Alert Color="AlertColor.Danger">
+        <h4 class="alert-heading">Error!</h4>
+        <span class="fa fa-bug"></span> @message
+    </Alert>
+}
+else
+{
+    <div class="m-0 box-shadow-inset p-3">
+        <div>
+            @foreach(var role in UserRoles)
+            {
+               <div class="w-100 mb-2">
+                   <BlueUnderlineOnePx />
+                   <p class="m-0 py-1">
+                        <div class="text-muted fw-bolder text-decoration-none fst-bold d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;">
+                            <span>@role.GetDescription()</span>
+                            <Button Color="ButtonColor.Danger" Outline="true" Class="mx-1 mt-1" @onclick="(async () => await RemoveAsync(role))">
+                                <Icon Name="IconName.ShieldMinus" />
+                            </Button>
+                        </div>
+                    </p>
+               </div>
+            }
+            <BlueUnderlineOnePx />
+        </div>
+        <div class="mt-3">
+            <EditForm Model="Role" method="post" OnValidSubmit="AssignAsync" FormName="assignRole">
+                <div class="row">
+                    <div class="form-floating mb-3 px-1">
+                        <select id="ddRole" class="form-control" value="@Role" @onchange="@OnRoleSelected">
+                            <option value=""></option>
+                            @foreach (var role in Enum.GetValues(typeof(SystemRole)))
+                            {
+                                <option value="@role">@role.GetDescription()</option>
+                            }
+                        </select>
+                        <label for="Name" class="form-label">Assign A Role</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-0 col-lg-2"></div>
+                    <div class="col-md-12 col-lg-8 d-flex justify-content-center">
+                        <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                            <Button Color="ButtonColor.Primary" Outline="true" Type="ButtonType.Submit" Class="mx-1 mt-1" Disabled="@isBusy">
+                                <Icon Name="IconName.ShieldShaded" /> Assign
+                            </Button>
+                            <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 mt-1" Disabled="@isBusy" @onclick="(async () => await SharedService.CancelModalAsync(Instance))">
+                                <Icon Name="IconName.ArrowLeft" /> Close
+                            </Button>
+                        </div>
+                    </div>
+                    <div class="col-md-0 col-lg-2"></div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+}
