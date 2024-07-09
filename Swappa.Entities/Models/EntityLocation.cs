@@ -5,14 +5,6 @@ namespace Swappa.Entities.Models
 {
     public class EntityLocation : IBaseEntity
     {
-        public EntityLocation()
-        {
-            Id = Guid.NewGuid();
-            CreatedAt = DateTime.UtcNow;
-            UpdatedAt = DateTime.UtcNow;
-            Coordinate = new Coordinate();
-        }
-
         public Guid Id { get; set; }
         public Guid EntityId { get; set; }
         public string CountryId { get; set; } = string.Empty;
@@ -24,6 +16,14 @@ namespace Swappa.Entities.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool IsDeprecated { get; set; }
+
+        public EntityLocation()
+        {
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+            Coordinate = new Coordinate();
+        }
     }
 
     public class Coordinate

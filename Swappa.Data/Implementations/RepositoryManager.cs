@@ -14,6 +14,8 @@ namespace Swappa.Data.Implementations
         private readonly Lazy<IUserRepository> _userRepository;
         private readonly Lazy<IUserFeedbackRepository> _feedbackRepository;
         private readonly Lazy<ILocationService> _locationService;
+        private readonly Lazy<IVehicleRepository> _vehicleRepository;
+        private readonly Lazy<IImageRepository> _imageRepository;
 
         public RepositoryManager(IOptions<MongoDbSettings> mongoSetting, 
             IOptions<CloudinarySettings> cloudSetting, IConfiguration configuration,
@@ -27,11 +29,17 @@ namespace Swappa.Data.Implementations
                 new UserFeedbackRepository(mongoSetting));
             _locationService = new Lazy<ILocationService>(() =>
                 new LocationService(configuration, mongoSetting, redisCache));
+            _vehicleRepository = new Lazy<IVehicleRepository>(() =>
+                 new VehicleRepository(mongoSetting));
+            _imageRepository = new Lazy<IImageRepository>(() =>
+                new ImageRepository(mongoSetting));
         }
 
         public ITokenRepository Token => _tokenRepository.Value;
         public IUserRepository User => _userRepository.Value;
         public IUserFeedbackRepository Feedback => _feedbackRepository.Value;
         public ILocationService Location => _locationService.Value;
+        public IVehicleRepository Vehicle => _vehicleRepository.Value;
+        public IImageRepository Image => _imageRepository.Value;
     }
 }

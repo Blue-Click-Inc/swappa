@@ -6,5 +6,7 @@
         IUserRepository User { get; }
         IUserFeedbackRepository Feedback { get; }
         ILocationService Location { get; }
+        IVehicleRepository Vehicle { get; }
+        IImageRepository Image { get; }
     }
 }

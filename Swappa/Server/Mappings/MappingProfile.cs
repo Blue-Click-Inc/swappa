@@ -20,6 +20,9 @@ namespace SpringBoardApi.Mapper
             CreateMap<EntityLocation, LocationToReturnDto>();
             CreateMap<EntityLocation, BaseLocationDto>();
             CreateMap<AppUser, LeanUserDetailsDto>();
+            CreateMap<Vehicle, VehicleToReturnDto>();
+            CreateMap<VehicleToCreateDto, Vehicle>();
+            CreateMap<VehicleForUpdateDto, Vehicle>();
         }
     }
 }

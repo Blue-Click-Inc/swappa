@@ -1,14 +1,19 @@
 ﻿using Swappa.Entities.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Swappa.Shared.DTOs
 {
-    public class VehicleToReturnDto
+    public abstract class BaseVehicleDto
     {
-        public Guid Id { get; set; }
+        [Required]
         public string? Make { get; set; }
+        [Required]
         public string? Model { get; set; }
+        [Required]
         public int Year { get; set; }
+        [Required]
         public double Price { get; set; }
+        [Required]
         public string? Color { get; set; }
         public string? Trim { get; set; }
         public Transmission Transmission { get; set; }
@@ -17,9 +22,5 @@ namespace Swappa.Shared.DTOs
         public string? VIN { get; set; }
         public string? Interior { get; set; }
         public int Odometer { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
-        public bool IsDeprecated { get; set; }
-        public LocationToReturnDto? Location { get; set; }
     }
 }
