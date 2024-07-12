@@ -7,6 +7,7 @@ namespace Swappa.Data.Contracts
     {
         Task AddAsync(Image image);
         Task AddAsync(ICollection<Image> images);
+        Task AddAsync(List<Image> images);
         Task<long> Count(Expression<Func<Image, bool>> expression);
         Task DeleteAsync(Expression<Func<Image, bool>> expression);
         Task EditAsync(Expression<Func<Image, bool>> expression, Image image);

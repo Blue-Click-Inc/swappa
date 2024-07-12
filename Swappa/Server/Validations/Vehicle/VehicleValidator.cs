@@ -8,7 +8,7 @@ namespace Swappa.Server.Validations.Vehicle
         public VehicleValidator()
         {
             RuleFor(x => x.Model)
-                .NotEmpty().WithMessage("{PropertyName} field is required.")
+                .NotEmpty().WithMessage("{PropertyName} field is required.");
             RuleFor(x => x.Make)
                 .NotEmpty().WithMessage("{PropertyName} field is required.");
             RuleFor(x => x.Price)

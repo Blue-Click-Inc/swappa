@@ -141,6 +141,7 @@ namespace Swappa.Server.Extensions
             services.AddScoped<IMedia, Media>();
             services.AddScoped<ICommon, Common>();
             services.AddScoped<ICloudinaryService, CloudinaryService>();
+            services.AddScoped<IToolService, ToolService>();
             services.AddSingleton<HangfireLogAttribute>();
             services.AddScoped<IRecurringJobService, RecurringJobService>();
         }

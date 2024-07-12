@@ -18,5 +18,6 @@ namespace Swappa.Data.Contracts
         Task DeleteAsync(Expression<Func<EntityLocation, bool>> expression);
         Task<EntityLocation?> GetByConditionAsync(Expression<Func<EntityLocation, bool>> expression);
         Task<bool> Exists(Expression<Func<EntityLocation, bool>> expression);
+        Task AddAsync(List<EntityLocation> entities);
     }
 }

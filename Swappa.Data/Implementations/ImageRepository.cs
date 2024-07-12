@@ -19,6 +19,9 @@ namespace Swappa.Data.Implementations
         public async Task AddAsync(Image image) =>
             await CreateAsync(image);
 
+        public async Task AddAsync(List<Image> images) =>
+            await CreateManyAsync(images);
+
         public async Task AddAsync(ICollection<Image> images) =>
             await CreateManyAsync(images);
 

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
+    <PackageReference Include="EPPlus" Version="7.2.1" />
     <PackageReference Include="Hangfire.Console" Version="1.4.3" />
     <PackageReference Include="Hangfire.RecurringJobExtensions" Version="1.1.4" />
     <PackageReference Include="Mailjet.Api" Version="3.0.0" />

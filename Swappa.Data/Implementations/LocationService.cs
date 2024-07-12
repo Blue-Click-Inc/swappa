@@ -131,6 +131,9 @@ namespace Swappa.Data.Implementations
         public async Task AddAsync(EntityLocation entity) =>
             await CreateAsync(entity);
 
+        public async Task AddAsync(List<EntityLocation> entities) =>
+            await CreateManyAsync(entities);
+
         public async Task EditAsync(Expression<Func<EntityLocation, bool>> expression, EntityLocation entity) =>
             await UpdateAsync(expression, entity);
 

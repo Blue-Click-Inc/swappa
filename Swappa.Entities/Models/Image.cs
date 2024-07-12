@@ -5,7 +5,7 @@ namespace Swappa.Entities.Models
 {
     public class Image : IBaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         [Required]
         public Guid VehicleId { get; set; }
         [Required, Url]

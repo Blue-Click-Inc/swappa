@@ -6,6 +6,7 @@ namespace Swappa.Data.Contracts
     public interface IVehicleRepository
     {
         Task AddAsync(Vehicle entity);
+        Task AddAsync(List<Vehicle> vehicles);
         Task<long> Count(Expression<Func<Vehicle, bool>> expression);
         Task DeleteAsync(Expression<Func<Vehicle, bool>> expression);
         Task EditAsync(Expression<Func<Vehicle, bool>> expression, Vehicle entity);

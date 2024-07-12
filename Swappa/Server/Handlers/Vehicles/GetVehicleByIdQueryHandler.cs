@@ -5,7 +5,7 @@ using Swappa.Entities.Responses;
 using Swappa.Server.Queries.Vehicle;
 using Swappa.Shared.DTOs;
 
-namespace Swappa.Server.Handlers.Vehicle
+namespace Swappa.Server.Handler.Vehicles
 {
     public class GetVehicleByIdQueryHandler : IRequestHandler<GetVehicleByIdQuery, ResponseModel<VehicleToReturnDto>>
     {

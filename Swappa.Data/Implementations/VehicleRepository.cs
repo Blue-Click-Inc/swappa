@@ -15,6 +15,9 @@ namespace Swappa.Data.Implementations
         public async Task AddAsync(Vehicle entity) =>
             await CreateAsync(entity);
 
+        public async Task AddAsync(List<Vehicle> vehicles) =>
+            await CreateManyAsync(vehicles);
+
         public IQueryable<Vehicle> FindAsQueryable(Expression<Func<Vehicle, bool>> expression = null!) =>
             expression != null ? GetAsQueryable(expression) : GetAsQueryable();
 

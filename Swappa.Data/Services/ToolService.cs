@@ -1,0 +1,61 @@
+﻿using Hangfire;
+using Hangfire.Console;
+using Hangfire.Server;
+using Swappa.Data.Contracts;
+using Swappa.Data.Services.Interfaces;
+using Swappa.Entities.Enums;
+using Swappa.Entities.Models;
+using Swappa.Shared.Extensions;
+
+namespace Swappa.Data.Services
+{
+    public class ToolService : IToolService
+    {
+        private readonly IRepositoryManager repository;
+        private readonly ICommon common;
+
+        public ToolService(IRepositoryManager repository, ICommon common)
+        {
+            this.repository = repository;
+            this.common = common;
+        }
+
+        public async Task VehicleBulkUpload(List<Vehicle> vehicles, List<Image> images, Guid userId, PerformContext context)
+        {
+            var locations = new List<EntityLocation>();
+
+            if (userId.IsNotEmpty())
+            {
+                context.WriteLine($"Getting location for user: {userId}");
+                var userLocation = await repository.Location.GetByConditionAsync(_ => _.EntityId.Equals(userId));
+                if(userLocation != null)
+                {
+                    context.WriteLine($"Initializing locations for {vehicles.Count} vehicle records");
+                    vehicles.ForEach(v =>
+                    {
+                        locations.Add(new EntityLocation
+                        {
+                            EntityId = userLocation.EntityId,
+                            EntityType = EntityType.Vehicle,
+                            City = userLocation.City,
+                            PostalCode = userLocation.PostalCode,
+                            CountryId = userLocation.CountryId,
+                            StateId = userLocation.StateId,
+                        });
+                    });
+                }
+            }
+
+            context.WriteLine($"Adding {vehicles.Count} vehicle records");
+            await repository.Vehicle.AddAsync(vehicles);
+
+            context.WriteLine($"Successfully added {vehicles.Count} vehicle records. Now adding the respective images.");
+            await repository.Image.AddAsync(images);
+
+            context.WriteLine($"Successfully added {images.Count} image records. Now adding vehicle locations.");
+            await repository.Location.AddAsync(locations);
+
+            context.WriteLine($"Successfully added {locations.Count} location records.");
+        }
+    }
+}
