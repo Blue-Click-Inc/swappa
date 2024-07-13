@@ -7,7 +7,7 @@
       <a class="px-1" style="cursor: pointer;" @onclick="@(async () => await SharedService.GoBackAsync())">
           <span class="oi oi-arrow-left" aria-hidden="true"></span>
       </a>
-        @if(false)
+        @if(isLoading)
         {
             <div class="text-center align-self-center top-50 m-auto">
                 <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
@@ -45,22 +45,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @*@foreach (var role in RoleData.Data)
+                        @foreach (var vehicle in Data.Data)
                         {
+                            
                             <tr class="box-shadow-inset">
-                                <th></th>
-                                <td>@role.RoleName</td>
-                                <td>@role.NumberOfUser.ToString("D")</td>
-                                <td class="d-flex justify-content-end">
-                                    <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1" @onclick="@(async () => await UpdateRole(role.Id))"><Icon Name="IconName.Pencil" /></Button>
+                                <td></td>
+                                <td>@vehicle?.Make</td>
+                                <td>@vehicle?.Model</td>
+                                <td>@vehicle?.Year</td>
+                                <td>@string.Format(new CultureInfo("en-NG"), "{0:C}", vehicle?.Price)</td>
+                                <td>@vehicle?.Color</td>
+                                <td>@vehicle?.Transmission.GetDescription()</td>
+                                <td>@vehicle?.Engine.GetDescription()</td>
+                                <td>@vehicle?.Odometer.ToString("D")</td>
+                                <td  class="d-flex justify-content-end">
+                                    <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1"><Icon Name="IconName.Pencil" /></Button>
                                     <AuthorizeView Roles="SuperAdmin">
                                         <Authorized>
-                                            <Button Color="ButtonColor.Danger" Disabled="role.NumberOfUser > 0" Outline="true" Class="mx-1" @onclick="@(async () => await DeleteRole(role.Id))"><Icon Name="IconName.Trash" /></Button>
+                                            <Button Color="ButtonColor.Danger" Outline="true" Class="mx-1"><Icon Name="IconName.Trash" /></Button>
                                         </Authorized>
                                     </AuthorizeView>
                                 </td>
                             </tr>
-                        }*@
+                        }
                     </tbody>
                 </table>
             </div>
