@@ -33,8 +33,12 @@ namespace Swappa.Server.Handlers.Vehicles
             var pagedList = PagedList<Vehicle>.ToPagedList(query, request.PageNumber, request.PageSize);
             var vehicleIds = pagedList.Select(v => v.Id).ToList();
 
-            var locations = await repository.Location.FindManyAsync(l => vehicleIds.Contains(l.EntityId));
-            var images = await repository.Image.FindManyAsync(i => vehicleIds.Contains(i.VehicleId));
+            var locations = (await repository.Location.FindManyAsync(l => vehicleIds.Contains(l.EntityId)))
+                .ToDictionary(l => l.EntityId);
+
+            var images = (await repository.Image.FindManyAsync(i => vehicleIds.Contains(i.VehicleId)))
+                .GroupBy(i => i.VehicleId)
+                .ToDictionary(i => i.Key, i => i.ToList());
 
             pagedList.MapLocations(locations)
                 .MapImages(images);

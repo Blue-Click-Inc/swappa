@@ -9,6 +9,8 @@ namespace Swappa.Entities.Models
         public Guid EntityId { get; set; }
         public string CountryId { get; set; } = string.Empty;
         public string StateId { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
+        public string State { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
         public string PostalCode { get; set; } = string.Empty;
         public Coordinate Coordinate { get; set; }

@@ -33,12 +33,15 @@ namespace Swappa.Data.Services
                     {
                         locations.Add(new EntityLocation
                         {
-                            EntityId = userLocation.EntityId,
+                            EntityId = v.Id,
                             EntityType = EntityType.Vehicle,
                             City = userLocation.City,
+                            Country = userLocation.Country,
+                            State = userLocation.State,
                             PostalCode = userLocation.PostalCode,
                             CountryId = userLocation.CountryId,
                             StateId = userLocation.StateId,
+                            Coordinate = userLocation.Coordinate
                         });
                     });
                 }

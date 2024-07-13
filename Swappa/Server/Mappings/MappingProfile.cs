@@ -23,6 +23,7 @@ namespace SpringBoardApi.Mapper
             CreateMap<Vehicle, VehicleToReturnDto>();
             CreateMap<VehicleToCreateDto, Vehicle>();
             CreateMap<VehicleForUpdateDto, Vehicle>();
+            CreateMap<Image, ImageToReturnDto>();
         }
     }
 }

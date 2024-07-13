@@ -48,6 +48,7 @@ namespace Swappa.Server.Handlers.User
                 return response.Process<UserDetailsDto>(new BadRequestResponse($"No user found with Id: {request.Id}."));
             }
 
+            user.Location = await repository.Location.FindOneAsync(l => l.EntityId.Equals(user.Id));
             var userDetails = mapper.Map<UserDetailsDto>(user);
             userDetails.UserRoles = roleManager.Roles
                 .Where(r => user.Roles.Contains(r.Id))
@@ -55,22 +56,6 @@ namespace Swappa.Server.Handlers.User
                 .ToList()
                 .ParseValues<SystemRole>();
 
-            var location = await repository.Location.FindOneAsync(l => l.EntityId.Equals(user.Id));
-            if(location != null)
-            {
-                var country = await repository.Location.GetAsync(location.CountryId);
-                var state = await repository.Location.GetOneAsync(location.StateId);
-                if(country != null && state != null)
-                {
-                    userDetails.Location = new LocationToReturnDto
-                    {
-                        Id = location.Id,
-                        Country = country.Name,
-                        State = state.Name,
-                        PostalCode = location.PostalCode
-                    };
-                }
-            }
             return response.Process<UserDetailsDto>(new ApiOkResponse<UserDetailsDto>(userDetails));
         }
     }

@@ -5,21 +5,21 @@ namespace Swappa.Server.Extensions
 {
     public static class HandlerExtensions
     {
-        public static PagedList<Vehicle> MapLocations(this PagedList<Vehicle> vehicles, List<EntityLocation> locations)
+        public static PagedList<Vehicle> MapLocations(this PagedList<Vehicle> vehicles, Dictionary<Guid, EntityLocation> locations)
         {
             vehicles.ForEach(v =>
             {
-                v.Location = locations.FirstOrDefault(l => l.EntityId == v.Id);
+                v.Location = locations.GetValueOrDefault(v.Id);
             });
 
             return vehicles;
         }
 
-        public static PagedList<Vehicle> MapImages(this PagedList<Vehicle> vehicles, List<Image> images)
+        public static PagedList<Vehicle> MapImages(this PagedList<Vehicle> vehicles, Dictionary<Guid, List<Image>> images)
         {
             vehicles.ForEach(v =>
             {
-                v.Images = images.Where(l => l.VehicleId == v.Id).ToList();
+                v.Images = images.GetValueOrDefault(v.Id) ?? new List<Image>();
             });
 
             return vehicles;

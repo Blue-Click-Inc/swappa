@@ -55,6 +55,8 @@ namespace Swappa.Server.Handlers.Location
             locationToUpdate.StateId = state._Id;
             locationToUpdate.CountryId = country._Id;
             locationToUpdate.City = request.City;
+            locationToUpdate.Country = country.Name;
+            locationToUpdate.State = state.Name;
             locationToUpdate.PostalCode = request.PostalCode;
             locationToUpdate.UpdatedAt = DateTime.UtcNow;
             if(request.PostalCode != locationToUpdate.PostalCode)
