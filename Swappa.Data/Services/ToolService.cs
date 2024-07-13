@@ -12,12 +12,10 @@ namespace Swappa.Data.Services
     public class ToolService : IToolService
     {
         private readonly IRepositoryManager repository;
-        private readonly ICommon common;
 
-        public ToolService(IRepositoryManager repository, ICommon common)
+        public ToolService(IRepositoryManager repository)
         {
             this.repository = repository;
-            this.common = common;
         }
 
         public async Task VehicleBulkUpload(List<Vehicle> vehicles, List<Image> images, Guid userId, PerformContext context)
@@ -48,13 +46,12 @@ namespace Swappa.Data.Services
 
             context.WriteLine($"Adding {vehicles.Count} vehicle records");
             await repository.Vehicle.AddAsync(vehicles);
-
             context.WriteLine($"Successfully added {vehicles.Count} vehicle records. Now adding the respective images.");
+
             await repository.Image.AddAsync(images);
-
             context.WriteLine($"Successfully added {images.Count} image records. Now adding vehicle locations.");
-            await repository.Location.AddAsync(locations);
 
+            await repository.Location.AddAsync(locations);
             context.WriteLine($"Successfully added {locations.Count} location records.");
         }
     }

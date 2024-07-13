@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components;
 using Swappa.Client.Services.Interfaces;
 using System.Net;
 using System.Net.Http.Json;
-using Toolbelt.Blazor;
 
 namespace Swappa.Client.Services.Implementations
 {

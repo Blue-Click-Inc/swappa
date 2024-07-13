@@ -4,5 +4,11 @@
     {
         public static bool GetOrdefaul(this bool? boolean) =>
             boolean ?? false;
+
+        public static bool IsNull(this object? value) =>
+            value == null;
+
+        public static bool IsNotNull(this object? value) =>
+            value != null;
     }
 }

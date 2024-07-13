@@ -50,5 +50,8 @@ namespace Swappa.Shared.Extensions
 
             return uriBuilder.ToString();
         }
+
+        public static bool IsNotNullOrEmpty(this string value) =>
+            !string.IsNullOrWhiteSpace(value);
     }
 }

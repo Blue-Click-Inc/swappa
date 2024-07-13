@@ -1,0 +1,47 @@
+﻿<PageTitle>Vehicle Bulk Upload</PageTitle>
+
+ <div class="row">
+    <div class="box-shadow-inset border-radius-2rem p-3">
+        @if(level != AlertColor.None)
+        {
+            <Alert Color="level">
+                <h4 class="alert-heading">@level.ToString()</h4>
+                <span>@message</span>
+            </Alert>
+        }
+        <EditForm Model="Model" method="post" OnValidSubmit="UploadAsync" FormName="bulkUploadFromSheet">
+            <DataAnnotationsValidator />
+            <h3>
+                <span class="text-muted fw-bold" aria-hidden="true"> 
+                    <Icon Name="IconName.Upload"></Icon> Upload Vehicle Records
+                </span>
+            </h3>
+            <hr />
+            <div class="row">
+                <div class="form-floating mb-3 px-1">
+                    <InputFile 
+                        OnChange="OnInputFileChange"
+                        class="form-control" 
+                        aria-required="true"
+                        accept=".xlsx,.xls"
+                    />
+                    <label for="File" class="form-label"></label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-0 col-lg-2"></div>
+                <div class="col-md-12 col-lg-8 d-flex justify-content-center">
+                    <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                        <Button Color="ButtonColor.Primary" Outline="true" Type="ButtonType.Submit" Class="mx-1 mt-1" Disabled="@isLoading">
+                            <Icon Name="IconName.Upload" /> Upload
+                        </Button>
+                        <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 mt-1" Disabled="@isLoading" @onclick="(async () => await SharedService.CancelModalAsync(Instance))">
+                            <Icon Name="IconName.ArrowLeft" /> Back
+                        </Button>
+                    </div>
+                </div>
+                <div class="col-md-0 col-lg-2"></div>
+            </div>
+        </EditForm>
+    </div>
+</div>

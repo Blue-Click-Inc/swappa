@@ -1,0 +1,17 @@
+﻿@page "/admin"
+@attribute [Authorize(Roles = "Admin, SuperAdmin")]
+
+<div>
+    <a class="px-1" style="cursor: pointer;" href="admin/users">
+        <span class="oi oi-people" aria-hidden="true"></span> User Center
+    </a>
+    <a class="px-1" style="cursor: pointer;" href="admin/roles">
+        <span class="oi oi-shield" aria-hidden="true"></span> Role Center
+    </a>
+    <a class="px-1" style="cursor: pointer;" href="admin/feedbacks">
+        <span class="oi oi-comment-square" aria-hidden="true"></span> Feedback Center
+    </a>
+    <a class="px-1" style="cursor: pointer;" href="admin/vehicles">
+        <Icon Name="IconName.Truck"></Icon> Vehicle Center
+    </a>
+</div>

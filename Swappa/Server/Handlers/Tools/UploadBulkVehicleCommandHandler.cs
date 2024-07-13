@@ -1,38 +1,34 @@
 ﻿using Hangfire;
 using MediatR;
 using OfficeOpenXml;
-using Swappa.Data.Contracts;
 using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Commands.Tools;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Server.Handlers.Tools
 {
     public class UploadBulkVehicleCommandHandler : IRequestHandler<UploadBulkVehicleCommand, ResponseModel<string>>
     {
-        private readonly IRepositoryManager repository;
+        private const int MAX_SIZE = 5242880;
         private readonly ApiResponseDto response;
-        private readonly IToolService toolService;
         private readonly ICommon common;
 
-        public UploadBulkVehicleCommandHandler(IRepositoryManager repository,
-            ApiResponseDto response, IToolService toolService, ICommon common)
+        public UploadBulkVehicleCommandHandler(ApiResponseDto response, ICommon common)
         {
-            this.repository = repository;
             this.response = response;
-            this.toolService = toolService;
             this.common = common;
         }
 
         public async Task<ResponseModel<string>> Handle(UploadBulkVehicleCommand request, CancellationToken cancellationToken)
         {
-            if(request != null && request.File.Length > 0)
+            if(request.IsNotNull() && request.File.IsNotNull() && request.File.Length > 0)
             {
-                var stream = new MemoryStream();
-                await request.File.CopyToAsync(stream);
+                using var stream = new MemoryStream(MAX_SIZE);
+                await request.File.CopyToAsync(stream, cancellationToken);
                 stream.Position = 0;
 
                 using var package = new ExcelPackage(stream);

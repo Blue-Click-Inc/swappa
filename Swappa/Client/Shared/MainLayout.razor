@@ -7,13 +7,6 @@
 
     <main>
         <div class="top-row px-4">
-            <AuthorizeView Roles="SuperAdmin, Admin">
-                <Authorized>
-                    <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowAddUserModal())">
-                        <span class="fa fa-user-plus" aria-hidden="true"></span> Add User
-                    </a>
-                </Authorized>
-            </AuthorizeView>
             <AuthorizeView>
                 <NotAuthorized>
                     <a class="px-1" style="cursor: pointer;" @onclick="(async () => await ShowRegisterModal())">
@@ -41,12 +34,6 @@
 </div>
 
 @code {
-    private async Task ShowAddUserModal()
-    {
-        var confirmation = Modal.Show<AddUserModal>("");
-        await confirmation.Result;
-    }
-
     private async Task ShowLoginModal()
     {
         var confirmationModal = Modal.Show<LoginModal>("");

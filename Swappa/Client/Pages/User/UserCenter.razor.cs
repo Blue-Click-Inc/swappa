@@ -1,4 +1,5 @@
 ﻿using Blazored.Modal;
+using Swappa.Client.Pages.Modals.Accounts;
 using Swappa.Client.Pages.Modals.Role;
 using Swappa.Client.Pages.Modals.User;
 using Swappa.Entities.Enums;
@@ -85,6 +86,12 @@ namespace Swappa.Client.Pages.User
 
             var confirm = Modal.Show<RoleManagerModal>("", parameters);
             var result = await confirm.Result;
+        }
+
+        private async Task ShowAddUserModal()
+        {
+            var confirmation = Modal.Show<AddUserModal>("");
+            await confirmation.Result;
         }
 
         private string GetStatusClass(Status status)

@@ -15,12 +15,12 @@
             <div class="col-md-0 col-lg-3"></div>
                 <div class="col-md-12 col-lg-6 d-flex justify-content-center">
                     <div class="d-flex justify-content-center flex-column flex-md-row w-100">
-                        <button class="btn btn-danger mx-1 mt-1" disabled="@isLoading" type="button" @onclick="(async () => await ConfirmAsync())">
+                        <Button Color="ButtonColor.Danger" Outline="true" Class="mx-1 mt-1" disabled="@isLoading" @onclick="(async () => await ConfirmAsync())">
                             <span class="oi oi-delete" aria-hidden="true"></span> @buttonLabel
-                        </button>
-                        <button type="button" class="btn btn-secondary mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
+                        </Button>
+                        <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
                             <span class="oi oi-arrow-left" aria-hidden="true"></span> Back
-                        </button>
+                        </Button>
                     </div>
                 </div>
             <div class="col-md-0 col-lg-3"></div>

@@ -47,6 +47,8 @@ namespace Swappa.Server.Handlers.Account
                 return response.Process<string>(new NotFoundResponse($"No user found with Id: {request.UserId}."));
             }
 
+            var exisingRole = await userManager.GetRolesAsync(user);
+
             var role = await roleManager.FindByNameAsync(request.Role.ToString());
             if(role == null)
             {
@@ -56,6 +58,10 @@ namespace Swappa.Server.Handlers.Account
             var result = await userManager.AddToRoleAsync(user, role.Name);
             if (result.Succeeded)
             {
+                if(exisingRole.IsNotNullOrEmpty())
+                {
+                    await userManager.RemoveFromRoleAsync(user, exisingRole.First());
+                }
                 return response.Process<string>(new ApiOkResponse<string>($"User successfully added to {role.Name} role."));
             }
 

@@ -2,6 +2,7 @@
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Swappa.Client.Services.Interfaces;
 
@@ -45,5 +46,13 @@ namespace Swappa.Client.Services.Implementations
         {
             await instance.CancelAsync();
         }
+
+        //public Stream ToStream(IBrowserFile file)
+        //{
+        //    var stream = file.OpenReadStream();
+        //    //var stream = new MemoryStream();
+        //    //file.CopyToAsync(stream);
+        //    stream.Position = 0;
+        //} 
     }
 }
