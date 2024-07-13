@@ -140,8 +140,11 @@ namespace Swappa.Data.Implementations
         public async Task DeleteAsync(Expression<Func<EntityLocation, bool>> expression) =>
             await RemoveAsync(expression);
 
-        public async Task<EntityLocation?> GetByConditionAsync(Expression<Func<EntityLocation, bool>> expression) =>
+        public async Task<EntityLocation?> FindOneAsync(Expression<Func<EntityLocation, bool>> expression) =>
             await GetAsync(expression);
+
+        public async Task<List<EntityLocation>> FindManyAsync(Expression<Func<EntityLocation, bool>> expression) =>
+            await GetManyAsync(expression);
 
         public async Task<bool> Exists(Expression<Func<EntityLocation, bool>> expression) =>
             await ExistsAsync(expression);

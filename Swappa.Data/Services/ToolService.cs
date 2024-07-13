@@ -25,7 +25,7 @@ namespace Swappa.Data.Services
             if (userId.IsNotEmpty())
             {
                 context.WriteLine($"Getting location for user: {userId}");
-                var userLocation = await repository.Location.GetByConditionAsync(_ => _.EntityId.Equals(userId));
+                var userLocation = await repository.Location.FindOneAsync(_ => _.EntityId.Equals(userId));
                 if(userLocation != null)
                 {
                     context.WriteLine($"Initializing locations for {vehicles.Count} vehicle records");

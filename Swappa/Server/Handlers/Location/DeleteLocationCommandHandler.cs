@@ -26,7 +26,7 @@ namespace Swappa.Server.Handlers.Location
                 return response.Process<string>(new BadRequestResponse("Invalid request. Request parameters can not be null"));
             }
 
-            var location = await repository.Location.GetByConditionAsync(l => l.EntityId.Equals(request.EntityId));
+            var location = await repository.Location.FindOneAsync(l => l.EntityId.Equals(request.EntityId));
             if(location == null)
             {
                 return response.Process<string>(new NotFoundResponse($"No location record found with the Id: {request.EntityId}"));

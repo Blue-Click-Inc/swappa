@@ -29,7 +29,7 @@ namespace Swappa.Server.Handlers.Location
                 return response.Process<BaseLocationDto>(new BadRequestResponse("Invalid request parameters!"));
             }
 
-            var location = await repository.Location.GetByConditionAsync(l => l.EntityId.Equals(request.EntityId));
+            var location = await repository.Location.FindOneAsync(l => l.EntityId.Equals(request.EntityId));
             if (location == null)
             {
                 return response.Process<BaseLocationDto>(new NotFoundResponse($"No location record with the Id: {request.EntityId}"));

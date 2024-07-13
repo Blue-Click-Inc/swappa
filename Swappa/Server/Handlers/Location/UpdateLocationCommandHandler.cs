@@ -46,7 +46,7 @@ namespace Swappa.Server.Handlers.Location
                 return response.Process<string>(new BadRequestResponse($"{state.Name} is not in {country.Name}."));
             }
 
-            var locationToUpdate = await repository.Location.GetByConditionAsync(l => l.EntityId.Equals(request.EntityId));
+            var locationToUpdate = await repository.Location.FindOneAsync(l => l.EntityId.Equals(request.EntityId));
             if (locationToUpdate == null)
             {
                 return response.Process<string>(new NotFoundResponse($"No location record found with the EntityId: {request.EntityId}"));

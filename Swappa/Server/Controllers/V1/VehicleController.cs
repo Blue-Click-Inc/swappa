@@ -17,11 +17,11 @@ namespace Swappa.Server.Controllers.V1
             _mediator = mediator;
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] VehicleToCreateDto command) =>
+        public async Task<IActionResult> PostAsync([FromBody] VehicleToCreateDto command) =>
             Ok(await _mediator.Send(command));
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromRoute] Guid id, [FromBody] VehicleForUpdateDto command) =>
+        public async Task<IActionResult> PutAsync([FromRoute] Guid id, [FromBody] VehicleForUpdateDto command) =>
             Ok(await _mediator.Send(new UpdateVehicleCommand
             {
                 Id = id,
@@ -29,14 +29,14 @@ namespace Swappa.Server.Controllers.V1
             }));
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] Guid id) =>
+        public async Task<IActionResult> GetAsync([FromRoute] Guid id) =>
             Ok(await _mediator.Send(new GetVehicleByIdQuery
             {
                 Id = id,
             }));
 
         [HttpGet("{merchantId}/merchant")]
-        public async Task<IActionResult> GetByMerchant([FromRoute] Guid merchantId, [FromQuery] VehicleQueryDto query) =>
+        public async Task<IActionResult> GetAsync([FromRoute] Guid merchantId, [FromQuery] VehicleQueryDto query) =>
             Ok(await _mediator.Send(new GetVehicleByMerchantQuery
             {
                 MerchantId = merchantId,
@@ -44,11 +44,11 @@ namespace Swappa.Server.Controllers.V1
             }));
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] VehicleQueryDto query) =>
+        public async Task<IActionResult> GetAsync([FromQuery] GetAllVehiclesQuery query) =>
             Ok(await _mediator.Send(query));
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id) =>
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id) =>
             Ok(await _mediator.Send(new DeleteVehicleCommand
             {
                 Id = id,

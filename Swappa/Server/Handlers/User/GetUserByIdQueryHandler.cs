@@ -55,7 +55,7 @@ namespace Swappa.Server.Handlers.User
                 .ToList()
                 .ParseValues<SystemRole>();
 
-            var location = await repository.Location.GetByConditionAsync(l => l.EntityId.Equals(user.Id));
+            var location = await repository.Location.FindOneAsync(l => l.EntityId.Equals(user.Id));
             if(location != null)
             {
                 var country = await repository.Location.GetAsync(location.CountryId);
