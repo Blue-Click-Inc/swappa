@@ -6,6 +6,7 @@ namespace Swappa.Data.Services.Interfaces
 {
     public interface IToolService
     {
+        Task<Stream> ExportVehicleDataToExcel(Guid entityId);
         Task VehicleBulkUpload(List<Vehicle> vehicles, List<Image> images, Guid userId, PerformContext context);
     }
 }
