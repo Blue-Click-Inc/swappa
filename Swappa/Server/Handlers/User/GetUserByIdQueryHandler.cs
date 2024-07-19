@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Swappa.Data.Contracts;
-using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
@@ -19,20 +18,18 @@ namespace Swappa.Server.Handlers.User
         private readonly ApiResponseDto response;
         private readonly IRepositoryManager repository;
         private readonly IMapper mapper;
-        private readonly ICommon common;
 
         public GetUserByIdQueryHandler(UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
             ApiResponseDto response, 
             IRepositoryManager repository,
-            IMapper mapper, ICommon common)
+            IMapper mapper)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.response = response;
             this.repository = repository;
             this.mapper = mapper;
-            this.common = common;
         }
 
         public async Task<ResponseModel<UserDetailsDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)

@@ -15,17 +15,16 @@ namespace Swappa.Server.Handlers.Account
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
         private readonly ApiResponseDto response;
-        private readonly ICommon common;
+        private readonly IRepositoryManager repository;
 
         public AddToRoleCommandHandler(UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
-            ApiResponseDto response,
-            ICommon common)
+            ApiResponseDto response, IRepositoryManager repository)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.response = response;
-            this.common = common;
+            this.repository = repository;
         }
 
         public async Task<ResponseModel<string>> Handle(AddToRoleCommand request, CancellationToken cancellationToken)
@@ -35,7 +34,7 @@ namespace Swappa.Server.Handlers.Account
                 return response.Process<string>(new BadRequestResponse("Invalid request parameters."));
             }
 
-            var userHasRights = await common.HasEqualOrHigherRole(request.Role);
+            var userHasRights = await repository.Common.HasEqualOrHigherRole(request.Role);
             if (!userHasRights)
             {
                 return response.Process<string>(new BadRequestResponse($"You have no permission to assign a user to {request.Role.GetDescription()} role."));

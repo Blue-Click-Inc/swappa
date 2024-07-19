@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Swappa.Data.Contracts;
 using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
@@ -14,17 +15,16 @@ namespace Swappa.Server.Handlers.Account
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
         private readonly ApiResponseDto response;
-        private readonly ICommon common;
+        private readonly IRepositoryManager repository;
 
         public RemoveFromRoleCommandHandler(UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager,
-            ApiResponseDto response,
-            ICommon common)
+            ApiResponseDto response, IRepositoryManager repository)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.response = response;
-            this.common = common;
+            this.repository = repository;
         }
         public async Task<ResponseModel<string>> Handle(RemoveFromRoleCommand request, CancellationToken cancellationToken)
         {
@@ -33,7 +33,7 @@ namespace Swappa.Server.Handlers.Account
                 return response.Process<string>(new BadRequestResponse("Invalid request parameters."));
             }
 
-            var userHasRights = await common.HasEqualOrHigherRole(request.Role);
+            var userHasRights = await repository.Common.HasEqualOrHigherRole(request.Role);
             if (!userHasRights)
             {
                 return response.Process<string>(new BadRequestResponse($"You have no permission to remove a user from {request.Role.GetDescription()} role."));

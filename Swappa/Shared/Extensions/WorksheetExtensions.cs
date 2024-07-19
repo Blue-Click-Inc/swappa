@@ -51,7 +51,7 @@ namespace Swappa.Shared.Extensions
             }
             if (merge)
             {
-                range.Merge = bold;
+                range.Merge = merge;
             }
             if (bold)
             {
@@ -80,7 +80,7 @@ namespace Swappa.Shared.Extensions
             {
                 if(minWidth != 0 && maxWidth != 0 && maxWidth >= minWidth)
                 {
-                    worksheet.Column(columnNum).AutoFit(10, 20);
+                    worksheet.Column(columnNum).AutoFit(minWidth, maxWidth);
                 }
                 else
                 {

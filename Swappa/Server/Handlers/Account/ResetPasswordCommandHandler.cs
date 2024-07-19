@@ -13,14 +13,14 @@ namespace Swappa.Server.Handlers.Account
     {
         private readonly UserManager<AppUser> userManager;
         private readonly ApiResponseDto response;
-        private readonly INotify notify;
+        private readonly IServiceManager service;
 
         public ResetPasswordCommandHandler(UserManager<AppUser> userManager,
-            ApiResponseDto response, INotify notify)
+            ApiResponseDto response, IServiceManager service)
         {
             this.userManager = userManager;
             this.response = response;
-            this.notify = notify;
+            this.service = service;
         }
 
         public async Task<ResponseModel<string>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
@@ -30,7 +30,7 @@ namespace Swappa.Server.Handlers.Account
             if (user == null || !user.EmailConfirmed)
                 return response.Process<string>(new BadRequestResponse($"Could not find a user with the email: {request.Email}, or account not confirmed yet."));
 
-            return await notify.SendAccountEmailAsync(user, request.Origin, TokenType.PasswordReset);
+            return await service.Notify.SendAccountEmailAsync(user, request.Origin, TokenType.PasswordReset);
         }
     }
 }

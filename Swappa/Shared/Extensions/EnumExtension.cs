@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Swappa.Entities.Enums;
+using System.ComponentModel;
 
 namespace Swappa.Shared.Extensions
 {
@@ -48,6 +49,11 @@ namespace Swappa.Shared.Extensions
                 return true;
             }
             return false;
+        }
+
+        public static bool IsInOneOrMoreRoles(this List<SystemRole> roles, params SystemRole[] systemRoles)
+        {
+            return roles.Any(x => systemRoles.Contains(x));
         }
 
         public static List<TEnum> ParseValues<TEnum>(this List<string> values) where TEnum : Enum

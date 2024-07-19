@@ -1,6 +1,7 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swappa.Data.Services.Interfaces;
 using Swappa.Server.Commands.Vehicle;
 using Swappa.Server.Queries.Vehicle;
 using Swappa.Shared.DTOs;
@@ -13,8 +14,13 @@ namespace Swappa.Server.Controllers.V1
     public class VehicleController : ControllerBase
     {
         private readonly IMediator _mediator;
-        public VehicleController(IMediator mediator) =>
+        private readonly IServiceManager service;
+
+        public VehicleController(IMediator mediator, IServiceManager service)
+        {
             _mediator = mediator;
+            this.service = service;
+        }
 
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] VehicleToCreateDto command) =>
@@ -53,5 +59,14 @@ namespace Swappa.Server.Controllers.V1
             {
                 Id = id,
             }));
+
+        [HttpPost("export-data")]
+        [Authorize(Roles = "Admin, Merchant, SuperAdmin")]
+        public async Task<IActionResult> DownloadVehicleData()
+        {
+            var stream = await service.Export.ExportVehicleDataToExcel();
+            if(stream == null) return Unauthorized();
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Vehicle Report-{DateTime.UtcNow.Ticks}");
+        }
     }
 }

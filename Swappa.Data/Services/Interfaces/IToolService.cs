@@ -1,12 +1,10 @@
-﻿using Hangfire;
-using Hangfire.Server;
+﻿using Hangfire.Server;
 using Swappa.Entities.Models;
 
 namespace Swappa.Data.Services.Interfaces
 {
     public interface IToolService
     {
-        Task<Stream> ExportVehicleDataToExcel(Guid entityId);
         Task VehicleBulkUpload(List<Vehicle> vehicles, List<Image> images, Guid userId, PerformContext context);
     }
 }

@@ -16,15 +16,15 @@ namespace Swappa.Server.Handlers.Account
         private readonly UserManager<AppUser> userManager;
         private readonly ApiResponseDto response;
         private readonly IRepositoryManager repository;
-        private readonly INotify notify;
+        private readonly IServiceManager service;
 
         public ForgotPasswordCommandHandler(UserManager<AppUser> userManager, ApiResponseDto response, 
-            IRepositoryManager repository, INotify notify)
+            IRepositoryManager repository, IServiceManager service)
         {
             this.userManager = userManager;
             this.response = response;
             this.repository = repository;
-            this.notify = notify;
+            this.service = service;
         }
 
         public async Task<ResponseModel<string>> Handle(ForgotPasswordCommand command, CancellationToken cancellationToken)
@@ -53,7 +53,7 @@ namespace Swappa.Server.Handlers.Account
                 }
             }
 
-            var notificationResponse = await notify.SendAccountEmailAsync(user, command.Request.Origin, TokenType.PasswordReset);
+            var notificationResponse = await service.Notify.SendAccountEmailAsync(user, command.Request.Origin, TokenType.PasswordReset);
             notificationResponse.Message = "Token expired. Another password reset link sent to your email. Please click on it to change your password.";
             return notificationResponse;
         }

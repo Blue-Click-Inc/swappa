@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Mongo.Common.Settings;
 using RedisCache.Common.Repository;
 using Swappa.Data.Configurations;
 using Swappa.Data.Contracts;
+using Swappa.Entities.Models;
 
 namespace Swappa.Data.Implementations
 {
@@ -16,10 +18,12 @@ namespace Swappa.Data.Implementations
         private readonly Lazy<ILocationService> _locationService;
         private readonly Lazy<IVehicleRepository> _vehicleRepository;
         private readonly Lazy<IImageRepository> _imageRepository;
+        private readonly Lazy<ICommonRepository> _commonRepository;
 
         public RepositoryManager(IOptions<MongoDbSettings> mongoSetting, 
             IOptions<CloudinarySettings> cloudSetting, IConfiguration configuration,
-            IHttpContextAccessor contextAccessor, ICacheCommonRepository redisCache)
+            IHttpContextAccessor contextAccessor, ICacheCommonRepository redisCache,
+            UserManager<AppUser> userManager)
         {
             _tokenRepository = new Lazy<ITokenRepository>(() =>
                 new TokenRepository(mongoSetting));
@@ -33,6 +37,8 @@ namespace Swappa.Data.Implementations
                  new VehicleRepository(mongoSetting));
             _imageRepository = new Lazy<IImageRepository>(() =>
                 new ImageRepository(mongoSetting));
+            _commonRepository = new Lazy<ICommonRepository>(() =>
+                new CommonRepository(contextAccessor, userManager));
         }
 
         public ITokenRepository Token => _tokenRepository.Value;
@@ -41,5 +47,6 @@ namespace Swappa.Data.Implementations
         public ILocationService Location => _locationService.Value;
         public IVehicleRepository Vehicle => _vehicleRepository.Value;
         public IImageRepository Image => _imageRepository.Value;
+        public ICommonRepository Common => _commonRepository.Value;
     }
 }

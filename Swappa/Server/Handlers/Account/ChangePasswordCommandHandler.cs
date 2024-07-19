@@ -11,14 +11,11 @@ namespace Swappa.Server.Handlers.Account
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ResponseModel<string>>
     {
         private readonly UserManager<AppUser> userManager;
-        private readonly SignInManager<AppUser> signInManager;
         private readonly ApiResponseDto response;
 
-        public ChangePasswordCommandHandler(UserManager<AppUser> userManager, 
-            SignInManager<AppUser> signInManager, ApiResponseDto response)
+        public ChangePasswordCommandHandler(UserManager<AppUser> userManager, ApiResponseDto response)
         {
             this.userManager = userManager;
-            this.signInManager = signInManager;
             this.response = response;
         }
 

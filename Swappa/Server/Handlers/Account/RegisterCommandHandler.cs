@@ -18,17 +18,16 @@ namespace Swappa.Server.Handlers.Account
         private readonly UserManager<AppUser> userManager;
         private readonly ApiResponseDto response;
         private readonly IMapper mapper;
-        private readonly INotify notify;
+        private readonly IServiceManager service;
 
         public RegisterCommandHandler(UserManager<AppUser> userManager,
             ApiResponseDto response,
-            IMapper mapper,
-            INotify notify)
+            IMapper mapper, IServiceManager service)
         {
             this.userManager = userManager;
             this.response = response;
             this.mapper = mapper;
-            this.notify = notify;
+            this.service = service;
         }
 
         public async Task<ResponseModel<string>> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -58,7 +57,7 @@ namespace Swappa.Server.Handlers.Account
             if (!roleResult.IsSuccessful)
                 return roleResult;
 
-            return await notify.SendAccountEmailAsync(user, request.Origin, TokenType.AccountConfirmation);
+            return await service.Notify.SendAccountEmailAsync(user, request.Origin, TokenType.AccountConfirmation);
         }
 
         private async Task<ResponseModel<string>> AssignToRoleAsync(string id, string role)

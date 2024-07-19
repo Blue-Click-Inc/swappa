@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using MediatR;
 using OfficeOpenXml;
+using Swappa.Data.Contracts;
 using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
@@ -15,12 +16,12 @@ namespace Swappa.Server.Handlers.Tools
     {
         private const int MAX_SIZE = 5242880;
         private readonly ApiResponseDto response;
-        private readonly ICommon common;
+        private readonly IRepositoryManager repository;
 
-        public UploadBulkVehicleCommandHandler(ApiResponseDto response, ICommon common)
+        public UploadBulkVehicleCommandHandler(ApiResponseDto response, IRepositoryManager repository)
         {
             this.response = response;
-            this.common = common;
+            this.repository = repository;
         }
 
         public async Task<ResponseModel<string>> Handle(UploadBulkVehicleCommand request, CancellationToken cancellationToken)
@@ -70,7 +71,7 @@ namespace Swappa.Server.Handlers.Tools
                         vehicles.Add(vehicle);
                     }
 
-                    Guid.TryParse(common.GetLoggedInUserId(), out var userId);
+                    Guid.TryParse(repository.Common.GetLoggedInUserId(), out var userId);
                     BackgroundJob.Enqueue<IToolService>(_ => _.VehicleBulkUpload(vehicles, images, userId, null!));
                     return response.Process<string>(new ApiOkResponse<string>($"Job to add {vehicles.Count} vehicle records started!"));
                 }

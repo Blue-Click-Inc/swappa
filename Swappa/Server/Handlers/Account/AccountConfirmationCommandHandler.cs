@@ -15,15 +15,16 @@ namespace Swappa.Server.Handlers.Account
         private readonly UserManager<AppUser> userManager;
         private readonly IRepositoryManager repository;
         private readonly ApiResponseDto response;
-        private readonly INotify notify;
+        private readonly IServiceManager service;
 
         public AccountConfirmationCommandHandler(UserManager<AppUser> userManager,
-            IRepositoryManager repository, ApiResponseDto response, INotify notify)
+            IRepositoryManager repository, ApiResponseDto response,
+            IServiceManager service)
         {
             this.userManager = userManager;
             this.repository = repository;
             this.response = response;
-            this.notify = notify;
+            this.service = service;
         }
 
         public async Task<ResponseModel<string>> Handle(ConfirmationCommand request, CancellationToken cancellationToken)
@@ -54,7 +55,7 @@ namespace Swappa.Server.Handlers.Account
                 }
             }
 
-            var result = await notify.SendAccountEmailAsync(user, request.Origin, TokenType.AccountConfirmation);
+            var result = await service.Notify.SendAccountEmailAsync(user, request.Origin, TokenType.AccountConfirmation);
             result.Message = "Token expired. Another link has been sent to your email. Please reconfirm to activate your account.";
             return result;
         }

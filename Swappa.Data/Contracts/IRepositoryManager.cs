@@ -8,5 +8,6 @@
         ILocationService Location { get; }
         IVehicleRepository Vehicle { get; }
         IImageRepository Image { get; }
+        ICommonRepository Common { get; }
     }
 }

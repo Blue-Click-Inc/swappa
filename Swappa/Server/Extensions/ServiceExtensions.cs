@@ -137,13 +137,9 @@ namespace Swappa.Server.Extensions
         {
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<ApiResponseDto>();
-            services.AddScoped<INotify, Notify>();
-            services.AddScoped<IMedia, Media>();
-            services.AddScoped<ICommon, Common>();
-            services.AddScoped<ICloudinaryService, CloudinaryService>();
-            services.AddScoped<IToolService, ToolService>();
             services.AddSingleton<HangfireLogAttribute>();
             services.AddScoped<IRecurringJobService, RecurringJobService>();
+            services.AddScoped<IServiceManager, ServiceManager>();
         }
 
         public static void ConfigureMediatR(this IServiceCollection services) =>
