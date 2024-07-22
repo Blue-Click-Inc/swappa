@@ -35,5 +35,21 @@
 
             return msgBody;
         }
+
+        public static string GetInvoicePdf()
+        {
+            string body = string.Empty;
+            var folderName = Path.Combine("wwwroot", "PDF", "InvoicePdf.html");
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            if (File.Exists(filepath))
+                body = File.ReadAllText(filepath);
+            else
+                return body;
+
+            //var msgBody = body.Replace("{email_link}", emailLink).
+            //    Replace("{year}", DateTime.Now.Year.ToString());
+
+            return body;
+        }
     }
 }

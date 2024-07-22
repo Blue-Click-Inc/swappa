@@ -1,5 +1,7 @@
-﻿using Swappa.Client.Pages.Modals.Vehicle;
+﻿using Microsoft.JSInterop;
+using Swappa.Client.Pages.Modals.Vehicle;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Client.Pages.Vehicle
 {
@@ -15,6 +17,22 @@ namespace Swappa.Client.Pages.Vehicle
             await GetDataAsync();
             await base.OnInitializedAsync();
         }
+
+        private async Task ExportToExcel()
+        {
+            var response = await VehicleService.ExportToExcel();
+            if(response.IsNull() || !response.IsSuccessStatusCode)
+            {
+                Toast.ShowError("An error occurred while exporting the data. Please try again later.");
+            }
+            else
+            {
+                var fileStream = await response.Content.ReadAsStreamAsync();
+                using var streamRef = new DotNetStreamReference(stream: fileStream);
+                await JSRuntime.InvokeVoidAsync("downloadFileFromStream", $"Vehicle Data-{DateTime.UtcNow.Ticks}.xlsx", streamRef);
+            }
+        }
+
         private async Task ShowBulkVehicleUploadModal()
         {
             var confirmation = Modal.Show<BulkVehicleUploadModal>("");

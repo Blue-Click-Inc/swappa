@@ -60,13 +60,24 @@ namespace Swappa.Server.Controllers.V1
                 Id = id,
             }));
 
-        [HttpPost("export-data")]
+        [HttpGet("export-data")]
         [Authorize(Roles = "Admin, Merchant, SuperAdmin")]
         public async Task<IActionResult> DownloadVehicleData()
         {
             var stream = await service.Export.ExportVehicleDataToExcel();
             if(stream == null) return Unauthorized();
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Vehicle Report-{DateTime.UtcNow.Ticks}");
+        }
+
+        [HttpPost("pdf-test")]
+        public IActionResult PdfTest()
+        {
+            var bytes = service.Export.ExportToPdf();
+            if(bytes == null)
+            {
+                return BadRequest();
+            }
+            return File(bytes, "application/pdf", $"Invoice-{DateTime.UtcNow.Ticks}");
         }
     }
 }

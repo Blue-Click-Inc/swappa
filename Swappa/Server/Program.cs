@@ -1,3 +1,5 @@
+using DinkToPdf;
+using DinkToPdf.Contracts;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Mongo.Common.MongoDB;
@@ -19,6 +21,7 @@ builder.Services.ConfigureServices();
 builder.Services.ConfigureMailJet(builder.Configuration);
 builder.Services.ConfigureCloudinary(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 builder.Services.AddApiVersioning(opt =>
 {

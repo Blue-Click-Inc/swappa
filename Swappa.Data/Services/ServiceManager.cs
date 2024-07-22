@@ -1,4 +1,5 @@
-﻿using Mailjet.Client;
+﻿using DinkToPdf.Contracts;
+using Mailjet.Client;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,7 @@ namespace Swappa.Data.Services
         public ServiceManager(IConfiguration configuration, 
             IRepositoryManager repository, IHttpContextAccessor contextAccessor,
             UserManager<AppUser> userManager, IMailjetClient mailjetClient,
-            ApiResponseDto response)
+            ApiResponseDto response, IConverter converter)
         {
             _cloudinaryService = new Lazy<ICloudinaryService>(() =>
                 new CloudinaryService(configuration, repository));
@@ -31,7 +32,7 @@ namespace Swappa.Data.Services
             _toolService = new Lazy<IToolService>(() =>
                 new ToolService(repository));
             _exportService = new Lazy<IExportService>(() =>
-                new ExportService(repository));
+                new ExportService(repository, converter));
         }
 
         public ICloudinaryService Cloudinary => _cloudinaryService.Value;

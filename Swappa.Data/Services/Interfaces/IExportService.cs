@@ -2,6 +2,7 @@
 {
     public interface IExportService
     {
+        byte[] ExportToPdf();
         Task<Stream> ExportVehicleDataToExcel();
     }
 }

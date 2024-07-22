@@ -1,4 +1,6 @@
-﻿using OfficeOpenXml;
+﻿using DinkToPdf;
+using DinkToPdf.Contracts;
+using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Swappa.Data.Contracts;
 using Swappa.Data.Services.Interfaces;
@@ -12,10 +14,13 @@ namespace Swappa.Data.Services
     public class ExportService : IExportService
     {
         private readonly IRepositoryManager repository;
+        private readonly IConverter converter;
 
-        public ExportService(IRepositoryManager repository)
+        public ExportService(IRepositoryManager repository,
+            IConverter converter)
         {
             this.repository = repository;
+            this.converter = converter;
         }
 
         public async Task<Stream> ExportVehicleDataToExcel()
@@ -115,6 +120,21 @@ namespace Swappa.Data.Services
             return null!;
         }
 
+        public byte[] ExportToPdf()
+        {
+            var html = Statics.GetInvoicePdf();
+            if (!html.IsNotNullOrEmpty())
+            {
+                return null!;
+            }
+
+            var globalSettings = GetPdfSettings();
+            var objectSettings = GetPdfObjectSettings(html);
+            var document = GetPdfDocument(globalSettings, objectSettings);
+
+            return converter.Convert(document);
+        }
+
         private static Dictionary<string, string> GetTitleHeader()
         {
             return new Dictionary<string, string>
@@ -135,5 +155,45 @@ namespace Swappa.Data.Services
             };
         }
 
+        private GlobalSettings GetPdfSettings()
+        {
+            return new GlobalSettings
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Landscape,
+                PaperSize = PaperKind.A4,
+                ImageDPI = 500,
+                ImageQuality = 500,
+                Margins = new MarginSettings
+                {
+                    Top = 10,
+                    Bottom = 10,
+                    Left = 10,
+                    Right = 10
+                },
+                DocumentTitle = "Invoice"
+            };
+        }
+
+        private ObjectSettings GetPdfObjectSettings(string html)
+        {
+            return new ObjectSettings
+            {
+                PagesCount = true,
+                HtmlContent = html,
+                WebSettings = { DefaultEncoding = "utf-8" },
+                //HeaderSettings = { FontSize = 12, Right = "Page {page} of {toPage}", Line = true, Spacing = 2.812 },
+                FooterSettings = { FontSize = 12, Right = $"© {DateTime.Now.Year}" }
+            };
+        }
+
+        private HtmlToPdfDocument GetPdfDocument(GlobalSettings globalSettings, ObjectSettings objectSettings)
+        {
+            return new HtmlToPdfDocument
+            {
+                GlobalSettings = globalSettings,
+                Objects = { objectSettings }
+            };
+        }
     }
 }

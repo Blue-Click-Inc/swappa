@@ -19,5 +19,11 @@ namespace Swappa.Client.Services.Implementations
             var response = await httpClient.GetAsync($"vehicle");
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<VehicleToReturnDto>>>(response);
         }
+
+        public async Task<HttpResponseMessage?> ExportToExcel()
+        {
+            var response = await httpClient.GetAsync("vehicle/export-data");
+            return response;
+        }
     }
 }
