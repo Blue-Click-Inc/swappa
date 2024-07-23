@@ -122,7 +122,19 @@ namespace Swappa.Data.Services
 
         public byte[] ExportToPdf()
         {
-            var html = Statics.GetInvoicePdf();
+            var details = new TestDetailsClass
+            {
+                Type = "Credit",
+                DateInitiated = DateTime.UtcNow,
+                CustomerName = "Ojo Toba Rufus",
+                BankName = "UBA Plc",
+                SenderName = "Cavista Holdings",
+                Amount = 1234567,
+                Reference = Guid.NewGuid().ToString().ToUpper().Replace("-", ""),
+                Naration = "August 2024 Salary"
+            };
+
+            var html = Statics.GetInvoicePdf(details);
             if (!html.IsNotNullOrEmpty())
             {
                 return null!;

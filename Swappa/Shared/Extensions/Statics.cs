@@ -1,4 +1,6 @@
-﻿namespace Swappa.Shared.Extensions
+﻿using Swappa.Entities.Models;
+
+namespace Swappa.Shared.Extensions
 {
     public static class Statics
     {
@@ -36,7 +38,7 @@
             return msgBody;
         }
 
-        public static string GetInvoicePdf()
+        public static string GetInvoicePdf(TestDetailsClass details)
         {
             string body = string.Empty;
             var folderName = Path.Combine("wwwroot", "PDF", "InvoicePdf.html");
@@ -46,8 +48,16 @@
             else
                 return body;
 
-            //var msgBody = body.Replace("{email_link}", emailLink).
-            //    Replace("{year}", DateTime.Now.Year.ToString());
+            body = body
+                .Replace("{amount}", $"{details.Amount:#,##0.00}")
+                .Replace("{date_initiated}", $"{details.DateInitiated:M}, {details.DateInitiated.Year}")
+                .Replace("{time_initiated}", $"{details.DateInitiated:t}")
+                .Replace("{reference_number}", details.Reference)
+                .Replace("{sender_name}", details.SenderName)
+                .Replace("{bank_name}", details.BankName)
+                .Replace("{naration}", details.Naration)
+                .Replace("{customer_name}", details.CustomerName)
+                .Replace("{trans_type}", details.Type);
 
             return body;
         }
