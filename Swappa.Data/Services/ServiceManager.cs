@@ -32,7 +32,7 @@ namespace Swappa.Data.Services
             _toolService = new Lazy<IToolService>(() =>
                 new ToolService(repository));
             _exportService = new Lazy<IExportService>(() =>
-                new ExportService(repository, converter));
+                new ExportService(repository, converter, userManager));
         }
 
         public ICloudinaryService Cloudinary => _cloudinaryService.Value;

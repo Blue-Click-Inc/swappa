@@ -69,6 +69,24 @@ namespace Swappa.Server.Controllers.V1
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Vehicle Report-{DateTime.UtcNow.Ticks}");
         }
 
+        [HttpPost("report/export-pdf")]
+        [Authorize(Roles = "Merchant, Admin, SuperAdmin")]
+        public async Task<IActionResult> DownloadReport([FromQuery] DateRangeDto query)
+        {
+            if(query == null || !query.IsValid)
+            {
+                return BadRequest("Invalid date range");
+            }
+
+            var bytes = await service.Export.VehiclesDetailsReport(query);
+            if (bytes == null)
+            {
+                return BadRequest();
+            }
+
+            return File(bytes, "application/pdf", $"Vehicle_Report-{DateTime.UtcNow.Ticks}");
+        }
+
         [HttpPost("pdf-test")]
         public IActionResult PdfTest()
         {

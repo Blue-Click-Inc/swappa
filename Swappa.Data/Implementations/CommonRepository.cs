@@ -22,6 +22,13 @@ namespace Swappa.Data.Implementations
 
         public string GetLoggedInUserId() => GetUserId();
 
+        public Guid GetUserIdAsGuid()
+        {
+            var userId = GetUserId();
+            Guid.TryParse(userId, out var @guid);
+            return @guid;
+        }
+
         public async Task<List<SystemRole>> GetUserRoles()
         {
             var userId = GetUserId();

@@ -1,11 +1,13 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
+using Microsoft.AspNetCore.Identity;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Swappa.Data.Contracts;
 using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
+using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
 using System.Drawing;
 
@@ -15,12 +17,14 @@ namespace Swappa.Data.Services
     {
         private readonly IRepositoryManager repository;
         private readonly IConverter converter;
+        private readonly UserManager<AppUser> userManager;
 
         public ExportService(IRepositoryManager repository,
-            IConverter converter)
+            IConverter converter, UserManager<AppUser> userManager)
         {
             this.repository = repository;
             this.converter = converter;
+            this.userManager = userManager;
         }
 
         public async Task<Stream> ExportVehicleDataToExcel()
@@ -36,7 +40,8 @@ namespace Swappa.Data.Services
 
                 if (userRoles.Contains(SystemRole.Merchant))
                 {
-                    vehicleQuery = vehicleQuery.Where(v => !v.IsDeprecated);
+                    var userIdGuid = Guid.Parse(userId.ToString());
+                    vehicleQuery = vehicleQuery.Where(v => !v.UserId.Equals(userIdGuid));
                 }
 
                 vehicles = await Task.Run(() => vehicleQuery.ToList());
@@ -146,6 +151,63 @@ namespace Swappa.Data.Services
 
             return converter.Convert(document);
         }
+
+        public async Task<byte[]> VehiclesDetailsReport(DateRangeDto dateQuery)
+        {
+            var userId = repository.Common.GetUserIdAsGuid();
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            if(user == null)
+            {
+                return null!;
+            }
+
+            var vehicles = await Task.Run(() => repository.Vehicle.FindAsQueryable(v => !v.IsDeprecated &&
+                v.UserId.Equals(userId) && 
+                userId.IsNotEmpty() &&
+                v.CreatedAt >= dateQuery.StartDate.Date && 
+                v.CreatedAt.Date <= dateQuery.EndDate.ToEndOfDay()).ToList());
+
+            if (vehicles.IsNotNullOrEmpty())
+            {
+                var groupedByEngine = vehicles.GroupBy(g => g.Engine).ToDictionary(k => k.Key, v => v.Count());
+                var groupedByTransmission = vehicles.GroupBy(g => g.Transmission).ToDictionary(k => k.Key, v => v.Count());
+                var groupedByDriveTrain = vehicles.GroupBy(g => g.DriveTrain).ToDictionary(k => k.Key, v => v.Count());
+                var totalPrice = vehicles.Sum(v => v.Price);
+                var lowestPrice = vehicles.Min(v => v.Price);
+                var highestPrice = vehicles.Max(v => v.Price);
+                var averagePrice = vehicles.Average(v => v.Price);
+                var totalNumOfVehicles = vehicles.Count;
+
+                var details = new VehiclesReportDto
+                {
+                    AveragePrice = averagePrice,
+                    LowestPriced = lowestPrice,
+                    HighestPrice = highestPrice,
+                    TotalPrice = totalPrice,
+                    NumOfVehicles = totalNumOfVehicles,
+                    MerchantName = user.Name,
+                    FromDate = dateQuery.StartDate,
+                    ToDate = dateQuery.EndDate,
+                    DriveTrain = groupedByDriveTrain,
+                    Engine = groupedByEngine,
+                    Transmission = groupedByTransmission
+                };
+                var html = Statics.GetVehicleReportPdf(details);
+                if (!html.IsNotNullOrEmpty())
+                {
+                    return null!;
+                }
+
+                var globalSettings = GetPdfSettings();
+                var objectSettings = GetPdfObjectSettings(html);
+                var document = GetPdfDocument(globalSettings, objectSettings);
+
+                return converter.Convert(document);
+            }
+
+            return null!;
+        }
+
 
         private static Dictionary<string, string> GetTitleHeader()
         {

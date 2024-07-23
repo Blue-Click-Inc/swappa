@@ -10,7 +10,7 @@ namespace Swappa.Entities.Models
     {
         public Guid Id { get; set; }
         [Required]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         [Required]
         public string Make { get; set; }
         [Required]

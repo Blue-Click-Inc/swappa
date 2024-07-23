@@ -2,6 +2,7 @@
 using MediatR;
 using OfficeOpenXml;
 using Swappa.Data.Contracts;
+using Swappa.Data.Services;
 using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Enums;
 using Swappa.Entities.Models;
@@ -17,17 +18,21 @@ namespace Swappa.Server.Handlers.Tools
         private const int MAX_SIZE = 5242880;
         private readonly ApiResponseDto response;
         private readonly IRepositoryManager repository;
+        private readonly IServiceManager serviceManager;
 
-        public UploadBulkVehicleCommandHandler(ApiResponseDto response, IRepositoryManager repository)
+        public UploadBulkVehicleCommandHandler(ApiResponseDto response, 
+            IRepositoryManager repository, IServiceManager serviceManager)
         {
             this.response = response;
             this.repository = repository;
+            this.serviceManager = serviceManager;
         }
 
         public async Task<ResponseModel<string>> Handle(UploadBulkVehicleCommand request, CancellationToken cancellationToken)
         {
             if(request.IsNotNull() && request.File.IsNotNull() && request.File.Length > 0)
             {
+                Guid.TryParse(repository.Common.GetLoggedInUserId(), out var userId);
                 using var stream = new MemoryStream(MAX_SIZE);
                 await request.File.CopyToAsync(stream, cancellationToken);
                 stream.Position = 0;
@@ -46,6 +51,7 @@ namespace Swappa.Server.Handlers.Tools
                         var vehicle = new Vehicle
                         {
                             Make = worksheet.Cells[row, 2]?.Value?.ToString() ?? string.Empty,
+                            UserId = userId,
                             Model = worksheet.Cells[row, 3]?.Value?.ToString() ?? string.Empty,
                             Year = int.TryParse(worksheet.Cells[row, 4]?.Value?.ToString(), out int year) ? year : DateTime.Now.Year,
                             Trim = worksheet.Cells[row, 5]?.Value?.ToString() ?? string.Empty,
@@ -71,8 +77,7 @@ namespace Swappa.Server.Handlers.Tools
                         vehicles.Add(vehicle);
                     }
 
-                    Guid.TryParse(repository.Common.GetLoggedInUserId(), out var userId);
-                    BackgroundJob.Enqueue<IToolService>(_ => _.VehicleBulkUpload(vehicles, images, userId, null!));
+                    BackgroundJob.Enqueue<ToolService>(_ => _.VehicleBulkUpload(vehicles, images, userId, null!));
                     return response.Process<string>(new ApiOkResponse<string>($"Job to add {vehicles.Count} vehicle records started!"));
                 }
 
