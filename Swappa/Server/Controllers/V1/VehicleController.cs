@@ -60,7 +60,7 @@ namespace Swappa.Server.Controllers.V1
                 Id = id,
             }));
 
-        [HttpGet("export-data")]
+        [HttpGet("export-to-excel")]
         [Authorize(Roles = "Admin, Merchant, SuperAdmin")]
         public async Task<IActionResult> DownloadVehicleData()
         {
@@ -69,7 +69,7 @@ namespace Swappa.Server.Controllers.V1
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"Vehicle Report-{DateTime.UtcNow.Ticks}");
         }
 
-        [HttpPost("report/export-pdf")]
+        [HttpGet("print-pdf")]
         [Authorize(Roles = "Merchant, Admin, SuperAdmin")]
         public async Task<IActionResult> DownloadReport([FromQuery] DateRangeDto query)
         {

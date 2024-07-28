@@ -33,6 +33,21 @@ namespace Swappa.Client.Pages.Vehicle
             }
         }
 
+        private async Task PrintPDF()
+        {
+            var response = await VehicleService.PrintPDF();
+            if (response.IsNull() || !response.IsSuccessStatusCode)
+            {
+                Toast.ShowError("An error occurred while exporting the data. Please try again later.");
+            }
+            else
+            {
+                var fileStream = await response.Content.ReadAsStreamAsync();
+                using var streamRef = new DotNetStreamReference(stream: fileStream);
+                await JSRuntime.InvokeVoidAsync("downloadFileFromStream", $"Vehicle_PDF_Report-{DateTime.UtcNow.Ticks}.pdf", streamRef);
+            }
+        }
+
         private async Task ShowBulkVehicleUploadModal()
         {
             var confirmation = Modal.Show<BulkVehicleUploadModal>("");

@@ -234,7 +234,7 @@ namespace Swappa.Data.Services
                 PagesCount = true,
                 HtmlContent = html,
                 WebSettings = { DefaultEncoding = "utf-8" },
-                FooterSettings = { FontSize = 8, Right = $"© {DateTime.UtcNow.Year}. All rights reserved. {merchantName}. ®" }
+                FooterSettings = { FontSize = 8, Right = $"© {DateTime.UtcNow.Year}. All rights reserved. {merchantName} ®." }
             };
         }
 

@@ -6,5 +6,6 @@ namespace Swappa.Client.Services.Interfaces
     {
         Task<HttpResponseMessage?> ExportToExcel();
         Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>?> GetDataAsync(VehicleQueryDto query);
+        Task<HttpResponseMessage?> PrintPDF();
     }
 }

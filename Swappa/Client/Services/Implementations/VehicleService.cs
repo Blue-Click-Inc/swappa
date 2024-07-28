@@ -22,7 +22,13 @@ namespace Swappa.Client.Services.Implementations
 
         public async Task<HttpResponseMessage?> ExportToExcel()
         {
-            var response = await httpClient.GetAsync("vehicle/export-data");
+            var response = await httpClient.GetAsync("vehicle/export-to-excel");
+            return response;
+        }
+
+        public async Task<HttpResponseMessage?> PrintPDF()
+        {
+            var response = await httpClient.GetAsync("vehicle/print-pdf");
             return response;
         }
     }
