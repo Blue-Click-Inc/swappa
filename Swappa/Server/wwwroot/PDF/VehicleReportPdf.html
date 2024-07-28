@@ -1,42 +1,88 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Report PDF</title>
-    </head>
-    <body style="width: 100%">
-        <img class="m_-8650771922725223159center m_-8650771922725223159fullwidth CToWUd" style="outline:none;text-decoration:none;clear:both;display:block;border:0;height:auto;line-height:100%;margin:0 auto;float:right;max-height:80px" align="right" border="0" alt="Image" src="https://res.cloudinary.com/enigmatr/image/upload/v1642992551/29052021-01_generated_qvcfmi.jpg" title="Image" />
-        <div style="border: 1px solid #ddd;margin-left: auto;margin-right: auto;margin-top: 2rem;clear: right;">
-            <h4 style="margin-bottom: 0;margin-top: 2rem;font-weight: bolder;font-size: larger;text-align: center;margin-left: auto;margin-right: auto;">{{merchant_name}} Inventory Summary</h4>
-            <hr style="margin-top: 0;border: 1px solid black;width: 25%;" />
-            <table style="font-family: Verdana, Geneva, Tahoma, sans-serif;border-collapse: collapse;width: 100%;">
-                <tr>
-                    <td style="text-align: left;padding: 16px;font-weight: bolder;">Date Range:</td>
-                    <td style="text-align: right;padding: 16px;font-weight: lighter;">{{date_range}}</td>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+    </style>
+</head>
+<body style="margin: 0;padding: 0.5cm 1cm;color: black;font-family: Verdana, Geneva, Tahoma, sans-serif;font-size: 10pt;">
+    <header style="color: white;height: 8cm;padding: 0 .5cm;background-color: rgb(4, 4, 47);">
+        <table style="width: 100%;">
+            <tr>
+                <td>
+                    <table>
+                        <tr style="padding-top: .3cm;">
+                            <td>
+                                <svg style="width: 1.5cm;height: 1.5cm;margin-right: .3cm;">
+                                    <circle cx="50%" cy="50%" r="40%" stroke="black" stroke-width="3" fill="white" />
+                                </svg>
+                            </td>
+                            <td>
+                                <h1>{{merchant_name}}</h1>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="padding-bottom: .3cm;width: 35%;padding-top: .5cm;">
+                    <h2 style="text-transform:uppercase;">Inventory Report</h2>
+                    <p style="margin-top:2px;">
+                        <b>Period:</b> {{date_range_string}}
+                    </p>
+                    <!-- <p style="margin-top:2px;">
+                      <b>Project No.</b> 01
+                    </p> -->
+                </td>
+            </tr>
+        </table>
+        <hr style="border: 0;border-top: 1mm solid white;height: 0;" />
+        <div style="display: flex;justify-content: space-between;">
+            <table>
+                <tr style="padding-top: .3cm;">
+                    <td style="text-align:start;margin-top: 2px;vertical-align: top;">
+                        <h3 style="text-align: justify;margin: 0 .40cm 0 0;color: white;text-transform:uppercase;">Address</h3>
+                    </td>
+                    <td>
+                        <p style="margin-top:2px;">
+                            <b>{{merchant_name}}</b>
+                            <br />
+                            {{address_city_state}}
+                            <br />
+                            {{country_dot_postal_code}}
+                            <br />
+                            <a href="mailto:{{email_address}}" style="color: inherit;text-decoration: none;">
+                                {{email_address}}
+                            </a>
+                            <br />
+                            <a href="tel:{{phone_number}}" style="color: inherit;text-decoration: none;">{{phone_number}}</a>
+                            <br />
+                        </p>
+                    </td>
                 </tr>
-                <tr>
-                    <td style="text-align: left;padding: 16px;font-weight: bolder;">Number of Vehicles:</td>
-                    <td style="text-align: right;padding: 16px;font-weight: lighter;">{{number_of_vehicles}}</td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;padding: 16px;font-weight: bolder;">Valued At:</td>
-                    <td style="text-align: right;padding: 16px;font-weight: lighter;">{{total_amount}}</td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;padding: 16px;font-weight: bolder;">Highest Price:</td>
-                    <td style="text-align: right;padding: 16px;font-weight: lighter;">{{highest_price}}</td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;padding: 16px;font-weight: bolder;">Lowest Price:</td>
-                    <td style="text-align: right;padding: 16px;font-weight: lighter;">{{lowest_price}}</td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;padding: 16px;font-weight: bolder;">Average Price:</td>
-                    <td style="text-align: right;padding: 16px;font-weight: lighter;">{{average_price}}</td>
-                </tr>
+                <tr style="width: 35%;"></tr>
             </table>
-            {{additional_information}}
         </div>
-    </body>
+    </header>
+    <main>
+        <table style="width: 100%;border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="height: 1cm;color: white;text-align:left;">Item Description</th>
+                    <th style="height: 1cm;color: white;width: 2.5cm;text-align:left;">Amount</th>
+                    <th style="height: 1cm;color: black;width: 2.5cm;text-align: right;">Total(NGN)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="padding: 2mm 0;border-bottom: .5mm solid #BFC0C3;"><b>Numbers of Items and Price</b><br /></td>
+                    <td style="padding: 2mm 0;border-bottom: .5mm solid #BFC0C3;"><b>{{total_number_of_items}}</b></td>
+                    <td style="padding: 2mm 0;border-bottom: .5mm solid #BFC0C3;text-align: right;"><b>{{total_price_of_items}}</b></td>
+                </tr>
+            </tbody>
+        </table>
+        {{categorized_details}}
+    </main>
+</body>
 </html>

@@ -65,6 +65,19 @@ namespace Swappa.Shared.Extensions
             return body;
         }
 
+        public static string TestPDF(VehiclesReportDto details)
+        {
+            string body = string.Empty;
+            var folderName = Path.Combine("wwwroot", "PDF", "VehicleDataPDF.html");
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            if (File.Exists(filepath))
+                body = File.ReadAllText(filepath);
+            else
+                return body;
+
+            return body;
+        }
+
         public static string GetVehicleReportPdf(VehiclesReportDto details)
         {
             string body = string.Empty;
@@ -78,13 +91,14 @@ namespace Swappa.Shared.Extensions
             var sb = new StringBuilder();
             var contentSb = new StringBuilder();
             body = body
-                .Replace("{{total_amount}}", $"NGN{details.TotalPrice:#,##0.00}")
-                .Replace("{{date_range}}", $"{details.FromDate:M}, {details.FromDate.Year} - {details.ToDate:M}, {details.ToDate.Year}")
+                .Replace("{{total_price_of_items}}", $"{details.TotalPrice:#,##0.00}")
+                .Replace("{{date_range_string}}", $"{details.FromDate.ToDateStringFormat()} - {details.ToDate.ToDateStringFormat()}")
                 .Replace("{{merchant_name}}", $"{details.MerchantName}")
-                .Replace("{{number_of_vehicles}}", $"{details.NumOfVehicles:#,##}")
-                .Replace("{{average_price}}", $"NGN{details.AveragePrice:#,##0.00}")
-                .Replace("{{lowest_price}}", $"NGN{details.LowestPriced:#,##0.00}")
-                .Replace("{{highest_price}}", $"NGN{details.HighestPrice:#,##0.00}");
+                .Replace("{{total_number_of_items}}", $"{details.NumOfVehicles:#,##}")
+                .Replace("{{address_city_state}}", $"{details.Contact.City}, {details.Contact.State}")
+                .Replace("{{country_dot_postal_code}}", $"{details.Contact.Country}. {details.Contact.PostalCode}")
+                .Replace("{{email_address}}", details.Contact.Email)
+                .Replace("{{phone_number}}", details.Contact.PhoneNumber);
 
             contentSb.Append(GetTransmissionSection(details.Transmission))
                 .AppendLine()
@@ -94,17 +108,17 @@ namespace Swappa.Shared.Extensions
 
             sb.Append(body)
                 .AppendLine()
-                .Replace("{{additional_information}}", contentSb.ToString());
+                .Replace("{{categorized_details}}", contentSb.ToString());
 
             return sb.ToString();
         }
 
-        public static string GetEngineSection(Dictionary<Engine, int> keyValuePairs)
+        public static string GetEngineSection(Dictionary<Engine, List<Vehicle>> keyValuePairs)
         {
             string tableBody = string.Empty;
-            if (keyValuePairs.IsNotNullOrEmpty() && keyValuePairs.Any(x => x.Value > 0))
+            if (keyValuePairs.IsNotNullOrEmpty())
             {
-                var folderName = Path.Combine("wwwroot", "PDF", "Subs", "VehicleTable.html");
+                var folderName = Path.Combine("wwwroot", "PDF", "Subs", "CategorizedVehicleReportDetails.html");
                 var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (File.Exists(filepath))
                     tableBody = File.ReadAllText(filepath);
@@ -112,22 +126,22 @@ namespace Swappa.Shared.Extensions
                     return tableBody;
 
                 tableBody = tableBody
-                    .Replace("{{headings}}", "Details By Engine Types")
-                    .Replace("{{table_contents}}", GetEngineContents(keyValuePairs));
+                    .Replace("{{category_header_title}}", "Details By Engine Types")
+                    .Replace("{{category_item_list}}", GetEngineContents(keyValuePairs));
             }
             
             return tableBody;
         }
 
-        public static string GetEngineContents(Dictionary<Engine, int> keyValuePairs)
+        public static string GetEngineContents(Dictionary<Engine, List<Vehicle>> keyValuePairs)
         {
             var sb = new StringBuilder();
             var content = string.Empty;
             foreach (var pair in keyValuePairs)
             {
-                if(pair.Value > 0)
+                if(pair.Value.IsNotNullOrEmpty())
                 {
-                    var folderName = Path.Combine("wwwroot", "PDF", "Subs", "VehicleTableData.html");
+                    var folderName = Path.Combine("wwwroot", "PDF", "Subs", "CategorizedVehicleReportItem.html");
                     var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                     if (File.Exists(filepath))
                         content = File.ReadAllText(filepath);
@@ -135,8 +149,9 @@ namespace Swappa.Shared.Extensions
                         return content;
 
                     sb.Append(content)
-                        .Replace("{{title_text}}", pair.Key.GetDescription())
-                        .Replace("{{total_numbers}}", $"{pair.Value:#,##}")
+                        .Replace("{{category_item_title}}", pair.Key.GetDescription())
+                        .Replace("{{category_item_count}}", $"{pair.Value.Count:#,##}")
+                        .Replace("{{category_item_total_price}}", $"{pair.Value.Sum(_ => _.Price):#,##0.00}")
                         .AppendLine();
                 }
             }
@@ -144,12 +159,12 @@ namespace Swappa.Shared.Extensions
             return sb.ToString();
         }
 
-        public static string GetDriveTrainSection(Dictionary<DriveTrain, int> keyValuePairs)
+        public static string GetDriveTrainSection(Dictionary<DriveTrain, List<Vehicle>> keyValuePairs)
         {
             string tableBody = string.Empty;
-            if (keyValuePairs.IsNotNullOrEmpty() && keyValuePairs.Any(x => x.Value > 0))
+            if (keyValuePairs.IsNotNullOrEmpty())
             {
-                var folderName = Path.Combine("wwwroot", "PDF", "Subs", "VehicleTable.html");
+                var folderName = Path.Combine("wwwroot", "PDF", "Subs", "CategorizedVehicleReportDetails.html");
                 var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (File.Exists(filepath))
                     tableBody = File.ReadAllText(filepath);
@@ -157,22 +172,22 @@ namespace Swappa.Shared.Extensions
                     return tableBody;
 
                 tableBody = tableBody
-                    .Replace("{{headings}}", "Details By Drive Trains")
-                    .Replace("{{table_contents}}", GetDriveTrainContents(keyValuePairs));
+                    .Replace("{{category_header_title}}", "Details By Drive Trains")
+                    .Replace("{{category_item_list}}", GetDriveTrainContents(keyValuePairs));
             }
 
             return tableBody;
         }
 
-        public static string GetDriveTrainContents(Dictionary<DriveTrain, int> keyValuePairs)
+        public static string GetDriveTrainContents(Dictionary<DriveTrain, List<Vehicle>> keyValuePairs)
         {
             var sb = new StringBuilder();
             var content = string.Empty;
             foreach (var pair in keyValuePairs)
             {
-                if (pair.Value > 0)
+                if (pair.Value.IsNotNullOrEmpty())
                 {
-                    var folderName = Path.Combine("wwwroot", "PDF", "Subs", "VehicleTableData.html");
+                    var folderName = Path.Combine("wwwroot", "PDF", "Subs", "CategorizedVehicleReportItem.html");
                     var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                     if (File.Exists(filepath))
                         content = File.ReadAllText(filepath);
@@ -180,8 +195,9 @@ namespace Swappa.Shared.Extensions
                         return content;
 
                     sb.Append(content)
-                        .Replace("{{title_text}}", pair.Key.GetDescription())
-                        .Replace("{{total_numbers}}", $"{pair.Value:#,##}")
+                        .Replace("{{category_item_title}}", pair.Key.GetDescription())
+                        .Replace("{{category_item_count}}", $"{pair.Value.Count:#,##}")
+                        .Replace("{{category_item_total_price}}", $"{pair.Value.Sum(_ => _.Price):#,##0.00}")
                         .AppendLine();
                 }
             }
@@ -189,12 +205,12 @@ namespace Swappa.Shared.Extensions
             return sb.ToString();
         }
 
-        public static string GetTransmissionSection(Dictionary<Transmission, int> keyValuePairs)
+        public static string GetTransmissionSection(Dictionary<Transmission, List<Vehicle>> keyValuePairs)
         {
             string tableBody = string.Empty;
-            if (keyValuePairs.IsNotNullOrEmpty() && keyValuePairs.Any(x => x.Value > 0))
+            if (keyValuePairs.IsNotNullOrEmpty())
             {
-                var folderName = Path.Combine("wwwroot", "PDF", "Subs", "VehicleTable.html");
+                var folderName = Path.Combine("wwwroot", "PDF", "Subs", "CategorizedVehicleReportDetails.html");
                 var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (File.Exists(filepath))
                     tableBody = File.ReadAllText(filepath);
@@ -202,22 +218,22 @@ namespace Swappa.Shared.Extensions
                     return tableBody;
 
                 tableBody = tableBody
-                    .Replace("{{headings}}", "Details By Transmission Types")
-                    .Replace("{{table_contents}}", GetTransmissionContents(keyValuePairs));
+                    .Replace("{{category_header_title}}", "Details By Transmission Types")
+                    .Replace("{{category_item_list}}", GetTransmissionContents(keyValuePairs));
             }
 
             return tableBody;
         }
 
-        public static string GetTransmissionContents(Dictionary<Transmission, int> keyValuePairs)
+        public static string GetTransmissionContents(Dictionary<Transmission, List<Vehicle>> keyValuePairs)
         {
             var sb = new StringBuilder();
             var content = string.Empty;
             foreach (var pair in keyValuePairs)
             {
-                if (pair.Value > 0)
+                if (pair.Value.IsNotNullOrEmpty())
                 {
-                    var folderName = Path.Combine("wwwroot", "PDF", "Subs", "VehicleTableData.html");
+                    var folderName = Path.Combine("wwwroot", "PDF", "Subs", "CategorizedVehicleReportItem.html");
                     var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                     if (File.Exists(filepath))
                         content = File.ReadAllText(filepath);
@@ -225,8 +241,9 @@ namespace Swappa.Shared.Extensions
                         return content;
 
                     sb.Append(content)
-                        .Replace("{{title_text}}", pair.Key.GetDescription())
-                        .Replace("{{total_numbers}}", $"{pair.Value:#,##}")
+                        .Replace("{{category_item_title}}", pair.Key.GetDescription())
+                        .Replace("{{category_item_count}}", $"{pair.Value.Count:#,##}")
+                        .Replace("{{category_item_total_price}}", $"{pair.Value.Sum(_ => _.Price):#,##0.00}")
                         .AppendLine();
                 }
             }

@@ -125,33 +125,6 @@ namespace Swappa.Data.Services
             return null!;
         }
 
-        public byte[] ExportToPdf()
-        {
-            var details = new TestDetailsClass
-            {
-                Type = "Credit",
-                DateInitiated = DateTime.UtcNow,
-                CustomerName = "Ojo Toba Rufus",
-                BankName = "UBA Plc",
-                SenderName = "Cavista Holdings",
-                Amount = 1234567,
-                Reference = Guid.NewGuid().ToString().ToUpper().Replace("-", ""),
-                Naration = "August 2024 Salary"
-            };
-
-            var html = Statics.GetInvoicePdf(details);
-            if (!html.IsNotNullOrEmpty())
-            {
-                return null!;
-            }
-
-            var globalSettings = GetPdfSettings();
-            var objectSettings = GetPdfObjectSettings(html);
-            var document = GetPdfDocument(globalSettings, objectSettings);
-
-            return converter.Convert(document);
-        }
-
         public async Task<byte[]> VehiclesDetailsReport(DateRangeDto dateQuery)
         {
             var userId = repository.Common.GetUserIdAsGuid();
@@ -167,22 +140,18 @@ namespace Swappa.Data.Services
                 v.CreatedAt >= dateQuery.StartDate.Date && 
                 v.CreatedAt.Date <= dateQuery.EndDate.ToEndOfDay()).ToList());
 
+            var location = await repository.Location.FindOneAsync(l => l.EntityId == userId) ?? new EntityLocation();
+
             if (vehicles.IsNotNullOrEmpty())
             {
-                var groupedByEngine = vehicles.GroupBy(g => g.Engine).ToDictionary(k => k.Key, v => v.Count());
-                var groupedByTransmission = vehicles.GroupBy(g => g.Transmission).ToDictionary(k => k.Key, v => v.Count());
-                var groupedByDriveTrain = vehicles.GroupBy(g => g.DriveTrain).ToDictionary(k => k.Key, v => v.Count());
+                var groupedByEngine = vehicles.GroupBy(g => g.Engine).ToDictionary(k => k.Key, v => v.ToList());
+                var groupedByTransmission = vehicles.GroupBy(g => g.Transmission).ToDictionary(k => k.Key, v => v.ToList());
+                var groupedByDriveTrain = vehicles.GroupBy(g => g.DriveTrain).ToDictionary(k => k.Key, v => v.ToList());
                 var totalPrice = vehicles.Sum(v => v.Price);
-                var lowestPrice = vehicles.Min(v => v.Price);
-                var highestPrice = vehicles.Max(v => v.Price);
-                var averagePrice = vehicles.Average(v => v.Price);
                 var totalNumOfVehicles = vehicles.Count;
 
                 var details = new VehiclesReportDto
                 {
-                    AveragePrice = averagePrice,
-                    LowestPriced = lowestPrice,
-                    HighestPrice = highestPrice,
                     TotalPrice = totalPrice,
                     NumOfVehicles = totalNumOfVehicles,
                     MerchantName = user.Name,
@@ -190,7 +159,16 @@ namespace Swappa.Data.Services
                     ToDate = dateQuery.EndDate,
                     DriveTrain = groupedByDriveTrain,
                     Engine = groupedByEngine,
-                    Transmission = groupedByTransmission
+                    Transmission = groupedByTransmission,
+                    Contact = new VehicleReportContactDetails
+                    {
+                        City = location.City,
+                        Country = location.Country,
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber,
+                        PostalCode = location.PostalCode,
+                        State = location.State
+                    }
                 };
                 var html = Statics.GetVehicleReportPdf(details);
                 if (!html.IsNotNullOrEmpty())
@@ -199,7 +177,7 @@ namespace Swappa.Data.Services
                 }
 
                 var globalSettings = GetPdfSettings();
-                var objectSettings = GetPdfObjectSettings(html);
+                var objectSettings = GetPdfObjectSettings(html, user.Name);
                 var document = GetPdfDocument(globalSettings, objectSettings);
 
                 return converter.Convert(document);
@@ -249,15 +227,14 @@ namespace Swappa.Data.Services
             };
         }
 
-        private ObjectSettings GetPdfObjectSettings(string html)
+        private ObjectSettings GetPdfObjectSettings(string html, string merchantName)
         {
             return new ObjectSettings
             {
                 PagesCount = true,
                 HtmlContent = html,
                 WebSettings = { DefaultEncoding = "utf-8" },
-                //HeaderSettings = { FontSize = 12, Right = "Page {page} of {toPage}", Line = true, Spacing = 2.812 },
-                FooterSettings = { FontSize = 12, Right = $"© {DateTime.Now.Year}" }
+                FooterSettings = { FontSize = 8, Right = $"© {DateTime.UtcNow.Year}. All rights reserved. {merchantName}. ®" }
             };
         }
 

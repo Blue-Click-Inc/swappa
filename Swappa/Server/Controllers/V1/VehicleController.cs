@@ -86,16 +86,5 @@ namespace Swappa.Server.Controllers.V1
 
             return File(bytes, "application/pdf", $"Vehicle_Report-{DateTime.UtcNow.Ticks}");
         }
-
-        [HttpPost("pdf-test")]
-        public IActionResult PdfTest()
-        {
-            var bytes = service.Export.ExportToPdf();
-            if(bytes == null)
-            {
-                return BadRequest();
-            }
-            return File(bytes, "application/pdf", $"Invoice-{DateTime.UtcNow.Ticks}");
-        }
     }
 }

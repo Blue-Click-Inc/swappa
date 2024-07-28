@@ -40,6 +40,22 @@
             return "N/A";
         }
 
+        /// <summary>
+        /// Returns date in MMM d, yyyy format: Jun 7, 2000.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static string ToDateStringFormat(this DateTime target)
+        {
+            var date = target <= MinDate ? 
+                DateTime.UtcNow.AddYears(-1) : 
+                target >= MaxDate ? 
+                DateTime.UtcNow : 
+                target;
+
+            return $"{date:MMM} {date:dd}, {date:yyyy}";
+        }
+
         public static DateTime ToEndOfDay(this DateTime target) =>
             new DateTime(target.Year, target.Month, target.Day, 23, 59, 59, 0);
 
