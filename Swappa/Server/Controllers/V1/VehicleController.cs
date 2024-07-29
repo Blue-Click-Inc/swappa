@@ -86,5 +86,10 @@ namespace Swappa.Server.Controllers.V1
 
             return File(bytes, "application/pdf", $"Vehicle_Report-{DateTime.UtcNow.Ticks}");
         }
+
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> FeedbackDashboard() =>
+            Ok(await _mediator.Send(new VehicleDashboardQuery()));
     }
 }

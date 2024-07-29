@@ -31,5 +31,11 @@ namespace Swappa.Client.Services.Implementations
             var response = await httpClient.GetAsync("vehicle/print-pdf");
             return response;
         }
+
+        public async Task<ResponseModel<VehicleDashboardDto>?> GetDashboard()
+        {
+            var response = await httpClient.GetAsync("vehicle/dashboard");
+            return await httpInterceptor.Process<ResponseModel<VehicleDashboardDto>>(response);
+        }
     }
 }

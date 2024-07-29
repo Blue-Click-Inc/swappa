@@ -3,9 +3,7 @@
 <PageTitle>@pageTitle</PageTitle>
 <div class="container">
   <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
-        <a class="px-1" style="cursor: pointer;" @onclick="@(async () => await SharedService.GoBackAsync())">
-            <span class="oi oi-arrow-left" aria-hidden="true"></span>
-        </a>
+        <BackButton></BackButton>
         @if(isLoading)
         {
             <div class="text-center align-self-center top-50 m-auto">
