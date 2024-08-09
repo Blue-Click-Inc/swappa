@@ -3,6 +3,8 @@ using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Identity;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using PdfSharpCore;
+using PdfSharpCore.Pdf;
 using Swappa.Data.Contracts;
 using Swappa.Data.Services.Interfaces;
 using Swappa.Entities.Enums;
@@ -10,11 +12,13 @@ using Swappa.Entities.Models;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
 using System.Drawing;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace Swappa.Data.Services
 {
     public class ExportService : IExportService
     {
+        private const int MAX_SIZE = 5242880;
         private readonly IRepositoryManager repository;
         private readonly IConverter converter;
         private readonly UserManager<AppUser> userManager;
@@ -186,6 +190,50 @@ namespace Swappa.Data.Services
             return null!;
         }
 
+        public async Task<byte[]> DownloadCarTemplate()
+        {
+            var file = await Statics.GetEmptyCarTemplate();
+            return file;
+        }
+
+        public byte[] TestPDF()
+        {
+            var html = Statics.TestPDF();
+            if (!html.IsNotNullOrEmpty())
+            {
+                return null!;
+            }
+
+            html = html.Replace("{{statuscolor}}", "red")
+                .Replace("{{typecolor}}", "green");
+            var globalSettings = GetPdfSettings(PaperKind.A4);
+            var objectSettings = GetPdfObjectSettings(html, "Toba Inc.");
+            var document = GetPdfDocument(globalSettings, objectSettings);
+
+            return converter.Convert(document);
+        }
+
+        public byte[] GeneratePDFSharp()
+        {
+            byte[]? response = null!;
+            var html = Statics.TestPDF();
+            if (!html.IsNotNullOrEmpty())
+            {
+                return response;
+            }
+
+            html = html.Replace("{{statuscolor}}", "red")
+                .Replace("{{typecolor}}", "green");
+
+            var data = new PdfDocument();
+            PdfGenerator.AddPdfPages(data, html, PageSize.A4);
+
+            using MemoryStream ms = new MemoryStream();
+            data.Save(ms);
+            response = ms.ToArray();
+
+            return response;
+        }
 
         private static Dictionary<string, string> GetTitleHeader()
         {
@@ -207,13 +255,13 @@ namespace Swappa.Data.Services
             };
         }
 
-        private GlobalSettings GetPdfSettings()
+        private GlobalSettings GetPdfSettings(PaperKind paperSize = PaperKind.A4)
         {
             return new GlobalSettings
             {
                 ColorMode = ColorMode.Color,
                 Orientation = Orientation.Landscape,
-                PaperSize = PaperKind.A4,
+                PaperSize = paperSize,
                 ImageDPI = 500,
                 ImageQuality = 500,
                 Margins = new MarginSettings
@@ -223,6 +271,7 @@ namespace Swappa.Data.Services
                     Left = 10,
                     Right = 10
                 },
+                DPI = 500,
                 DocumentTitle = "Invoice"
             };
         }

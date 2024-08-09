@@ -2,10 +2,19 @@
 <PageTitle>Swappa - Home</PageTitle>
 
 <div class="container">
-    <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
-        @for(int i = 1; i <= 3; i++)
+  <div class="row g-1 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
+        @if(isLoading)
         {
-            <VehicleCard Vehicle="new VehicleToReturnDto()"></VehicleCard>
+            <div class="text-center align-self-center top-50 m-auto">
+                <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
+            </div>
+        }
+        else
+        {
+            @foreach(var vehicle in Vehicles.Data)
+            {
+                <VehicleCard Vehicle="vehicle"></VehicleCard>
+            }
         }
     </div>
 </div>

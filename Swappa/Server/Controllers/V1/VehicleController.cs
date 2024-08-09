@@ -91,5 +91,41 @@ namespace Swappa.Server.Controllers.V1
         [HttpGet("dashboard")]
         public async Task<IActionResult> FeedbackDashboard() =>
             Ok(await _mediator.Send(new VehicleDashboardQuery()));
+
+        [HttpGet("test-pdf")]
+        public IActionResult Test()
+        {
+            var bytes = service.Export.TestPDF();
+            if (bytes == null)
+            {
+                return BadRequest();
+            }
+
+            return File(bytes, "application/pdf", $"Test-{DateTime.UtcNow.Ticks}");
+        }
+
+        [HttpGet("sharp-pdf")]
+        public IActionResult SharpTest()
+        {
+            var bytes = service.Export.GeneratePDFSharp();
+            if (bytes == null)
+            {
+                return BadRequest();
+            }
+
+            return File(bytes, "application/pdf", $"PDF_Sharp-{Guid.NewGuid()}.pdf");
+        }
+
+        [HttpGet("download-template")]
+        public async Task<IActionResult> DownloadEmptyCarTemplate()
+        {
+            var bytes = await service.Export.DownloadCarTemplate();
+            if (bytes == null)
+            {
+                return BadRequest();
+            }
+
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"CarTemplate-{Guid.NewGuid()}.xlsx");
+        }
     }
 }

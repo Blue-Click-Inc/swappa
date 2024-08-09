@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            @import url("https://fonts.cdnfonts.com/css/roboto");
+        </style>
+    </head>
+    <body>
+        <div class="wrapper bg-white"
+             style="box-sizing: border-box;width: 100%;min-height: 560px;height: auto;margin: 0 auto;max-width: 500px;background-color: #fff;font-family: 'Roboto', Verdana, Geneva, Tahoma, sans-serif;font-style: normal;font-size: 15px;line-height: 150%;color: #3d4355;">
+            <div class="header bg-primary" style="box-sizing: border-box;background-color: #296CF0;width: 100%;padding: 2.5rem !important;">
+                <img src="https://merchant-upload-test.s3.eu-west-2.amazonaws.com/banklyStatement.png" alt="Bankly" width="auto" style="box-sizing: border-box;">
+            </div>
+            <div class="content" style="box-sizing: border-box;width: 100%;height: auto;padding: 20px;">
+                <div>
+                    <p style="margin-bottom: 15px; margin-top: 22px;">
+                        Here's the payout summary for {{customername}}
+                    </p>
+                    <div>
+                        <p style="padding-bottom: 17px;font-weight: 600;letter-spacing: 0.2px;box-sizing: border-box;background-color: #296CF0;width: 100%;padding: 2.5rem !important;color: #fff;">Payout Summary</p>
+                        <table border="0" style="width: 100%; border-collapse: collapse;">
+                            <tr style="background: #f6f9ff; height: 40px;margin-bottom: 5px; border-bottom: 1px solid black">
+                                <td style="color: #000000">
+                                    Transaction Date:
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{transactiondate}}
+                                </td>
+                            </tr>
+                            <tr style="background: #ffffff; height: 40px !important;">
+                                <td style="color: #000000">
+                                    Transaction Time
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{transactiontime}}
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f6f9ff; height: 40px !important;">
+                                <td style="color: #000000 !important;">
+                                    Type
+                                </td>
+                                <td style="font-weight: 600;color: {{typecolor}};">
+                                    {{transactiontype}}
+                                </td>
+                            </tr>
+                            <tr style="background: #ffffff; height: 40px !important;">
+                                <td style="color: #000000">
+                                    Customer Name
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{customername}}
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f6f9ff; height: 40px !important;">
+                                <td style="color: #000000 !important;">
+                                    Amount
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{amount}}
+                                </td>
+                            </tr>
+                            <tr style="background-color: #ffffff; height: 40px !important;">
+                                <td style="color: #000000 !important;">
+                                    Bank Name
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{bankname}}
+                                </td>
+                            </tr>
+                            <tr style="background: #ffffff;  height: 40px !important;">
+                                <td style="color: #000000 !important;">
+                                    Sender Name
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{sendername}}
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f6f9ff;  height: 40px !important;">
+                                <td style="color: #000000 !important;">
+                                    Reference #
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{referencenumber}}
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f6f9ff;  height: 40px !important;">
+                                <td style="color: #000000 !important;">
+                                    Session Id
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{sessionid}}
+                                </td>
+                            </tr>
+                            <tr style="background-color: #f6f9ff;  height: 40px !important;">
+                                <td style="color: #000000 !important;">
+                                    Status
+                                </td>
+                                <td style="font-weight: 600;color: {{statuscolor}}">
+                                    {{status}}
+                                </td>
+                            </tr>
+                            <tr style="background: #ffffff;  height: 40px !important;">
+                                <td style="color: #000000 !important;">
+                                    Naration
+                                </td>
+                                <td style="font-weight: 600;">
+                                    {{naration}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

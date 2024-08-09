@@ -65,10 +65,10 @@ namespace Swappa.Shared.Extensions
             return body;
         }
 
-        public static string TestPDF(VehiclesReportDto details)
+        public static string TestPDF()
         {
             string body = string.Empty;
-            var folderName = Path.Combine("wwwroot", "PDF", "VehicleDataPDF.html");
+            var folderName = Path.Combine("wwwroot", "PDF", "TestTemp.html");
             var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             if (File.Exists(filepath))
                 body = File.ReadAllText(filepath);
@@ -76,6 +76,16 @@ namespace Swappa.Shared.Extensions
                 return body;
 
             return body;
+        }
+
+        public static async Task<byte[]> GetEmptyCarTemplate()
+        {
+            var folderName = Path.Combine("wwwroot", "Files", "CarTemplate.xlsx");
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            if (File.Exists(filepath))
+                return await File.ReadAllBytesAsync(filepath);
+            else
+                return null!;
         }
 
         public static string GetVehicleReportPdf(VehiclesReportDto details)

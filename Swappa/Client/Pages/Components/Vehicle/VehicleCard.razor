@@ -1,22 +1,14 @@
 ﻿<div class="col-12 col-md-6 col-lg-4">
     <div class="card box-shadow-inset">
-        <a href="/vehicle/" class="text-decoration-none">
-            <img src="https://dtstockphotos.azureedge.net/stockitems/1050185321/1434575c-1f5b-4774-8c9d-9a0aca0db95f_Medium.jpg" alt="Car 2" class="card-img-top" />
-            @*<img src="@Vehicle.Images.FirstOrDefault(i => i.IsMain)?.Url" class="img-fluid" alt="@Vehicle.Make @Vehicle.Model"/>*@
+        <a href="/vehicle/@Vehicle.Id" class="text-decoration-none">
+            <img src="@Vehicle.Images.OrderByDescending(v => v.IsMain).FirstOrDefault()?.Url" alt="@Vehicle.Make @Vehicle.Model" class="card-img-top" />
             <div class="card-body">
-                <p class="card-title text-muted fw-bold text-center">
-                    Honda Accord LE 2022
-                </p>
+                <p class="card-title text-muted fw-bold text-center">@Vehicle.Make @Vehicle.Model @Vehicle.Year</p>
                 <span>
-                    <span class="card-text oi oi-image mx-0 px-0">4</span>
-                    <span class="card-text oi oi-eye" style="float: right  !important;" aria-hidden="true">72</span>
+                    <span class="card-text oi oi-image mx-0 px-0">@Vehicle.Images.Count</span>
+                    <span class="card-text oi oi-eye" style="float: right  !important;" aria-hidden="true" hidden>0</span>
                 </span>
             </div>
         </a>
     </div>
 </div>
-
-@code {
-    [Parameter]
-    public VehicleToReturnDto Vehicle { get; set; } = new();
-}
