@@ -1,4 +1,5 @@
 ﻿using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Client.Pages
 {
@@ -6,8 +7,9 @@ namespace Swappa.Client.Pages
     {
         private bool isLoading = false;
         private string message = string.Empty;
+        private string pageTitle = $"{Statics.AppName} - Home";
 
-        public VehicleQueryDto Query { get; set; } = new VehicleQueryDto();
+        public VehicleQueryDto Query { get; set; } = new();
         public PaginatedListDto<VehicleToReturnDto>? Vehicles { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -29,6 +31,11 @@ namespace Swappa.Client.Pages
                 message = response?.Message ?? string.Empty;
             }
             isLoading = false;
+        }
+
+        private async Task Search()
+        {
+
         }
     }
 }

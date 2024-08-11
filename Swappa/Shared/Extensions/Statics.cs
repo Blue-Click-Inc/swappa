@@ -7,6 +7,8 @@ namespace Swappa.Shared.Extensions
 {
     public static class Statics
     {
+        public static string AppName { get; set; } = "Blue Wall";
+
         public static string GetAccountConfirmationTemplate(string url, string name)
         {
             string body = string.Empty;
