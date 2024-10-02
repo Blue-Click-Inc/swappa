@@ -196,6 +196,27 @@ namespace Swappa.Data.Services
             return file;
         }
 
+        public async Task<Dictionary<string, double>> TestDict()
+        {
+            var result = new Dictionary<string, double>();
+            var vehicles = await Task.Run(() => repository.Vehicle.FindAsQueryable()
+                .GroupBy(v => v.CreatedAt));
+                //.ToDictionary(k => (k.Key.Month, k.Key.Year), value => value.Sum(v => v.Price)));
+            foreach (var task in vehicles)
+            {
+                var key = $"{task.Key:MMM} {task.Key:yyyy}";
+                if (!result.ContainsKey(key))
+                {
+                    result.Add(key, task.Sum(v => v.Price));
+                }
+                else
+                {
+                    result[key] += task.Sum(v => v.Price);
+                }
+            }
+            return result;
+        }
+
         public byte[] TestPDF()
         {
             var html = Statics.TestPDF();
@@ -233,6 +254,16 @@ namespace Swappa.Data.Services
             response = ms.ToArray();
 
             return response;
+        }
+
+        private static string GetStatusColor(Status status)
+        {
+            return status switch
+            {
+                Status.Active => "green",
+                Status.Inactive => "red",
+                _ => "red",
+            };
         }
 
         private static Dictionary<string, string> GetTitleHeader()

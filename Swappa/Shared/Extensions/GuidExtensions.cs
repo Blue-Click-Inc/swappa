@@ -16,6 +16,5 @@
             _ = Guid.TryParse(target, out var result);
             return result;
         }
-            
     }
 }

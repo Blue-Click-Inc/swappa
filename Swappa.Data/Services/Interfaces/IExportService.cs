@@ -9,5 +9,6 @@ namespace Swappa.Data.Services.Interfaces
         byte[] GeneratePDFSharp();
         byte[] TestPDF();
         Task<byte[]> VehiclesDetailsReport(DateRangeDto dateQuery);
+        Task<Dictionary<string, double>> TestDict();
     }
 }

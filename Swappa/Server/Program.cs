@@ -22,7 +22,6 @@ builder.Services.ConfigureMailJet(builder.Configuration);
 builder.Services.ConfigureCloudinary(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
-
 builder.Services.AddApiVersioning(opt =>
 {
     opt.ReportApiVersions = true;

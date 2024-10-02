@@ -21,7 +21,7 @@ namespace Swappa.Shared.Extensions
 
                 return result;
             }
-            return text;
+            return Capitalize(text);
         }
 
         public static string Capitalize(this string text)

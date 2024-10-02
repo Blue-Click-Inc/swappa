@@ -53,7 +53,7 @@ namespace Swappa.Shared.Extensions
 
         public static bool IsInOneOrMoreRoles(this List<SystemRole> roles, params SystemRole[] systemRoles)
         {
-            return roles.Any(x => systemRoles.Contains(x));
+            return roles.Any(systemRoles.Contains);
         }
 
         public static List<TEnum> ParseValues<TEnum>(this List<string> values) where TEnum : Enum
@@ -75,7 +75,7 @@ namespace Swappa.Shared.Extensions
             var result = new List<TEnum>();
             values.ForEach(e =>
             {
-                if (e.TryParseValue<TEnum>(out TEnum @enum))
+                if (e.TryParseValue<TEnum>(out var @enum))
                 {
                     result.Add(@enum);
                 }
@@ -87,13 +87,10 @@ namespace Swappa.Shared.Extensions
         public static bool TryParseValue<TEnum>(this int target, out TEnum @enum) where TEnum : Enum
         {
             @enum = default!;
-            if (target.IsInEnum<TEnum>())
-            {
-                @enum = (TEnum)Enum.ToObject(typeof(TEnum), target);
-                return true;
-            }
+            if (!target.IsInEnum<TEnum>()) return false;
+            @enum = (TEnum)Enum.ToObject(typeof(TEnum), target);
+            return true;
 
-            return false;
         }
     }
 }

@@ -127,5 +127,11 @@ namespace Swappa.Server.Controllers.V1
 
             return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"CarTemplate-{Guid.NewGuid()}.xlsx");
         }
+
+        [HttpGet("GetTest")]
+        public async Task<IActionResult> GetTest()
+        {
+            return Ok(await service.Export.TestDict());
+        }
     }
 }

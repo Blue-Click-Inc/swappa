@@ -1,5 +1,7 @@
 ﻿using Swappa.Client.Services.Interfaces;
+using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Client.Services.Implementations
 {
@@ -16,7 +18,7 @@ namespace Swappa.Client.Services.Implementations
 
         public async Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>?> GetDataAsync(VehicleQueryDto query)
         {
-            var response = await httpClient.GetAsync($"vehicle");
+            var response = await httpClient.GetAsync($"vehicle{GetQuery(query)}");
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<VehicleToReturnDto>>>(response);
         }
 
@@ -36,6 +38,52 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.GetAsync("vehicle/dashboard");
             return await httpInterceptor.Process<ResponseModel<VehicleDashboardDto>>(response);
+        }
+
+        private string GetQuery(VehicleQueryDto query)
+        {
+            var queryStr = string.Empty;
+            if (query.SearchTerm.IsNotNullOrEmpty())
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&SearchTerm={query.SearchTerm}" : $"?SearchTerm={query.SearchTerm}";
+            }
+            if(query.DriveTrain != DriveTrain.None)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&DriveTrain={query.DriveTrain}" : $"?DriveTrain={query.DriveTrain}";
+            }
+            if(query.Engine != Engine.None)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&Engine={query.Engine}" : $"?Engine={query.Engine}";
+            }
+            if (query.Transmission != Transmission.None)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&Transmission={query.Transmission}" : $"?Transmission={query.Transmission}";
+            }
+            if (query.PageSize != default)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&PageSize={query.PageSize}" : $"?PageSize={query.PageSize}";
+            }
+            if (query.PageNumber != default)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&PageNumber={query.PageNumber}" : $"?PageNumber={query.PageNumber}";
+            }
+            if (query.MinPrice != default)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&MinPrice={query.MinPrice}" : $"?MinPrice={query.MinPrice}";
+            }
+            if (query.MaxPrice != default)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&MaxPrice={query.MaxPrice}" : $"?MaxPrice={query.MaxPrice}";
+            }
+            if (query.MinYear != default)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&MinYear={query.MinYear}" : $"?MinYear={query.MinYear}";
+            }
+            if (query.MaxYear != default)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&MaxYear={query.MaxYear}" : $"?MaxYear={query.MaxYear}";
+            }
+            return queryStr;
         }
     }
 }

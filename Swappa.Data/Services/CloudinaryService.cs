@@ -38,9 +38,7 @@ namespace Swappa.Data.Services
                 ResourceType = ResourceType.Image
             };
             var delRes = await _cloud.DestroyAsync(deletionParams);
-            if (delRes.StatusCode == System.Net.HttpStatusCode.OK && delRes.Result.ToLower() == "ok")
-                return true;
-            return false;
+            return delRes.StatusCode == System.Net.HttpStatusCode.OK && delRes.Result.ToLower() == "ok";
         }
 
         public async Task<PhotoUploadResultDto?> UploadPhoto(IFormFile photo)
@@ -51,7 +49,7 @@ namespace Swappa.Data.Services
                 Transformation = new Transformation().Width(344).Height(258)
             };
             var res = await _cloud.UploadAsync(imageUploadParams);
-            if (!(res.StatusCode == System.Net.HttpStatusCode.OK))
+            if (res.StatusCode != System.Net.HttpStatusCode.OK)
                 return null;
 
             return new PhotoUploadResultDto { PublicId = res.PublicId, Url = res.Url.ToString() };
@@ -63,23 +61,21 @@ namespace Swappa.Data.Services
 
             if (imageFiles.IsNotNullOrEmpty())
             {
-                for (int i = 0; i < imageFiles.Count; i++)
+                for (var i = 0; i < imageFiles.Count; i++)
                 {
                     var uploadResult = await this.UploadPhoto(imageFiles[i]);
-                    if (uploadResult != null)
+                    if (uploadResult == null) continue;
+                    var image = new Image
                     {
-                        var image = new Image
-                        {
-                            Url = uploadResult.Url,
-                            PublicId = uploadResult.PublicId,
-                            VehicleId = vehicleId
-                        };
-                        if (isForNew)
-                        {
-                            image.IsMain = i == 0;
-                        }
-                        imagesToCreate.Add(image);
+                        Url = uploadResult.Url,
+                        PublicId = uploadResult.PublicId,
+                        VehicleId = vehicleId
+                    };
+                    if (isForNew)
+                    {
+                        image.IsMain = i == 0;
                     }
+                    imagesToCreate.Add(image);
                 }
 
                 await repository.Image.AddAsync(imagesToCreate);

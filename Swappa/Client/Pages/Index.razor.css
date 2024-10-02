@@ -1,0 +1,17 @@
+﻿.filter-toggler {
+    display: none !important;
+}
+
+.display-filter {
+    display: block !important;
+}
+
+@media (max-width: 768px) {
+    .filter-toggler {
+        display: block !important;
+    }
+
+    .display-filter {
+        display: none !important;
+    }
+}

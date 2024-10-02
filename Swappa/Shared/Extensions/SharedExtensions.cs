@@ -2,7 +2,7 @@
 {
     public static class SharedExtensions
     {
-        public static bool GetOrdefaul(this bool? boolean) =>
+        public static bool GetOrdefault(this bool? boolean) =>
             boolean ?? false;
 
         public static bool IsNull(this object? value) =>
