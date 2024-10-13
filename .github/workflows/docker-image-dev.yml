@@ -1,0 +1,17 @@
+name: Build and Push Docker Image to Docker Hub
+on:
+  push:
+    branches:
+      - development
+  pull_request:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build the Docker image
+        run: docker build -t ojotobar777/blue-wall:latest -f Swappa/Server/Dockerfile .
