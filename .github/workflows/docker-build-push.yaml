@@ -1,0 +1,17 @@
+name: Build and Push Docker Image to Docker Hub
+on:
+  push:
+    branches:
+      - master
+jobs:
+  publish_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Image
+        run: docker build ./ -t ojotobar777/blue-wall:latest
+      - name: Push Image to Docker Hub
+        run: |
+          docker login -u ojotobar777 -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push ojotobar777/blue-wall:latest
