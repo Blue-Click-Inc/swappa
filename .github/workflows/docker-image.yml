@@ -3,8 +3,12 @@ on:
   pull_request:
     branches:
       - master
+    types:
+      - closed
 jobs:
-  publish_image:
+  if_merged:
+    if: github.event.pull_request.merged
+    publish_image:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
