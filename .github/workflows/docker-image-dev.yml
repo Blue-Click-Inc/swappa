@@ -1,17 +1,21 @@
 name: Build and Push Docker Image to Docker Hub
 on:
-  push:
-    branches:
-      - development
   pull_request:
     branches:
       - development
+    types:
+      - closed
 
 jobs:
-  build:
+  if_merged:
+    if: github.event.pull_request.merged
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build the Docker image
-        run: docker build -t ojotobar777/blue-wall:latest -f Swappa/Server/Dockerfile .
+        run: docker build -t ojotobar777/blue-wall:dev -f Swappa/Server/Dockerfile .
+      - name: Push Image to Docker Hub
+        run: |
+          docker login -u ojotobar777 -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push ojotobar777/blue-wall:dev
