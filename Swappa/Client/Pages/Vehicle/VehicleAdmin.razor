@@ -1,93 +1,58 @@
 ﻿@page "/admin/vehicles"
-@attribute [Authorize(Roles = "Admin, SuperAdmin")]
+@attribute [Authorize(Roles = "Admin, SuperAdmin, Merchant")]
 
-<PageTitle>System Roles</PageTitle>
+<PageTitle>Inventory Manager</PageTitle>
 <div class="container">
   <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
         <BackButton></BackButton>
-        @if(isLoading)
-        {
-            <div class="text-center align-self-center top-50 m-auto">
-                <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
-            </div>
-        }
-        else
-        {
-            <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
+        <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
                 <div class="col-0 col-md-3 col-lg-4"></div>
                 <div class="col-12 col-md-6 col-lg-4">
                     <SinglePillCardDash 
                         Background="FeedbackRating.Good" 
                         CardTitle="Total Number Of Vehicles" 
-                        PillContent="123,475,857">
+                        PillContent="@NumberOfVehicles">
                     </SinglePillCardDash>
                 </div>
                 <div class="col-0 col-md-3 col-lg-4"></div>
-            </div>
-            <div class="table-responsive">
-                 <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ShowBulkVehicleUploadModal())>
-                     <Tooltip Title="Vehicle Data Bulk Upload" role="button">
+        </div>
+        <div class="card box-shadow-inset m-auto">
+            <EditForm Model="Query" method="post" OnValidSubmit="Search" FormName="searchVehicle">
+            <VehicleFilter Query="@Query" />
+            <VehicleSearch ClearSearch="Clear" Query="@Query"/>
+            </EditForm>
+        </div>
+        <div class="table-responsive mt-5">
+            @if (isLoading)
+            {
+                <div class="text-center align-self-center top-50 m-auto">
+                    <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
+                </div>
+            }
+            else
+            {
+                <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ShowBulkVehicleUploadModal())>
+                    <Tooltip Title="Vehicle Data Bulk Upload" role="button">
                         <Icon Name="IconName.Upload"></Icon>
-                     </Tooltip>
-                 </Button>
-                 <Button Color="ButtonColor.Primary" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ShowAddVehicleModal())>
-                     <Tooltip Title="Add New Vehicle" role="button">
+                    </Tooltip>
+                </Button>
+                <Button Color="ButtonColor.Primary" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ShowAddVehicleModal())>
+                    <Tooltip Title="Add New Vehicle" role="button">
                         <Icon Name="IconName.Plus"></Icon>
-                     </Tooltip>
-                 </Button>
-                 <Button Color="ButtonColor.Success" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ExportToExcel())>
-                     <Tooltip Title="Generate Excel Report" role="button">
+                    </Tooltip>
+                </Button>
+                <Button Color="ButtonColor.Success" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ExportToExcel())>
+                    <Tooltip Title="Generate Excel Report" role="button">
                         <Icon Name="IconName.Download"></Icon>
-                     </Tooltip>
-                 </Button>
-                 <Button Color="ButtonColor.Dark" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await PrintPDF())>
-                     <Tooltip Title="Print PDF Report" role="button">
+                    </Tooltip>
+                </Button>
+                <Button Color="ButtonColor.Dark" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await PrintPDF())>
+                    <Tooltip Title="Print PDF Report" role="button">
                         <Icon Name="IconName.Printer"></Icon>
-                     </Tooltip>
-                 </Button>
-                <table class="table table-striped table-hover table-borderless caption-top">
-                    <caption>Vehicles</caption>
-                    <thead>
-                        <tr>
-                            <th style="background: #002147; color: white;"></th>
-                            <th style="background: #002147; color: white;">Model</th>
-                            <th style="background: #002147; color: white;">Make</th>
-                            <th style="background: #002147; color: white;">Year</th>
-                            <th style="background: #002147; color: white;">Price</th>
-                            <th style="background: #002147; color: white;">Color</th>
-                            <th style="background: #002147; color: white;">Transmission</th>
-                            <th style="background: #002147; color: white;">Engine</th>
-                            <th style="background: #002147; color: white;">Odometer</th>
-                            <th style="background: #002147; color: white;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var vehicle in Data.Data)
-                        {
-                            
-                            <tr class="box-shadow-inset">
-                                <td></td>
-                                <td>@vehicle?.Make</td>
-                                <td>@vehicle?.Model</td>
-                                <td>@vehicle?.Year</td>
-                                <td>@string.Format(new CultureInfo("en-NG"), "{0:C}", vehicle?.Price)</td>
-                                <td>@vehicle?.Color</td>
-                                <td>@vehicle?.Transmission.GetDescription()</td>
-                                <td>@vehicle?.Engine.GetDescription()</td>
-                                <td>@vehicle?.Odometer.ToString("D")</td>
-                                <td  class="d-flex justify-content-end">
-                                    <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1"><Icon Name="IconName.Pencil" /></Button>
-                                    <AuthorizeView Roles="SuperAdmin">
-                                        <Authorized>
-                                            <Button Color="ButtonColor.Danger" Outline="true" Class="mx-1"><Icon Name="IconName.Trash" /></Button>
-                                        </Authorized>
-                                    </AuthorizeView>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        }
+                    </Tooltip>
+                </Button>
+                <VehicleTableList Data="Data" />
+            }
+        </div>
     </div>
 </div>

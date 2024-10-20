@@ -6,10 +6,6 @@
     display: block !important;
 }
 
-.hide-text {
-    display: block !important;
-}
-
 @media (max-width: 992px) {
     .filter-toggler {
         display: block !important;

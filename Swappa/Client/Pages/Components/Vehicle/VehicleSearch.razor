@@ -1,0 +1,27 @@
+﻿<div class="row w-75 m-auto my-3">
+    <div class="form-floating px-1 col-md-12 col-lg-7 py-1 my-1">
+        <InputText 
+            @bind-Value="Query.SearchTerm" 
+            class="form-control" 
+            placeholder="Enter text"
+            aria-required="true" 
+        />
+        <label for="Make" class="form-label">Enter text</label>
+    </div>
+    <div class="form-floating px-1 col-md-12 col-lg-5 py-1">
+        <div class="row">
+            <div class="col-md-12 col-lg-6 my-1">
+                <Button Color="ButtonColor.Primary" Outline="true" Class="p-3 w-100 d-flex justify-content-center" Type="ButtonType.Submit">
+                    <Icon Name="IconName.Search"></Icon>
+                    <span class="hide-text px-1">Search</span>
+                </Button>
+            </div>
+            <div class="col-md-12 col-lg-6 my-1">
+                <Button Color="ButtonColor.Secondary" Outline="true" Class="p-3 w-100 d-flex justify-content-center" @onclick=@(() => ClearSearch.InvokeAsync())>
+                    <Icon Name="IconName.Trash"></Icon>
+                    <span class="hide-text px-1">Clear</span>
+                </Button>
+            </div>
+        </div>
+    </div>
+</div>
