@@ -25,8 +25,13 @@
                 <div class="col-0 col-md-3 col-lg-4"></div>
             </div>
             <div class="table-responsive">
-                 <Button Color="ButtonColor.Primary" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ShowBulkVehicleUploadModal())>
+                 <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ShowBulkVehicleUploadModal())>
                      <Tooltip Title="Vehicle Data Bulk Upload" role="button">
+                        <Icon Name="IconName.Upload"></Icon>
+                     </Tooltip>
+                 </Button>
+                 <Button Color="ButtonColor.Primary" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ShowAddVehicleModal())>
+                     <Tooltip Title="Add New Vehicle" role="button">
                         <Icon Name="IconName.Plus"></Icon>
                      </Tooltip>
                  </Button>

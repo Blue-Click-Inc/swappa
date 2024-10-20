@@ -54,21 +54,8 @@ namespace Swappa.Client.Pages.Modals.Vehicle
 
         private void OnInputFileChange(InputFileChangeEventArgs e)
         {
-            var content = new MultipartFormDataContent();
-            var file = e.GetMultipleFiles().FirstOrDefault();
-            if (file.IsValid(FileTypes.Sheet))
-            {
-                var stream = new StreamContent(file.OpenReadStream(MAX_SIZE));
-                stream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
-                
-                content.Add(
-                    content: stream,
-                    name: "\"files\"",
-                    fileName: file.Name);
-
-                Content = content;
-            }
-            else
+            Content = SharedService.OnInputFilesChange(e, FileTypes.Sheet, "files", MAX_SIZE,  out var isValidInput);
+            if (!isValidInput)
             {
                 message = $"File size must not exceed {FileTypes.Sheet.MaxSize()}MiB and must be one of ({FileTypes.Sheet.AllowedFileType()})";
                 level = AlertColor.Warning;

@@ -1,0 +1,188 @@
+﻿<PageTitle>@pageTitle</PageTitle>
+
+<div class="row">
+    <div class="box-shadow-inset border-radius-2rem p-3">
+        <EditForm Model="VehicleForCreateDto" method="post" OnValidSubmit="Save" FormName="addVehicle">
+            <DataAnnotationsValidator />
+            <h3>Add New Vehicle</h3>
+            <hr />
+            <div class="row">
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="VehicleForCreateDto.Make" 
+                        class="form-control" 
+                        autocomplete="Make"
+                        placeholder="Enter vehicle make"
+                        aria-required="true" 
+                    />
+                    <label for="Make" class="form-label">Make (Honda)</label>
+                    <ValidationMessage For="() => VehicleForCreateDto.Make" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="VehicleForCreateDto.Model" 
+                        class="form-control" 
+                        autocomplete="Model"
+                        placeholder="Enter vehicle model"
+                        aria-required="true" 
+                    />
+                    <label for="Make" class="form-label">Model (Accord)</label>
+                    <ValidationMessage For="() => VehicleForCreateDto.Model" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputText 
+                        @bind-Value="VehicleForCreateDto.Trim" 
+                        class="form-control" 
+                        autocomplete="Trim"
+                        placeholder="Enter vehicle trim"
+                        aria-required="true" 
+                    />
+                    <label for="Trim" class="form-label">Trim (LE)</label>
+                    <ValidationMessage For="() => VehicleForCreateDto.Trim" class="text-danger" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-floating mb-3 px-1 col-sm-12 col-md-8">
+                    <InputNumber 
+                        @bind-Value="VehicleForCreateDto.Price" 
+                        class="form-control" 
+                        autocomplete="Price"
+                        placeholder="Price"
+                        aria-required="true" 
+                    />
+                    <label for="Price" class="form-label">Price (&#x20A6;)</label>
+                    <ValidationMessage For="() => VehicleForCreateDto.Model" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1 col-sm-12 col-md-4">
+                    <InputNumber 
+                        @bind-Value="VehicleForCreateDto.Year" 
+                        class="form-control" 
+                        autocomplete="Year"
+                        placeholder="Odometer"
+                        aria-required="true" 
+                    />
+                    <label for="Year" class="form-label">Year</label>
+                    <ValidationMessage For="() => VehicleForCreateDto.Year" class="text-danger" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-floating mb-3 px-1 col-sm-12 col-md-7">
+                    <InputSelect 
+                        @bind-Value="VehicleForCreateDto.Transmission" 
+                        class="form-control" 
+                        autocomplete="Transmission"
+                        placeholder="Transmission"
+                        aria-required="true">
+                        @foreach (var transmission in Enum.GetValues(typeof(Transmission)))
+                        {
+                            <option value="@transmission">@transmission.GetDescription()</option>
+                        }
+                    </InputSelect>
+                    <label for="Transmission" class="form-label">Select Transmission</label>
+                </div>
+                <div class="form-floating mb-3 px-1 col-sm-12 col-md-5">
+                    <InputSelect 
+                        @bind-Value="VehicleForCreateDto.Engine" 
+                        class="form-control" 
+                        autocomplete="Engine"
+                        placeholder="Engine"
+                        aria-required="true"
+                    >
+                     @foreach (var engine in Enum.GetValues(typeof(Engine)))
+                     {
+                        <option value="@engine">@engine.GetDescription()</option>
+                     }
+                    </InputSelect>
+                    <label for="Price" class="form-label">Select Engine</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-floating mb-3 px-1 col-sm-12 col-md-5">
+                    <InputSelect 
+                        @bind-Value="VehicleForCreateDto.DriveTrain" 
+                        class="form-control" 
+                        autocomplete="DriveTrain"
+                        placeholder="DriveTrain"
+                        aria-required="true">
+                         @foreach (var drive in Enum.GetValues(typeof(DriveTrain)))
+                         {
+                            <option value="@drive">@drive.GetDescription()</option>
+                         }
+                    </InputSelect>
+                    <label for="DriveTrain" class="form-label">Select Drive Train</label>
+                </div>
+                <div class="form-floating mb-3 px-1 col-sm-12 col-md-7">
+                    <InputNumber 
+                        @bind-Value="VehicleForCreateDto.Odometer" 
+                        class="form-control" 
+                        autocomplete="Odometer"
+                        placeholder="Odometer (Km)"
+                        aria-required="true" 
+                    />
+                    <label for="Odometer" class="form-label">Odometer (Km)</label>
+                    <ValidationMessage For="() => VehicleForCreateDto.Odometer" class="text-danger" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-floating mb-3 px-1 col-sm-12 col-md-6">
+                    <InputText 
+                        @bind-Value="VehicleForCreateDto.Color" 
+                        class="form-control" 
+                        autocomplete="Color"
+                        placeholder="Color"
+                        aria-required="true" 
+                    />
+                    <label for="Price" class="form-label">Color</label>
+                    <ValidationMessage For="() => VehicleForCreateDto.Color" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1 col-sm-12 col-md-6">
+                    <InputText 
+                        @bind-Value="VehicleForCreateDto.Interior" 
+                        class="form-control" 
+                        autocomplete="Interior"
+                        placeholder="Interior"
+                        aria-required="true" 
+                    />
+                    <label for="Interior" class="form-label">Interior color</label>
+                    <ValidationMessage For="() => VehicleForCreateDto.Interior" class="text-danger" />
+                </div>
+            </div>
+            <div class="row">
+                 <div class="form-floating mb-3 px-1 col-md-12 col-lg-7">
+                    <InputText 
+                        @bind-Value="VehicleForCreateDto.VIN" 
+                        class="form-control" 
+                        autocomplete="VIN"
+                        placeholder="VIN"
+                        aria-required="true" 
+                    />
+                    <label for="VIN" class="form-label">VIN</label>
+                </div>
+                <div class="form-floating mb-3 px-1 col-md-12 col-lg-5">
+                    <InputFile 
+                        OnChange="OnInputFileChange"
+                        class="form-control" 
+                        aria-required="true"
+                        multiple
+                        accept=".png, .jpg, .jpeg"
+                    />
+                    <label for="ImageFiles" class="form-label py-2">Upload Images</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-0 col-lg-3"></div>
+                <div class="col-md-12 col-lg-6 d-flex justify-content-center">
+                    <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                        <Button Color="ButtonColor.Primary" Outline="true" Class="mx-1 mt-1" Type="ButtonType.Submit" disabled="@isLoading">
+                            <span class="fa fa-user-plus" aria-hidden="true"></span> @buttonLabel
+                        </Button>
+                        <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 mt-1" disabled="@isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
+                            <span class="oi oi-arrow-left" aria-hidden="true"></span> Back
+                        </Button>
+                    </div>
+                </div>
+                <div class="col-md-0 col-lg-3"></div>
+            </div>
+        </EditForm>
+    </div>
+</div>

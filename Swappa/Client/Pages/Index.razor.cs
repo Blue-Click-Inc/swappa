@@ -37,11 +37,6 @@ namespace Swappa.Client.Pages
             _isLoading = false;
         }
 
-        private void ToggleFilterDisplay()
-        {
-            _showFilter = !_showFilter;
-        }
-
         private async Task Search()
         {
             await GetDataAsync();

@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Blazored.Modal;
+using Microsoft.JSInterop;
 using Swappa.Client.Pages.Modals.Vehicle;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
@@ -11,10 +12,12 @@ namespace Swappa.Client.Pages.Vehicle
         private string message = string.Empty;
 
         public PaginatedListDto<VehicleToReturnDto>? Data { get; set; }
-        
+        public Guid LoggedInUserId { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             await GetDataAsync();
+            LoggedInUserId = await UserService.GetLoggedInUserId();
             await base.OnInitializedAsync();
         }
 
@@ -52,6 +55,21 @@ namespace Swappa.Client.Pages.Vehicle
         {
             var confirmation = Modal.Show<BulkVehicleUploadModal>("");
             await confirmation.Result;
+        }
+
+        private async Task ShowAddVehicleModal()
+        {
+            var idParam = new ModalParameters
+            {
+                { "UserId", LoggedInUserId }
+            };
+
+            var confirmationModal = Modal.Show<AddVehicleModal>("", idParam);
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetDataAsync();
+            }
         }
 
         private async Task GetDataAsync()
