@@ -31,6 +31,7 @@ namespace Swappa.Entities.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool IsDeprecated { get; set; }
+        public long Views { get; set; } 
         public EntityLocation? Location { get; set; }
         public List<Image> Images { get; set; } = new();
 

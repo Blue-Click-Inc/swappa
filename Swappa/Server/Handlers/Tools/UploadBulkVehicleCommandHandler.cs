@@ -32,7 +32,7 @@ namespace Swappa.Server.Handlers.Tools
         {
             if(request.IsNotNull() && request.File.IsNotNull() && request.File.Length > 0)
             {
-                Guid.TryParse(repository.Common.GetLoggedInUserId(), out var userId);
+                var userId = repository.Common.GetUserIdAsGuid();
                 using var stream = new MemoryStream(MAX_SIZE);
                 await request.File.CopyToAsync(stream, cancellationToken);
                 stream.Position = 0;
