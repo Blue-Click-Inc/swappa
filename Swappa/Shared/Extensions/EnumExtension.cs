@@ -96,10 +96,10 @@ namespace Swappa.Shared.Extensions
         {
             return new List<string>
             {
-                SystemRole.Admin.ToString(),
-                SystemRole.Merchant.ToString(),
-                SystemRole.SuperAdmin.ToString(),
-                SystemRole.User.ToString()
+                SystemRole.Admin.GetDescription(),
+                SystemRole.Merchant.GetDescription(),
+                SystemRole.SuperAdmin.GetDescription(),
+                SystemRole.User.GetDescription()
             };
         }
     }

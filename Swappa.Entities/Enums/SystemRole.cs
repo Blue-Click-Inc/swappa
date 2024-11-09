@@ -4,13 +4,13 @@ namespace Swappa.Entities.Enums
 {
     public enum SystemRole
     {
-        [Description("Regular User")]
+        [Description("User")]
         User,
         [Description("Merchant")]
         Merchant,
-        [Description("Administrator")]
+        [Description("Admin")]
         Admin,
-        [Description("Super Administrator")]
+        [Description("Super Admin")]
         SuperAdmin
     }
 }

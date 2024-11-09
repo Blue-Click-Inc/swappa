@@ -9,7 +9,7 @@ namespace Swappa.Shared.Extensions
     {
         public static string RemoveSpaceAndCapitalize(this string text)
         {
-            if(text.Contains(" "))
+            if(text.Contains(' '))
             {
                 var result = string.Empty;
                 var words = text.Split(" ");
@@ -21,7 +21,10 @@ namespace Swappa.Shared.Extensions
 
                 return result;
             }
-            return Capitalize(text);
+            else
+            {
+                return Capitalize(text);
+            }
         }
 
         public static string Capitalize(this string text)
