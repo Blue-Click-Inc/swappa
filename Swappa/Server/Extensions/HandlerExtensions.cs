@@ -80,7 +80,7 @@ namespace Swappa.Server.Extensions
         {
             var users = new List<RegisterDto>
             {
-                new RegisterDto
+                new() 
                 {
                     Name = "Super Admin",
                     Email = "super.admin@example.com",
@@ -88,7 +88,7 @@ namespace Swappa.Server.Extensions
                     Role = Entities.Enums.SystemRole.SuperAdmin,
                     Password = PASS
                 },
-                new RegisterDto
+                new() 
                 {
                     Name = "Admin",
                     Email = "admin@example.com",
@@ -96,7 +96,7 @@ namespace Swappa.Server.Extensions
                     Role = Entities.Enums.SystemRole.Admin,
                     Password = PASS
                 },
-                new RegisterDto
+                new() 
                 {
                     Name = "Common User",
                     Email = "user001@example.com",
@@ -104,7 +104,7 @@ namespace Swappa.Server.Extensions
                     Role = Entities.Enums.SystemRole.User,
                     Password = PASS
                 },
-                new RegisterDto
+                new() 
                 {
                     Name = "Merchant",
                     Email = "merchant@example.com",
