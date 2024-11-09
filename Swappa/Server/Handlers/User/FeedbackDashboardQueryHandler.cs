@@ -4,6 +4,7 @@ using Swappa.Entities.Enums;
 using Swappa.Entities.Responses;
 using Swappa.Server.Queries.User;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Server.Handlers.User
 {
@@ -24,12 +25,14 @@ namespace Swappa.Server.Handlers.User
             var feedbackCount = await repository.Feedback
                 .Count(f => !f.IsDeprecated);
 
-            var averageRating = await Task.Run(() =>
+            var feedback = await Task.Run(() =>
                 repository.Feedback
                     .FindAsQueryable(f => !f.IsDeprecated)
                     .Select(f => (int)f.Rating)
-                    .ToList()
-                    .Average());
+                    .ToList());
+
+            var averageRating = feedback.IsNotNullOrEmpty() ?
+                feedback.Average() : 0;
             
             return response
                 .Process<FeedbackDashboardDto>(new ApiOkResponse<FeedbackDashboardDto>(new FeedbackDashboardDto

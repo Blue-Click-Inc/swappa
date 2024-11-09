@@ -71,7 +71,7 @@ namespace Swappa.Server.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>
-                    builder.WithOrigins("https://localhost:7027", "http://localhost:1984", "https://localhost:1992/")
+                    builder.WithOrigins("https://localhost:7027", "http://localhost:5027")
                         .AllowCredentials()
                         .AllowAnyMethod()
                         .AllowAnyHeader());

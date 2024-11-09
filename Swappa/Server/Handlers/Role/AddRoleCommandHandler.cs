@@ -12,12 +12,15 @@ namespace Swappa.Server.Handlers.Role
     {
         private readonly RoleManager<AppRole> roleManager;
         private readonly ApiResponseDto response;
+        private readonly ILogger<AddRoleCommandHandler> logger;
 
         public AddRoleCommandHandler(RoleManager<AppRole> roleManager,
-            ApiResponseDto response)
+            ApiResponseDto response,
+            ILogger<AddRoleCommandHandler> logger)
         {
             this.roleManager = roleManager;
             this.response = response;
+            this.logger = logger;
         }
 
         public async Task<ResponseModel<string>> Handle(AddRoleCommand request, CancellationToken cancellationToken)
@@ -27,7 +30,10 @@ namespace Swappa.Server.Handlers.Role
 
             var existing = await roleManager.RoleExistsAsync(request.RoleName);
             if (existing)
+            {
+                logger.LogWarning($"Role {request.RoleName} already exists.");
                 return response.Process<string>(new BadRequestResponse($"Role {request.RoleName} already exists."));
+            }
 
             var result = await roleManager.CreateAsync(new AppRole
             {
@@ -36,8 +42,12 @@ namespace Swappa.Server.Handlers.Role
             });
 
             if (!result.Succeeded)
+            {
+                var errorMessages = string.Join(Environment.NewLine, result.Errors);
+                logger.LogError($"Error occurred: {errorMessages}");
                 return response
                     .Process<string>(new BadRequestResponse($"Operation failed! {result.Errors.FirstOrDefault()?.Description}"));
+            }
 
             return response.Process<string>(new ApiOkResponse<string>($"Role {request.RoleName} successfully added."));
         }
