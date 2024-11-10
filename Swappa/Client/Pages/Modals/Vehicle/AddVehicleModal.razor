@@ -2,73 +2,73 @@
 
 <div class="row">
     <div class="box-shadow-inset border-radius-2rem p-3">
-        <EditForm Model="VehicleForCreateDto" method="post" OnValidSubmit="Save" FormName="addVehicle">
+        <EditForm Model="Request" method="post" OnValidSubmit="Save" FormName="addVehicle">
             <DataAnnotationsValidator />
             <h3>Add New Vehicle</h3>
             <hr />
             <div class="row">
                 <div class="form-floating mb-3 px-1">
                     <InputText 
-                        @bind-Value="VehicleForCreateDto.Make" 
+                        @bind-Value="Request.Make" 
                         class="form-control" 
                         autocomplete="Make"
                         placeholder="Enter vehicle make"
                         aria-required="true" 
                     />
                     <label for="Make" class="form-label">Make (Honda)</label>
-                    <ValidationMessage For="() => VehicleForCreateDto.Make" class="text-danger" />
+                    <ValidationMessage For="() => Request.Make" class="text-danger" />
                 </div>
                 <div class="form-floating mb-3 px-1">
                     <InputText 
-                        @bind-Value="VehicleForCreateDto.Model" 
+                        @bind-Value="Request.Model" 
                         class="form-control" 
                         autocomplete="Model"
                         placeholder="Enter vehicle model"
                         aria-required="true" 
                     />
                     <label for="Make" class="form-label">Model (Accord)</label>
-                    <ValidationMessage For="() => VehicleForCreateDto.Model" class="text-danger" />
+                    <ValidationMessage For="() => Request.Model" class="text-danger" />
                 </div>
                 <div class="form-floating mb-3 px-1">
                     <InputText 
-                        @bind-Value="VehicleForCreateDto.Trim" 
+                        @bind-Value="Request.Trim" 
                         class="form-control" 
                         autocomplete="Trim"
                         placeholder="Enter vehicle trim"
                         aria-required="true" 
                     />
                     <label for="Trim" class="form-label">Trim (LE)</label>
-                    <ValidationMessage For="() => VehicleForCreateDto.Trim" class="text-danger" />
+                    <ValidationMessage For="() => Request.Trim" class="text-danger" />
                 </div>
             </div>
             <div class="row">
                 <div class="form-floating mb-3 px-1 col-sm-12 col-md-8">
                     <InputNumber 
-                        @bind-Value="VehicleForCreateDto.Price" 
+                        @bind-Value="Request.Price" 
                         class="form-control" 
                         autocomplete="Price"
                         placeholder="Price"
                         aria-required="true" 
                     />
                     <label for="Price" class="form-label">Price (&#x20A6;)</label>
-                    <ValidationMessage For="() => VehicleForCreateDto.Model" class="text-danger" />
+                    <ValidationMessage For="() => Request.Model" class="text-danger" />
                 </div>
                 <div class="form-floating mb-3 px-1 col-sm-12 col-md-4">
                     <InputNumber 
-                        @bind-Value="VehicleForCreateDto.Year" 
+                        @bind-Value="Request.Year" 
                         class="form-control" 
                         autocomplete="Year"
                         placeholder="Odometer"
                         aria-required="true" 
                     />
                     <label for="Year" class="form-label">Year</label>
-                    <ValidationMessage For="() => VehicleForCreateDto.Year" class="text-danger" />
+                    <ValidationMessage For="() => Request.Year" class="text-danger" />
                 </div>
             </div>
             <div class="row">
                 <div class="form-floating mb-3 px-1 col-sm-12 col-md-7">
                     <InputSelect 
-                        @bind-Value="VehicleForCreateDto.Transmission" 
+                        @bind-Value="Request.Transmission" 
                         class="form-control" 
                         autocomplete="Transmission"
                         placeholder="Transmission"
@@ -82,7 +82,7 @@
                 </div>
                 <div class="form-floating mb-3 px-1 col-sm-12 col-md-5">
                     <InputSelect 
-                        @bind-Value="VehicleForCreateDto.Engine" 
+                        @bind-Value="Request.Engine" 
                         class="form-control" 
                         autocomplete="Engine"
                         placeholder="Engine"
@@ -99,7 +99,7 @@
             <div class="row">
                 <div class="form-floating mb-3 px-1 col-sm-12 col-md-5">
                     <InputSelect 
-                        @bind-Value="VehicleForCreateDto.DriveTrain" 
+                        @bind-Value="Request.DriveTrain" 
                         class="form-control" 
                         autocomplete="DriveTrain"
                         placeholder="DriveTrain"
@@ -113,44 +113,44 @@
                 </div>
                 <div class="form-floating mb-3 px-1 col-sm-12 col-md-7">
                     <InputNumber 
-                        @bind-Value="VehicleForCreateDto.Odometer" 
+                        @bind-Value="Request.Odometer" 
                         class="form-control" 
                         autocomplete="Odometer"
                         placeholder="Odometer (Km)"
                         aria-required="true" 
                     />
                     <label for="Odometer" class="form-label">Odometer (Km)</label>
-                    <ValidationMessage For="() => VehicleForCreateDto.Odometer" class="text-danger" />
+                    <ValidationMessage For="() => Request.Odometer" class="text-danger" />
                 </div>
             </div>
             <div class="row">
                 <div class="form-floating mb-3 px-1 col-sm-12 col-md-6">
                     <InputText 
-                        @bind-Value="VehicleForCreateDto.Color" 
+                        @bind-Value="Request.Color" 
                         class="form-control" 
                         autocomplete="Color"
                         placeholder="Color"
                         aria-required="true" 
                     />
                     <label for="Price" class="form-label">Color</label>
-                    <ValidationMessage For="() => VehicleForCreateDto.Color" class="text-danger" />
+                    <ValidationMessage For="() => Request.Color" class="text-danger" />
                 </div>
                 <div class="form-floating mb-3 px-1 col-sm-12 col-md-6">
                     <InputText 
-                        @bind-Value="VehicleForCreateDto.Interior" 
+                        @bind-Value="Request.Interior" 
                         class="form-control" 
                         autocomplete="Interior"
                         placeholder="Interior"
                         aria-required="true" 
                     />
                     <label for="Interior" class="form-label">Interior color</label>
-                    <ValidationMessage For="() => VehicleForCreateDto.Interior" class="text-danger" />
+                    <ValidationMessage For="() => Request.Interior" class="text-danger" />
                 </div>
             </div>
             <div class="row">
                  <div class="form-floating mb-3 px-1 col-md-12 col-lg-7">
                     <InputText 
-                        @bind-Value="VehicleForCreateDto.VIN" 
+                        @bind-Value="Request.VIN" 
                         class="form-control" 
                         autocomplete="VIN"
                         placeholder="VIN"

@@ -29,9 +29,9 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<VehicleToReturnDto>>>(response);
         }
 
-        public async Task<ResponseModel<string>?> AddAsync(VehicleToCreateDto request)
+        public async Task<ResponseModel<string>?> AddAsync(MultipartFormDataContent request)
         {
-            var response = await httpClient.PostAsJsonAsync($"vehicle", request);
+            var response = await httpClient.PostAsync($"vehicle", request);
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 

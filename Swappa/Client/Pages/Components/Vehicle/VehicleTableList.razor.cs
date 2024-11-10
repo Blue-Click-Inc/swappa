@@ -7,5 +7,7 @@ namespace Swappa.Client.Pages.Components.Vehicle
     {
         [Parameter]
         public PaginatedListDto<VehicleToReturnDto>? Data { get; set; }
+        [Parameter]
+        public string DataCount { get; set; } = "0";
     }
 }

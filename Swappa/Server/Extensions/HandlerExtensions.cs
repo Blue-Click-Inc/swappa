@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using Swappa.Entities.Models;
 using Swappa.Server.Commands.Role;
 using Swappa.Shared.DTOs;

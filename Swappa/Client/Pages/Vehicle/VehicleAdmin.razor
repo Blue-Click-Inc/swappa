@@ -5,18 +5,7 @@
 <div class="container">
   <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
         <BackButton></BackButton>
-        <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
-                <div class="col-0 col-md-3 col-lg-4"></div>
-                <div class="col-12 col-md-6 col-lg-4">
-                    <SinglePillCardDash 
-                        Background="FeedbackRating.Good" 
-                        CardTitle="Total Number Of Vehicles" 
-                        PillContent="@NumberOfVehicles">
-                    </SinglePillCardDash>
-                </div>
-                <div class="col-0 col-md-3 col-lg-4"></div>
-        </div>
-        <div class="card box-shadow-inset m-auto">
+        <div class="card box-shadow-inset m-auto mt-1">
             <EditForm Model="Query" method="post" OnValidSubmit="Search" FormName="searchVehicle">
             <VehicleFilter Query="@Query" />
             <VehicleSearch ClearSearch="Clear" Query="@Query"/>
@@ -51,7 +40,7 @@
                         <Icon Name="IconName.Printer"></Icon>
                     </Tooltip>
                 </Button>
-                <VehicleTableList Data="Data" />
+                <VehicleTableList Data="Data" DataCount="@NumberOfVehicles"/>
             }
         </div>
     </div>

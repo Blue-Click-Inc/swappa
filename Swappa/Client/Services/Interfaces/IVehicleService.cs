@@ -4,7 +4,7 @@ namespace Swappa.Client.Services.Interfaces
 {
     public interface IVehicleService
     {
-        Task<ResponseModel<string>?> AddAsync(VehicleToCreateDto request);
+        Task<ResponseModel<string>?> AddAsync(MultipartFormDataContent request);
         Task<HttpResponseMessage?> ExportToExcel();
         Task<ResponseModel<VehicleToReturnDto>?> GetByIdAsync(Guid id);
         Task<ResponseModel<VehicleDashboardDto>?> GetDashboard();
