@@ -114,38 +114,52 @@ namespace Swappa.Server.Extensions
             };
             foreach (var user in users)
             {
-                logger.LogInformation($"Adding User: {user.Name} to the database");
-                await scope.DoSeedUser(user);
-                logger.LogInformation($"Successfully added added user: {user.Name} to the database");
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                if(userManager.IsNotNull())
+                {
+                    if (userManager.Users.Any())
+                    {
+                        logger.LogInformation("Seeding skipped.... Roles already exist in the database.");
+                    }
+                    else
+                    {
+                        await userManager.DoSeedUser(user, logger);
+                    }
+                }
             }
         }
 
-        private static async Task DoSeedUser(this IServiceScope scope, RegisterDto dto)
+        private static async Task DoSeedUser(this UserManager<AppUser> userManager, 
+            RegisterDto dto, ILogger<Program> logger)
         {
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
             if (userManager.IsNotNull())
             {
                 var user = await userManager.FindByEmailAsync(dto.Email);
                 if (user.IsNull())
                 {
-                    var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
-                    if(mapper.IsNotNull())
+                    user = new AppUser
                     {
-                        user = mapper.Map<AppUser>(dto);
-                        user.UserName = dto.Email;
-                        user.Name = user.Name.Capitalize();
-                        user.Status = Entities.Enums.Status.Active;
-                        user.EmailConfirmed = true;
+                        Name = dto.Name,
+                        Email = dto.Email,
+                        Gender = dto.Gender,
+                        EmailConfirmed = true,
+                        UserName = dto.Email,
+                        Status = Entities.Enums.Status.Active,
+                    };
 
-                        var result = await userManager.CreateAsync(user, dto.Password);
-                        if(result.Succeeded)
+                    logger.LogInformation($"Adding User: {user.Name} to the database");
+                    var result = await userManager.CreateAsync(user, dto.Password);
+                    if (result.Succeeded)
+                    {
+                        logger.LogInformation($"Successfully added User: {user.Name} to the database");
+                        var roleResult = await userManager.AddToRoleAsync(user, dto.Role.ToString());
+                        if (!roleResult.Succeeded)
                         {
-                            var roleResult = await userManager.AddToRoleAsync(user, dto.Role.ToString());
-                            if (!roleResult.Succeeded)
-                            {
-                                await userManager.DeleteAsync(user);
-                            }
+                            logger.LogError($"Adding user: {user.Name} to role failed. Deleting user record...");
+                            await userManager.DeleteAsync(user);
                         }
+
+                        logger.LogInformation($"Deleted user: {user.Name} from the database");
                     }
                 }
             }
