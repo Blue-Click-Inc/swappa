@@ -1,9 +1,9 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Swappa.Shared.Extensions;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
-using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace Swappa.Client.State
 {
@@ -30,7 +30,7 @@ namespace Swappa.Client.State
 
                 if (!string.IsNullOrEmpty(accessToken))
                 {
-                    identity = new ClaimsIdentity(ParseClaimsFromJwt(accessToken), "jwt");
+                    identity = new ClaimsIdentity(accessToken.ParseClaimsFromJwt(), "jwt");
                     httpClient.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue("Bearer", accessToken.Replace("\"", ""));
                 }
@@ -45,25 +45,6 @@ namespace Swappa.Client.State
             {
                 return await Task.FromResult(new AuthenticationState(claimPrincipal));
             }
-        }
-
-        private static List<Claim>? ParseClaimsFromJwt(string jwt)
-        {
-            var payload = jwt.Split('.')[1];
-            var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePair = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
-            return keyValuePair?.Select(kvp => new Claim(kvp.Key, kvp.Value?.ToString())).ToList();
-        }
-
-        private static byte[] ParseBase64WithoutPadding(string base64)
-        {
-            switch (base64.Length % 4)
-            {
-                case 2: base64 += "=="; break;
-                case 3: base64 += "="; break;
-            }
-
-            return Convert.FromBase64String(base64);
         }
     }
 }

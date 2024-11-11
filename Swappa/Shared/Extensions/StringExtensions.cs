@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Swappa.Entities.Enums;
+using System.Security.Claims;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -56,5 +58,24 @@ namespace Swappa.Shared.Extensions
 
         public static bool IsNotNullOrEmpty(this string value) =>
             !string.IsNullOrWhiteSpace(value);
+
+        public static List<Claim>? ParseClaimsFromJwt(this string jwt)
+        {
+            var payload = jwt.Split('.')[1];
+            var jsonBytes = ParseBase64WithoutPadding(payload);
+            var keyValuePair = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
+            return keyValuePair?.Select(kvp => new Claim(kvp.Key, kvp.Value?.ToString() ?? string.Empty)).ToList();
+        }
+
+        private static byte[] ParseBase64WithoutPadding(string base64)
+        {
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "="; break;
+            }
+
+            return Convert.FromBase64String(base64);
+        }
     }
 }

@@ -38,21 +38,24 @@
             Disabled="@_isBusy">
                 <Icon Name="IconName.ArrowLeft"></Icon>
         </Button>
-        @*<Button 
-            Color="ButtonColor.Danger" 
-            Outline="true" 
-            Class="m-1" 
-            @onclick="(async () => await SharedService.GoBackAsync())" 
-            Disabled="@_isBusy">
+        @if (Show)
+        {
+            <Button
+                Color="ButtonColor.Danger"
+                Outline="true"
+                Class="m-1"
+                @onclick="(async () => await SharedService.GoBackAsync())"
+                Disabled="@_isBusy">
                 <Icon Name="IconName.Trash"></Icon>
-        </Button>
-        <Button 
-            Color="ButtonColor.Warning" 
-            Outline="true" 
-            Class="m-1" 
-            @onclick="(async () => await SharedService.GoBackAsync())" 
-            Disabled="@_isBusy">
+            </Button>
+            <Button
+                Color="ButtonColor.Warning"
+                Outline="true"
+                Class="m-1"
+                @onclick="(async () => await SharedService.GoBackAsync())"
+                Disabled="@_isBusy">
                 <Icon Name="IconName.Pencil"></Icon>
-        </Button>*@
+            </Button>
+        }
     </div>
 </div>
