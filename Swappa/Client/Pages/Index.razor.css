@@ -1,17 +1,9 @@
-﻿.filter-toggler {
-    display: none !important;
-}
-
-.display-filter {
+﻿.hide-text {
     display: block !important;
 }
 
-@media (max-width: 768px) {
-    .filter-toggler {
-        display: block !important;
-    }
-
-    .display-filter {
+@media (min-width : 992px) and (max-width : 1110px) {
+    .hide-text {
         display: none !important;
     }
 }

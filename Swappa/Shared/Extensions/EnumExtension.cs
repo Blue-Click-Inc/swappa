@@ -90,7 +90,17 @@ namespace Swappa.Shared.Extensions
             if (!target.IsInEnum<TEnum>()) return false;
             @enum = (TEnum)Enum.ToObject(typeof(TEnum), target);
             return true;
+        }
 
+        public static List<string> AllRolesString()
+        {
+            return new List<string>
+            {
+                SystemRole.Admin.GetDescription(),
+                SystemRole.Merchant.GetDescription(),
+                SystemRole.SuperAdmin.GetDescription(),
+                SystemRole.User.GetDescription()
+            };
         }
     }
 }

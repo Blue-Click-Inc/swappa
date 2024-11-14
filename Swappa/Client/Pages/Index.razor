@@ -4,127 +4,14 @@
 <div class="container">
   <div class="card box-shadow-inset m-auto">
       <EditForm Model="Query" method="post" OnValidSubmit="Search" FormName="searchVehicle">
-        <div class="filter-toggler">
-            <Button Color="ButtonColor.Primary" Outline="true" @onclick=@(() => ToggleFilterDisplay())>
-                <Icon Name="FilterIcon" Size="IconSize.x4"></Icon>
-            </Button>
-        </div>
-        <div class="w-75 m-auto pt-2 px-2 @FilterClass">
-            <div class="row">
-                <div class="form-floating p-1 col-sm-12 col-lg-6">
-                    <InputNumber 
-                        @bind-Value="Query.MinPrice" 
-                        class="form-control"
-                        placeholder="Minimum Price"
-                        aria-required="true" 
-                    />
-                    <label for="Price" class="form-label">Lower Price Range</label>
-                </div>
-                <div class="form-floating p-1 col-sm-12 col-lg-6">
-                    <InputNumber 
-                        @bind-Value="Query.MaxPrice" 
-                        class="form-control" 
-                        placeholder="Maximum Price"
-                        aria-required="true" 
-                    />
-                    <label for="Price" class="form-label">Higher Price Range</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-floating p-1 col-sm-12 col-lg-6">
-                    <InputSelect 
-                        @bind-Value="Query.Transmission" 
-                        class="form-control" 
-                        placeholder="Transmission"
-                        aria-required="true">
-                        @foreach (var transmission in Enum.GetValues(typeof(Transmission)))
-                        {
-                            <option value="@transmission">@transmission.GetDescription()</option>
-                        }
-                    </InputSelect>
-                    <label for="Transmission" class="form-label">Transmission</label>
-                </div>
-                <div class="form-floating p-1 col-sm-12 col-lg-6">
-                    <InputSelect 
-                        @bind-Value="Query.Engine" 
-                        class="form-control" 
-                        placeholder="Engine"
-                        aria-required="true"
-                    >
-                        @foreach (var engine in Enum.GetValues(typeof(Engine)))
-                        {
-                        <option value="@engine">@engine.GetDescription()</option>
-                        }
-                </InputSelect>
-                    <label for="Price" class="form-label">Engine</label>
-                </div>
-            </div>
-            <div class="row pt-1">
-                <div class="form-floating p-1 col-md-12 col-lg-3">
-                    <InputNumber 
-                        @bind-Value="Query.MinYear" 
-                        class="form-control"
-                        placeholder="Minimum Year"
-                        aria-required="true" 
-                    />
-                    <label for="Year" class="form-label">Minimum Year</label>
-                </div>
-                <div class="form-floating p-1 col-md-12 col-lg-3">
-                    <InputNumber 
-                        @bind-Value="Query.MaxYear" 
-                        class="form-control" 
-                        placeholder="Maximum Year"
-                        aria-required="true" 
-                    />
-                    <label for="Year" class="form-label">Maximum Year</label>
-                </div>
-                <div class="form-floating p-1 col-md-12 col-lg-6">
-                    <InputSelect 
-                        @bind-Value="Query.DriveTrain" 
-                        class="form-control" 
-                        placeholder="DriveTrain"
-                        aria-required="true">
-                            @foreach (var drive in Enum.GetValues(typeof(DriveTrain)))
-                            {
-                            <option value="@drive">@drive.GetDescription()</option>
-                            }
-                    </InputSelect>
-                    <label for="DriveTrain" class="form-label">Drive Train</label>
-                </div>
-            </div>
-            <hr />
-        </div>
-        <div class="row w-75 m-auto my-3">
-            <div class="form-floating px-1 col-md-12 col-lg-7 py-1 my-1">
-                <InputText 
-                    @bind-Value="Query.SearchTerm" 
-                    class="form-control" 
-                    placeholder="Enter text"
-                    aria-required="true" 
-                />
-                <label for="Make" class="form-label">Enter text</label>
-            </div>
-            <div class="form-floating px-1 col-md-12 col-lg-5 py-1">
-                <div class="row">
-                    <div class="col-md-12 col-lg-6 my-1">
-                        <Button Color="ButtonColor.Primary" Outline="true" Class="p-3 w-100" Type="ButtonType.Submit">
-                            <Icon Name="IconName.Search"></Icon> Search
-                        </Button>
-                    </div>
-                    <div class="col-md-12 col-lg-6 my-1">
-                        <Button Color="ButtonColor.Secondary" Outline="true" Class="p-3 w-100" @onclick=@(async () => await Clear())>
-                            <Icon Name="IconName.Brush"></Icon> Clear
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <VehicleFilter Query="@Query" />
+        <VehicleSearch ClearSearch="Clear" Query="@Query"/>
       </EditForm>
   </div>
   <div class="row g-1 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
         @if(_isLoading)
         {
-            <div class="text-center align-self-center top-50 m-auto">
+            <div class="text-center align-self-center top-50 m-auto mt-5">
                 <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
             </div>
         }

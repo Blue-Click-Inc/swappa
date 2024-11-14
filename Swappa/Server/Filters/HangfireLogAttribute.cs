@@ -53,7 +53,7 @@ namespace Swappa.Server.Filters
             var failedState = context.CandidateState as FailedState;
             if (failedState != null)
             {
-                Logger.ErrorFormat($"Job {context.BackgroundJob.Id} failed due to an exception {failedState.Exception}");
+                Logger.ErrorFormat($"Job {context.BackgroundJob.Id} failed due to an exception {failedState.Exception.Message}");
             }
         }
     }

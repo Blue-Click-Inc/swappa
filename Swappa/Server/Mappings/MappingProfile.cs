@@ -21,7 +21,8 @@ namespace SpringBoardApi.Mapper
             CreateMap<EntityLocation, BaseLocationDto>();
             CreateMap<AppUser, LeanUserDetailsDto>();
             CreateMap<Vehicle, VehicleToReturnDto>();
-            CreateMap<VehicleToCreateDto, Vehicle>();
+            CreateMap<VehicleToCreateDto, Vehicle>()
+                .ForMember(dest => dest.Images, opt => opt.Ignore());
             CreateMap<VehicleForUpdateDto, Vehicle>();
             CreateMap<Image, ImageToReturnDto>();
         }

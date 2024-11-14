@@ -2,6 +2,7 @@
 using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
+using System.Net.Http.Json;
 
 namespace Swappa.Client.Services.Implementations
 {
@@ -16,10 +17,28 @@ namespace Swappa.Client.Services.Implementations
             this.httpInterceptor = httpInterceptor;
         }
 
+        public async Task<ResponseModel<VehicleToReturnDto>?> GetByIdAsync(Guid id)
+        {
+            var response = await httpClient.GetAsync($"vehicle/{id}");
+            return await httpInterceptor.Process<ResponseModel<VehicleToReturnDto>>(response);
+        }
+
         public async Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>?> GetDataAsync(VehicleQueryDto query)
         {
             var response = await httpClient.GetAsync($"vehicle{GetQuery(query)}");
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<VehicleToReturnDto>>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> AddAsync(MultipartFormDataContent request)
+        {
+            var response = await httpClient.PostAsync($"vehicle", request);
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> UpdateAsync(Guid id, VehicleForUpdateDto request)
+        {
+            var response = await httpClient.PutAsJsonAsync($"vehicle/{id}", request);
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
         public async Task<HttpResponseMessage?> ExportToExcel()

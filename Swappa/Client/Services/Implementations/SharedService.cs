@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Swappa.Client.Services.Interfaces;
+using Swappa.Entities.Enums;
+using Swappa.Shared.Extensions;
+using System.Net.Http.Headers;
 
 namespace Swappa.Client.Services.Implementations
 {
@@ -47,12 +50,40 @@ namespace Swappa.Client.Services.Implementations
             await instance.CancelAsync();
         }
 
-        //public Stream ToStream(IBrowserFile file)
-        //{
-        //    var stream = file.OpenReadStream();
-        //    //var stream = new MemoryStream();
-        //    //file.CopyToAsync(stream);
-        //    stream.Position = 0;
-        //} 
+        public MultipartFormDataContent OnInputFilesChange(InputFileChangeEventArgs e, FileTypes fileType, string formFileName,  long maxAllowedMaximumSize, out bool isValidInputs)
+        {
+            var content = new MultipartFormDataContent();
+            var files = e.GetMultipleFiles().ToList();
+            if (files.IsNotNullOrEmpty())
+            {
+                foreach (var file in files)
+                {
+                    if (file.IsValid(fileType))
+                    {
+                        var stream = new StreamContent(file.OpenReadStream(maxAllowedMaximumSize));
+                        stream.Headers.ContentType = new MediaTypeHeaderValue(file.ContentType);
+
+                        content.Add(
+                            content: stream,
+                            name: $"\"{formFileName}\"",
+                            fileName: file.Name);
+
+                    }
+                    else
+                    {
+                        isValidInputs = false;
+                        return content;
+                    }
+                }
+
+                isValidInputs = true;
+                return content;
+            }
+            else
+            {
+                isValidInputs = false;
+                return content;
+            }
+        }
     }
 }

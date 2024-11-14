@@ -1,0 +1,90 @@
+﻿<div class="filter-toggler">
+    <Button Color="ButtonColor.Primary" Outline="true" @onclick=@(() => ToggleFilterDisplay())>
+        <Icon Name="FilterIcon" Size="IconSize.x4"></Icon>
+    </Button>
+</div>
+<div class="w-75 m-auto pt-2 px-2 @FilterClass">
+    <div class="row">
+        <div class="form-floating p-1 col-sm-12 col-lg-6">
+            <InputNumber 
+                @bind-Value="Query.MinPrice" 
+                class="form-control"
+                placeholder="Minimum Price"
+                aria-required="true" 
+            />
+            <label for="Price" class="form-label">Lower Price Range</label>
+        </div>
+        <div class="form-floating p-1 col-sm-12 col-lg-6">
+            <InputNumber 
+                @bind-Value="Query.MaxPrice" 
+                class="form-control" 
+                placeholder="Maximum Price"
+                aria-required="true" 
+            />
+            <label for="Price" class="form-label">Higher Price Range</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-floating p-1 col-sm-12 col-lg-6">
+            <InputSelect 
+                @bind-Value="Query.Transmission" 
+                class="form-control" 
+                placeholder="Transmission"
+                aria-required="true">
+                @foreach (var transmission in Enum.GetValues(typeof(Transmission)))
+                {
+                    <option value="@transmission">@transmission.GetDescription()</option>
+                }
+            </InputSelect>
+            <label for="Transmission" class="form-label">Transmission</label>
+        </div>
+        <div class="form-floating p-1 col-sm-12 col-lg-6">
+            <InputSelect 
+                @bind-Value="Query.Engine" 
+                class="form-control" 
+                placeholder="Engine"
+                aria-required="true"
+            >
+                @foreach (var engine in Enum.GetValues(typeof(Engine)))
+                {
+                <option value="@engine">@engine.GetDescription()</option>
+                }
+            </InputSelect>
+            <label for="Price" class="form-label">Engine</label>
+        </div>
+    </div>
+    <div class="row pt-1">
+        <div class="form-floating p-1 col-md-12 col-lg-3">
+            <InputNumber 
+                @bind-Value="Query.MinYear" 
+                class="form-control"
+                placeholder="Minimum Year"
+                aria-required="true" 
+            />
+            <label for="Year" class="form-label">Minimum Year</label>
+        </div>
+        <div class="form-floating p-1 col-md-12 col-lg-3">
+            <InputNumber 
+                @bind-Value="Query.MaxYear" 
+                class="form-control" 
+                placeholder="Maximum Year"
+                aria-required="true" 
+            />
+            <label for="Year" class="form-label">Maximum Year</label>
+        </div>
+        <div class="form-floating p-1 col-md-12 col-lg-6">
+            <InputSelect 
+                @bind-Value="Query.DriveTrain" 
+                class="form-control" 
+                placeholder="DriveTrain"
+                aria-required="true">
+                    @foreach (var drive in Enum.GetValues(typeof(DriveTrain)))
+                    {
+                    <option value="@drive">@drive.GetDescription()</option>
+                    }
+            </InputSelect>
+            <label for="DriveTrain" class="form-label">Drive Train</label>
+        </div>
+    </div>
+    <hr />
+</div>

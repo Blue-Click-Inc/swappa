@@ -1,0 +1,23 @@
+﻿@page "/vehicle/{Id:guid}"
+
+<PageTitle>@_pageTitle</PageTitle>
+<div class="container mt-5">
+    @if (_isBusy)
+    {
+        <div class="text-center align-self-center top-50 m-auto">
+            <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
+        </div>
+    }
+    else if (_isError)
+    {
+        <Alert Color="AlertColor.Danger">
+            <h4 class="alert-heading text-center">@_messageHeader</h4>
+            <p class="text-center">@_message</p>
+            <Button Style="outline: none; text-decoration: underline;color: blue;" @onclick=@(async () => await SharedService.GoBackAsync())>Go Back</Button>
+        </Alert>
+    }
+    @if(!_isBusy && !_isError && Data.IsNotNull())
+    {
+       <VehicleDetailCard Data="Data"></VehicleDetailCard>
+    }
+</div>

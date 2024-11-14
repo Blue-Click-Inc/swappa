@@ -26,11 +26,13 @@ namespace Swappa.Client.Pages.Modals.Accounts
                 }
                 else
                 {
+                    var userId = AccountService.GetUserIdFromToken(Response.Data?.AccessToken ?? string.Empty);
+                    await LocalStorage.SetItemAsync("userId", userId);
                     await LocalStorage.SetItemAsync("accessToken", Response.Data?.AccessToken);
                     await LocalStorage.SetItemAsync("refreshToken", Response.Data?.RefreshToken);
                     await AuthStateProvider.GetAuthenticationStateAsync();
                     await Instance.CloseAsync();
-                    Toast.ShowSuccess("Login successful.");
+                    Toast.ShowSuccess($"Login successful.");
                 }
             }
             else

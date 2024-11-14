@@ -1,0 +1,9 @@
+﻿.hide-text {
+    display: block !important;
+}
+
+@media (min-width : 992px) and (max-width : 1110px) {
+    .hide-text {
+        display: none !important;
+    }
+}

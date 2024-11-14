@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Blazored.Modal;
+using Microsoft.JSInterop;
 using Swappa.Client.Pages.Modals.Vehicle;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
@@ -11,10 +12,16 @@ namespace Swappa.Client.Pages.Vehicle
         private string message = string.Empty;
 
         public PaginatedListDto<VehicleToReturnDto>? Data { get; set; }
-        
+        public Guid LoggedInUserId { get; set; }
+        public VehicleQueryDto Query { get; set; } = new();
+        public string NumberOfVehicles => Data.IsNull() ? 
+            0.0m.ToString() : 
+            Data.MetaData.TotalCount.ToString("#,##");
+
         protected override async Task OnInitializedAsync()
         {
             await GetDataAsync();
+            LoggedInUserId = await UserService.GetLoggedInUserId();
             await base.OnInitializedAsync();
         }
 
@@ -54,10 +61,25 @@ namespace Swappa.Client.Pages.Vehicle
             await confirmation.Result;
         }
 
+        private async Task ShowAddVehicleModal()
+        {
+            var idParam = new ModalParameters
+            {
+                { "UserId", LoggedInUserId }
+            };
+
+            var confirmationModal = Modal.Show<AddVehicleModal>("", idParam);
+            var result = await confirmationModal.Result;
+            if (result.Confirmed)
+            {
+                await GetDataAsync();
+            }
+        }
+
         private async Task GetDataAsync()
         {
             isLoading = Data == null;
-            var response = await VehicleService.GetDataAsync(new VehicleQueryDto());
+            var response = await VehicleService.GetDataAsync(Query);
             if(response != null && response.IsSuccessful)
             {
                 Data = response.Data;
@@ -65,8 +87,20 @@ namespace Swappa.Client.Pages.Vehicle
             else
             {
                 message = response?.Message ?? string.Empty;
+                Toast.ShowError(message);
             }
             isLoading = false;
+        }
+
+        private async Task Search()
+        {
+            await GetDataAsync();
+        }
+
+        private async Task Clear()
+        {
+            Query = new();
+            await GetDataAsync();
         }
     }
 }

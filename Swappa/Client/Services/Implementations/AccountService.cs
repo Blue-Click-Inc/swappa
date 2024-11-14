@@ -1,7 +1,9 @@
 ﻿using Swappa.Client.Services.Interfaces;
 using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace Swappa.Client.Services.Implementations
 {
@@ -138,6 +140,14 @@ namespace Swappa.Client.Services.Implementations
             var response = await httpClient.PutAsJsonAsync($"account/{userId}/remove-role/{role}", new object());
 
             return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public string GetUserIdFromToken(string token)
+        {
+            var claims = token.ParseClaimsFromJwt() ?? new List<Claim>();
+            var userId = claims.Find(u => u.Type.Equals(ClaimTypes.NameIdentifier));
+
+            return userId.Value;
         }
     }
 }

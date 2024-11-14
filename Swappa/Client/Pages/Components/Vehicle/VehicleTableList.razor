@@ -1,0 +1,59 @@
+﻿<table class="table table-striped table-hover table-borderless caption-top">
+    <caption>Vehicles: <b>@DataCount</b></caption>
+    <thead>
+        <tr>
+            <th style="background: #002147; color: white;"></th>
+            <th style="background: #002147; color: white;">Model</th>
+            <th style="background: #002147; color: white;">Make</th>
+            <th style="background: #002147; color: white;">Year</th>
+            <th style="background: #002147; color: white;">Price</th>
+            <th style="background: #002147; color: white;">Color</th>
+            <th style="background: #002147; color: white;">Transmission</th>
+            <th style="background: #002147; color: white;">Engine</th>
+            <th style="background: #002147; color: white;">Odometer</th>
+            <th style="background: #002147; color: white;">Date Added</th>
+            <th style="background: #002147; color: white;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Data.IsNull() || Data.Data.IsNullOrEmpty())
+        {
+
+            <tr class="box-shadow-inset">
+                <td colspan="11">
+                    <Alert Color="AlertColor.Info">
+                        <h4 class="alert-heading text-center">No record found!</h4>
+                        <p class="text-center">
+                            <Icon Name="IconName.InfoCircle"></Icon>  No vehicle record to display.
+                        </p>
+                    </Alert>
+                </td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var vehicle in Data.Data)
+            {
+
+                <tr class="box-shadow-inset">
+                    <td></td>
+                    <td>@vehicle?.Make</td>
+                    <td>@vehicle?.Model</td>
+                    <td>@vehicle?.Year</td>
+                    <td>@string.Format(new CultureInfo("en-NG"), "{0:C}", vehicle?.Price)</td>
+                    <td>@vehicle?.Color</td>
+                    <td>@vehicle?.Transmission.GetDescription()</td>
+                    <td>@vehicle?.Engine.GetDescription()</td>
+                    <td>@vehicle?.Odometer.ToString("D")</td>
+                    <td>@vehicle?.CreatedAt.ToString("d")</td>
+                    <td class="d-flex justify-content-center">
+                        <a href="/vehicle/@vehicle?.Id" class="link-btn">
+                            <Icon Name="IconName.Eye"></Icon>
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        }
+    </tbody>
+</table>

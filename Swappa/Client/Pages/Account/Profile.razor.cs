@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using Swappa.Client.Pages.Modals.Accounts;
 using Swappa.Client.Pages.Modals.Location;
 using Swappa.Client.Pages.Modals.User;
+using Swappa.Client.Pages.Modals.Vehicle;
 using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
