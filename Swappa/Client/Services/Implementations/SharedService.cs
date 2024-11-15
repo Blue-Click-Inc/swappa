@@ -32,6 +32,7 @@ namespace Swappa.Client.Services.Implementations
         public async Task LogoutAsync()
         {
             await localStorage.RemoveItemAsync("accessToken");
+            await localStorage.RemoveItemAsync("userId");
             await stateProvider.GetAuthenticationStateAsync();
         }
 
