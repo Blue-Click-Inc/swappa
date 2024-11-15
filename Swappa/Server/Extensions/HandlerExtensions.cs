@@ -112,16 +112,16 @@ namespace Swappa.Server.Extensions
                     Password = PASS
                 }
             };
-            foreach (var user in users)
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            if (userManager.IsNotNull())
             {
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-                if(userManager.IsNotNull())
+                if (userManager.Users.Any())
                 {
-                    if (userManager.Users.Any())
-                    {
-                        logger.LogInformation("Seeding skipped.... Roles already exist in the database.");
-                    }
-                    else
+                    logger.LogInformation("Seeding skipped.... Users already exist in the database.");
+                }
+                else
+                {
+                    foreach (var user in users)
                     {
                         await userManager.DoSeedUser(user, logger);
                     }

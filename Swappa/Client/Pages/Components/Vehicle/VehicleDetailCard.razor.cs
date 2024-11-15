@@ -21,8 +21,7 @@ namespace Swappa.Client.Pages.Components.Vehicle
         private async Task<bool> IsTheOwner()
         {
             var userIdString = await LocalStorage.GetItemAsStringAsync("userId");
-            var userId = userIdString.Replace("\"", "").ToGuid();
-            return Data.UserId.Equals(userId);
+            return userIdString.IsNotNullOrEmpty() && Data.UserId.Equals(userIdString.Replace("\"", "").ToGuid());
         }
     }
 }
