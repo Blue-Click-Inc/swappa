@@ -15,6 +15,15 @@
                 <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
             </div>
         }
+        else if(!_isLoading && _hasError)
+        {
+            <Alert Color="AlertColor.Danger">
+                <h4 class="alert-heading text-center">An error Occurred!</h4>
+                <p class="text-center">
+                    <Icon Name="IconName.InfoCircle"></Icon> Something went wrong. Please contact support if issue persists.
+                </p>
+            </Alert>
+        }
         else if(Vehicles.Data.IsNotNullOrEmpty())
         {
             @foreach(var vehicle in Vehicles.Data)
