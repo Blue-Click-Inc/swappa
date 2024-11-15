@@ -7,6 +7,15 @@ namespace Swappa.Server.Configurations
 {
     public static class Configurations
     {
+        public static IConfigurationRoot GetAppEnvironementConfigs()
+        {
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty;
+            return new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env}.json", optional: true)
+                .Build();
+        }
+
         public static void ConfigureLogging()
         {
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty;

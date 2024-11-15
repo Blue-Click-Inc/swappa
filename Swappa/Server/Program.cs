@@ -11,6 +11,8 @@ using Swappa.Server.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 Configurations.ConfigureLogging();
+//TODO: Implement another version of Mongo Connection that will accept connection string and database name
+//TODO: var appConfigs = Configurations.GetAppEnvironementConfigs();
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureMongoIdentity(builder.Configuration);
