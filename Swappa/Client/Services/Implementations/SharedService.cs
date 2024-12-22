@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using Swappa.Client.Services.Interfaces;
+using Swappa.Client.State;
 using Swappa.Entities.Enums;
 using Swappa.Shared.Extensions;
 using System.Net.Http.Headers;
@@ -31,8 +32,10 @@ namespace Swappa.Client.Services.Implementations
 
         public async Task LogoutAsync()
         {
+            GlobalVariables.UserId = Guid.Empty;
+            GlobalVariables.Favorites = 0;
             await localStorage.RemoveItemAsync("accessToken");
-            await localStorage.RemoveItemAsync("userId");
+            await localStorage.RemoveItemAsync("refreshToken");
             await stateProvider.GetAuthenticationStateAsync();
         }
 

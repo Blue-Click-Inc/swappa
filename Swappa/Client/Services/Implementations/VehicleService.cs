@@ -59,6 +59,28 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<VehicleDashboardDto>>(response);
         }
 
+        public async Task<ResponseModel<FavoriteVehicleResponseDto>?> ToggleFavorite(IdDto request)
+        {
+            var response = await httpClient.PostAsJsonAsync("vehicle/toggle-favorite", request);
+            return await httpInterceptor.Process<ResponseModel<FavoriteVehicleResponseDto>>(response);
+        }
+
+        public async Task<ResponseModel<bool>> IsFavorite(Guid id)
+        {
+            var response = await httpClient.GetAsync($"vehicle/is-favorite/{id}");
+            if(response.IsNotNull() && response.IsSuccessStatusCode)
+            {
+                await response.Content.ReadFromJsonAsync<ResponseModel<bool>>();
+            }
+            return new ResponseModel<bool>();
+        }
+
+        public async Task<ResponseModel<long>?> GetFavoriteCount(Guid userId)
+        {
+            var response = await httpClient.GetAsync($"vehicle/favorite-count/{userId}");
+            return await httpInterceptor.Process<ResponseModel<long>>(response);
+        }
+
         private string GetQuery(VehicleQueryDto query)
         {
             var queryStr = string.Empty;

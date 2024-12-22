@@ -22,6 +22,8 @@ namespace Swappa.Shared.DTOs
         public DateTime UpdatedAt { get; set; }
         public bool IsDeprecated { get; set; }
         public long Views { get; set; }
+        public long Favorited { get; set; }
+        public bool IsFavorite { get; set; }
         public LocationToReturnDto? Location { get; set; }
         public List<ImageToReturnDto> Images { get; set; } = new();
     }

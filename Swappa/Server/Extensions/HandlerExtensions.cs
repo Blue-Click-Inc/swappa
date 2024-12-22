@@ -158,8 +158,10 @@ namespace Swappa.Server.Extensions
                             logger.LogError($"Adding user: {user.Name} to role failed. Deleting user record...");
                             await userManager.DeleteAsync(user);
                         }
-
-                        logger.LogInformation($"Deleted user: {user.Name} from the database");
+                        else
+                        {
+                            logger.LogInformation($"Added user: {user.Name} to the {dto.Role.GetDescription()} role");
+                        }
                     }
                 }
             }
