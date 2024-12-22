@@ -90,7 +90,11 @@ namespace Swappa.Client.Pages.User
 
         private async Task ShowAddUserModal()
         {
-            var confirmation = Modal.Show<AddUserModal>("");
+            var parameters = new ModalParameters
+            {
+                { "ForSuperUser", true }
+            };
+            var confirmation = Modal.Show<RegisterDialogue>("", parameters);
             await confirmation.Result;
         }
 

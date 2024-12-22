@@ -1,0 +1,7 @@
+﻿<div class="px-5">
+    <InputRadioGroup @bind-Value="RegType.Type">
+        <InputRadio Value="SystemRole.Admin" /> @SystemRole.Admin.GetDescription()
+        <br />
+        <InputRadio Value="SystemRole.SuperAdmin" /> @SystemRole.SuperAdmin.GetDescription()
+    </InputRadioGroup>
+</div>

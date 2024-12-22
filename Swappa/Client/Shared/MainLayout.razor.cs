@@ -1,6 +1,6 @@
-﻿using Swappa.Client.Pages.Modals.Accounts;
-using Swappa.Client.State;
-using Swappa.Shared.Extensions;
+﻿using Blazored.Modal;
+using Swappa.Client.Pages.Modals.Accounts;
+using Swappa.Entities.Enums;
 
 namespace Swappa.Client.Shared
 {
@@ -20,7 +20,11 @@ namespace Swappa.Client.Shared
 
         private async Task ShowRegisterModal()
         {
-            var confirmation = Modal.Show<RegisterModal>("");
+            var parameters = new ModalParameters
+            {
+                { "Type", SystemRole.User }
+            };
+            var confirmation = Modal.Show<RegisterModal>("", parameters);
             await confirmation.Result;
         }
     }

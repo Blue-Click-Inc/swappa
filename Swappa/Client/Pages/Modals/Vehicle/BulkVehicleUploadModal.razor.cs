@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Components.Forms;
 using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
-using System.Net.Http.Headers;
 
 namespace Swappa.Client.Pages.Modals.Vehicle
 {
