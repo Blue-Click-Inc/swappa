@@ -34,20 +34,15 @@ namespace Swappa.Client.Pages.Modals.Accounts
                     await LocalStorage.SetItemAsync("userId", userId);
                     await LocalStorage.SetItemAsync("accessToken", Response.Data?.AccessToken);
                     await LocalStorage.SetItemAsync("refreshToken", Response.Data?.RefreshToken);
+
                     await AuthStateProvider.GetAuthenticationStateAsync();
-                    //var userId = AccountService.GetUserIdFromAccessToken(Response.Data?.AccessToken ?? string.Empty);
                     if (userId.IsNotEmpty())
                     {
                         GlobalVariables.UserId = userId;
                         var countResponse = await VehicleService.GetFavoriteCount(userId);
                         if (countResponse.IsSuccessful)
                         {
-                            await LocalStorage.SetItemAsync("favoriteVehicles", countResponse.Data);
                             GlobalVariables.Favorites = countResponse.Data;
-                        }
-                        else
-                        {
-                            await LocalStorage.SetItemAsync("favoriteVehicles", 0);
                         }
                     }
                     await Instance.CloseAsync();

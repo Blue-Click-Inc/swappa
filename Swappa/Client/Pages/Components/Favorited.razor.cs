@@ -1,5 +1,6 @@
 ﻿using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
+using Swappa.Client.State;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
 
@@ -17,17 +18,6 @@ namespace Swappa.Client.Pages.Components
             await base.OnParametersSetAsync();
         }
 
-        private async Task<bool> IsFavoriteVehicle(Guid id)
-        {
-            var response = await VehicleService.IsFavorite(id);
-            if (response.IsSuccessful)
-            {
-                return response.Data;
-            }
-
-            return false;
-        }
-
         private async Task ToggleFavorite()
         {
             var response = await VehicleService.ToggleFavorite(new Swappa.Shared.DTOs.IdDto
@@ -37,7 +27,7 @@ namespace Swappa.Client.Pages.Components
 
             if(response.IsNotNull() && response.IsSuccessful)
             {
-                await LocalStorage.SetItemAsync("favoriteVehicles", response.Data.AllFavorites);
+                GlobalVariables.Favorites = response.Data.AllFavorites;
                 Vehicle.IsFavorite = response.Data.IsFavorite;
                 Vehicle.Favorited = response.Data.Favorites;
             }

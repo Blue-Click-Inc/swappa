@@ -24,8 +24,7 @@
             <p class="my-1"><span class="fw-bold">VIN:</span> @Data.VIN</p>
             <p class="my-1"><span class="fw-bold">Views:</span> @Data.Views</p>
             <AuthorizeView>
-                <p class="d-flex my-1 justify-content-between">
-                    <span class="fw-bold">Favorited: @Data.Favorited.ToShortNumString()</span>
+                <p class="d-flex my-1 justify-content-end">
                     <Favorited Vehicle="Data"/>
                 </p>
             </AuthorizeView>
