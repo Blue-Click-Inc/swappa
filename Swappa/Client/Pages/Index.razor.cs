@@ -7,9 +7,9 @@ namespace Swappa.Client.Pages
     public partial class Index
     {
         private bool _isLoading = false;
-        private string _message = string.Empty;
         private readonly string _pageTitle = $"{Statics.AppName} - Home";
         private bool _showFilter = true;
+        private bool _hasError = false;
 
         public IconName FilterIcon => _showFilter ? IconName.Filter : IconName.EyeSlash;
         public string FilterClass => _showFilter ? "display-filter" : null!;
@@ -32,7 +32,7 @@ namespace Swappa.Client.Pages
             }
             else
             {
-                _message = response?.Message ?? string.Empty;
+                _hasError = true;
             }
             _isLoading = false;
         }

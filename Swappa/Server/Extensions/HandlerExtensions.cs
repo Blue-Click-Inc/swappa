@@ -112,16 +112,16 @@ namespace Swappa.Server.Extensions
                     Password = PASS
                 }
             };
-            foreach (var user in users)
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+            if (userManager.IsNotNull())
             {
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-                if(userManager.IsNotNull())
+                if (userManager.Users.Any())
                 {
-                    if (userManager.Users.Any())
-                    {
-                        logger.LogInformation("Seeding skipped.... Roles already exist in the database.");
-                    }
-                    else
+                    logger.LogInformation("Seeding skipped.... Users already exist in the database.");
+                }
+                else
+                {
+                    foreach (var user in users)
                     {
                         await userManager.DoSeedUser(user, logger);
                     }
@@ -158,8 +158,10 @@ namespace Swappa.Server.Extensions
                             logger.LogError($"Adding user: {user.Name} to role failed. Deleting user record...");
                             await userManager.DeleteAsync(user);
                         }
-
-                        logger.LogInformation($"Deleted user: {user.Name} from the database");
+                        else
+                        {
+                            logger.LogInformation($"Added user: {user.Name} to the {dto.Role.GetDescription()} role");
+                        }
                     }
                 }
             }

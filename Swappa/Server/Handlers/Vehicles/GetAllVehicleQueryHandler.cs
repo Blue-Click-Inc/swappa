@@ -25,7 +25,7 @@ namespace Swappa.Server.Handlers.Vehicles
 
         public async Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>> Handle(GetAllVehiclesQuery request, CancellationToken cancellationToken)
         {
-            var query = repository.Vehicle.FindAsQueryable(v => !v.IsDeprecated)
+            var query = repository.Vehicle.FindAsQueryable(v => !v.IsDeprecated && !request.IncludeSold ? !v.IsSold : true)
                 .OrderByDescending(v => v.CreatedAt)
                 .Search(request.SearchTerm)
                 .Filter(request);

@@ -10,6 +10,7 @@ namespace Swappa.Client.Services.Interfaces
         Task<ResponseModel<string>?> ChangePasswordAsync(Guid id, ChangePasswordDto request);
         Task<ResponseModel<string>?> ConfirmAccountAsync(AccountConfirmationDto account);
         Task<ResponseModel<string>?> DeactivateAccountAsync(Guid id);
+        Guid GetUserIdFromAccessToken(string token);
         string GetUserIdFromToken(string token);
         Task<ResponseModel<TokenDto>?> LoginAsync(LoginDto login);
         Task<ResponseModel<string>?> RegisterAsync(RegisterDto register);

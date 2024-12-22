@@ -149,5 +149,13 @@ namespace Swappa.Client.Services.Implementations
 
             return userId.Value;
         }
+
+        public Guid GetUserIdFromAccessToken(string token)
+        {
+            var claims = token.ParseClaimsFromJwt() ?? new List<Claim>();
+            var userId = claims.Find(u => u.Type.Equals(ClaimTypes.NameIdentifier));
+
+            return userId.Value.ToGuid();
+        }
     }
 }

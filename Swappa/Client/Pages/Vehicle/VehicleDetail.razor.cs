@@ -14,7 +14,7 @@ namespace Swappa.Client.Pages.Vehicle
         [Parameter]
         public Guid Id { get; set; }
         public VehicleToReturnDto? Data { get; set; }
-
+        
         protected async override Task OnParametersSetAsync()
         {
             await GetResponseAsync(Id);

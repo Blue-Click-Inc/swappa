@@ -63,6 +63,30 @@ namespace Swappa.Server.Controllers.V1
                 Id = id,
             }));
 
+        [HttpPost("toggle-favorite")]
+        [Authorize]
+        public async Task<IActionResult> ToggleFavorite([FromBody] IdDto request) =>
+            Ok(await _mediator.Send(new ToggleFavoriteVehicleCommand
+            {
+                VehicleId = request.Id
+            }));
+
+        [Authorize]
+        [HttpGet("favorite-count/{userId}")]
+        public async Task<IActionResult> FavoriteCount([FromRoute] Guid userId) =>
+            Ok(await _mediator.Send(new GetFavoriteVehicleCountQuery
+            {
+                UserId = userId
+            }));
+
+        [Authorize]
+        [HttpGet("is-favorite/{id}")]
+        public async Task<IActionResult> IsFavorite([FromRoute] Guid id) =>
+            Ok(await _mediator.Send(new IsFavoriteVehicleQuery
+            {
+                Id = id
+            }));
+
         [HttpGet("export-to-excel")]
         [Authorize(Roles = "Admin, Merchant, SuperAdmin")]
         public async Task<IActionResult> DownloadVehicleData()
