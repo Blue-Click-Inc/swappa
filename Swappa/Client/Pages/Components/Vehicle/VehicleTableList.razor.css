@@ -1,0 +1,12 @@
+﻿.link-btn {
+    border: 1px solid black !important;
+    padding: .5rem .7rem;
+    border-radius: .3rem;
+    color: black;
+}
+
+.link-btn:hover {
+    background: black;
+    color: white;
+    border: white;
+}

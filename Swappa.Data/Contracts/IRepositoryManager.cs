@@ -9,5 +9,7 @@
         IVehicleRepository Vehicle { get; }
         IImageRepository Image { get; }
         ICommonRepository Common { get; }
+        IVehicleViewsRepository VehicleViews { get; }
+        IFavoriteVehiclesRepository FavoriteVehicles { get; }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using MediatR;
 using Swappa.Data.Contracts;
+using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Queries.Vehicle;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Server.Handler.Vehicles
 {
@@ -34,6 +36,32 @@ namespace Swappa.Server.Handler.Vehicles
             {
                 vehicle.Images = images;
             }
+
+            await Task.Run(async () =>
+            {
+                var loggedInUserId = repository.Common.GetUserIdAsGuid();
+                if (loggedInUserId.IsNotEmpty())
+                {
+                    var alreadyViewed = await repository
+                    .VehicleViews.Exists(x => x.VehicleId.Equals(request.Id) && x.UserId.Equals(loggedInUserId));
+                    if (!alreadyViewed && !loggedInUserId.Equals(vehicle.UserId))
+                    {
+                        await repository.VehicleViews.AddAsync(new VehicleViews
+                        {
+                            VehicleId = vehicle.Id,
+                            UserId = loggedInUserId,
+                        });
+
+                        vehicle.Views++;
+                        await repository.Vehicle.EditAsync(x => x.Id.Equals(vehicle.Id), vehicle);
+                    }
+
+                    var isUserFavorite = await repository.FavoriteVehicles
+                        .Exists(v => v.VehicleId.Equals(request.Id) && v.UserId.Equals(loggedInUserId));
+
+                    vehicle.IsFavorite = isUserFavorite;
+                }
+            }, CancellationToken.None);
 
             var returnData = mapper.Map<VehicleToReturnDto>(vehicle);
             return response.Process<VehicleToReturnDto>(new ApiOkResponse<VehicleToReturnDto>(returnData));

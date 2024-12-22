@@ -11,6 +11,8 @@ using Swappa.Server.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 Configurations.ConfigureLogging();
+//TODO: Implement another version of Mongo Connection that will accept connection string and database name
+//TODO: var appConfigs = Configurations.GetAppEnvironementConfigs();
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureMongoIdentity(builder.Configuration);
@@ -58,6 +60,8 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
+    app.UseSwagger();
+    app.UseSwaggerUI();
     app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
@@ -81,5 +85,5 @@ app.UseHangfireDashboard("/jobs", new DashboardOptions
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-
+await app.SeedSystemData(logger);
 app.Run();

@@ -1,0 +1,68 @@
+﻿@using Swappa.Client.State
+<div class="card box-shadow-inset m-auto p-3 mb-3">
+    <p class="display-6 fs-3 fw-bold text-center">@Data.Make @Data.Model @Data.Trim @Data.Year</p>
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-md-5 border">
+            <img src="@Data.Images.FirstOrDefault(i => i.IsMain)?.Url" class="img-fluid img-thumbnail mx-auto d-block" alt="@Data.Make @Data.Model @Data.Trim @Data.Year">
+        </div>
+        <div class="col-sm-12 col-md-7 border text-start">
+            <p class="my-1"><span class="fs-6 fw-bold">Transmission:</span> @Data.Transmission.GetDescription()</p>
+            <p class="my-1"><span class="fw-bold">Engine:</span> @Data.Engine.GetDescription()</p>
+            <p class="my-1"><span class="fw-bold">Drive Train:</span> @Data.DriveTrain.GetDescription()</p>
+            <p class="my-1"><span class="fw-bold">Price:</span> &#x20A6;@Data.Price.ToString("N2")</p>
+            <p class="d-flex my-1 justify-content-between">
+                <span class="fw-bold">Color:</span> 
+                <span>@Data.Color</span>
+                <div class="circle border p-2" style="background: @Data.Color.ToLower().Trim()"></div>
+            </p>
+            <p class="d-flex my-1 justify-content-between">
+                <span class="fw-bold">Interior:</span> 
+                <span>@Data.Interior</span>
+                <div class="circle border p-2" style="background: @Data.Interior.ToLower().Trim()"></div>
+            </p>
+            <p class="my-1"><span class="fw-bold">Odometer:</span> @Data.Odometer.ToString("N0") km</p>
+            <p class="my-1"><span class="fw-bold">VIN:</span> @Data.VIN</p>
+            <p class="my-1"><span class="fw-bold">Views:</span> @Data.Views</p>
+            <AuthorizeView>
+                <p class="d-flex my-1 justify-content-end">
+                    <Favorited Vehicle="Data"/>
+                </p>
+            </AuthorizeView>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center flex-column flex-md-row mt-2">
+        <Button 
+            Color="ButtonColor.Primary" Outline="true" 
+            Class="m-1" 
+            @onclick="(async () => await SharedService.GoBackAsync())"
+            Disabled="@_isBusy">Buy Now</Button>
+        <Button 
+            Color="ButtonColor.Secondary" 
+            Outline="true" 
+            Class="m-1" 
+            @onclick="(async () => await SharedService.GoBackAsync())" 
+            Disabled="@_isBusy">
+                <Icon Name="IconName.ArrowLeft"></Icon>
+        </Button>
+        <AuthorizeView Roles="SuperAdmin, Admin, Merchant">
+            @if (Show)
+            {
+                <Button Color="ButtonColor.Danger"
+                        Outline="true"
+                        Class="m-1"
+                        @onclick="(async () => await SharedService.GoBackAsync())"
+                        Disabled="@_isBusy">
+                    <Icon Name="IconName.Trash"></Icon>
+                </Button>
+                <Button Color="ButtonColor.Warning"
+                        Outline="true"
+                        Class="m-1"
+                        @onclick="(async () => await SharedService.GoBackAsync())"
+                        Disabled="@_isBusy">
+                    <Icon Name="IconName.Pencil"></Icon>
+                </Button>
+            }
+
+        </AuthorizeView>
+    </div>
+</div>

@@ -22,11 +22,14 @@ namespace Swappa.Server.Controllers.V1
             this.service = service;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] VehicleToCreateDto command) =>
-            Ok(await _mediator.Send(command));
+        [HttpPost, Authorize(Roles = "SuperAdmin, Admin, Merchant")]
+        public async Task<IActionResult> PostAsync([FromForm] VehicleToCreateDto command) =>
+            Ok(await _mediator.Send(new AddVehicleCommand
+            {
+                Request = command,
+            }));
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = "SuperAdmin, Admin, Merchant")]
         public async Task<IActionResult> PutAsync([FromRoute] Guid id, [FromBody] VehicleForUpdateDto command) =>
             Ok(await _mediator.Send(new UpdateVehicleCommand
             {
@@ -41,7 +44,7 @@ namespace Swappa.Server.Controllers.V1
                 Id = id,
             }));
 
-        [HttpGet("{merchantId}/merchant")]
+        [HttpGet("{merchantId}/merchant"), Authorize(Roles = "SuperAdmin, Admin, Merchant")]
         public async Task<IActionResult> GetAsync([FromRoute] Guid merchantId, [FromQuery] VehicleQueryDto query) =>
             Ok(await _mediator.Send(new GetVehicleByMerchantQuery
             {
@@ -53,11 +56,35 @@ namespace Swappa.Server.Controllers.V1
         public async Task<IActionResult> GetAsync([FromQuery] GetAllVehiclesQuery query) =>
             Ok(await _mediator.Send(query));
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = "SuperAdmin, Admin, Merchant")]
         public async Task<IActionResult> DeleteAsync([FromRoute] Guid id) =>
             Ok(await _mediator.Send(new DeleteVehicleCommand
             {
                 Id = id,
+            }));
+
+        [HttpPost("toggle-favorite")]
+        [Authorize]
+        public async Task<IActionResult> ToggleFavorite([FromBody] IdDto request) =>
+            Ok(await _mediator.Send(new ToggleFavoriteVehicleCommand
+            {
+                VehicleId = request.Id
+            }));
+
+        [Authorize]
+        [HttpGet("favorite-count/{userId}")]
+        public async Task<IActionResult> FavoriteCount([FromRoute] Guid userId) =>
+            Ok(await _mediator.Send(new GetFavoriteVehicleCountQuery
+            {
+                UserId = userId
+            }));
+
+        [Authorize]
+        [HttpGet("is-favorite/{id}")]
+        public async Task<IActionResult> IsFavorite([FromRoute] Guid id) =>
+            Ok(await _mediator.Send(new IsFavoriteVehicleQuery
+            {
+                Id = id
             }));
 
         [HttpGet("export-to-excel")]

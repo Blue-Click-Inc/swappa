@@ -25,7 +25,7 @@ namespace Swappa.Data.Implementations
         public Guid GetUserIdAsGuid()
         {
             var userId = GetUserId();
-            Guid.TryParse(userId, out var @guid);
+            _ = Guid.TryParse(userId, out Guid @guid);
             return @guid;
         }
 

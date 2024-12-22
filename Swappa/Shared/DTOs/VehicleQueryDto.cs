@@ -44,6 +44,7 @@ namespace Swappa.Shared.DTOs
                     maxPrice < value ? _maxPrice : value; 
                 }
         }
+        public bool IncludeSold { get; set; }
         public Transmission Transmission { get; set; } = Transmission.None;
         public Engine Engine { get; set; } = Engine.None;
         public DriveTrain DriveTrain { get; set; } = DriveTrain.None;

@@ -22,7 +22,7 @@ namespace Swappa.Server.Validations.Vehicle
             RuleFor(x => x.Engine)
                 .IsInEnum().WithMessage("Please enter a valid {PropertyName}");
             RuleFor(x => x.Color)
-                .IsInEnum().WithMessage("{PropertyName} field is required.");
+                .NotEmpty().WithMessage("{PropertyName} field is required.");
         }
     }
 }

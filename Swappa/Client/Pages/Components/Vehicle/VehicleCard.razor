@@ -4,9 +4,16 @@
             <img src="@Vehicle.Images.OrderByDescending(v => v.IsMain).FirstOrDefault()?.Url" alt="@Vehicle.Make @Vehicle.Model" class="card-img-top" />
             <div class="card-body">
                 <p class="card-title text-muted fw-bold text-center">@Vehicle.Make @Vehicle.Model @Vehicle.Year</p>
-                <span>
-                    <span class="card-text oi oi-image mx-0 px-0">@Vehicle.Images.Count</span>
-                    <span class="card-text oi oi-eye" style="float: right  !important;" aria-hidden="true" hidden>0</span>
+                <span class="d-flex flex-row justify-content-around">
+                    <span class="card-text oi oi-image mx-0 px-0">
+                        <span class="px-1">@Vehicle.Images.Count</span>
+                    </span>
+                    <span class="card-text oi oi-heart mx-0 px-0">
+                        <span class="px-1">@Vehicle.Favorited.ToShortNumString()</span>
+                    </span>
+                    <span class="card-text oi oi-eye" aria-hidden="true">
+                        <span class="px-1">@Vehicle.Views</span>
+                    </span>
                 </span>
             </div>
         </a>

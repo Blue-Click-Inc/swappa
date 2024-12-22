@@ -4,6 +4,7 @@ using Hangfire.Logging;
 using Hangfire.Server;
 using Hangfire.States;
 using Hangfire.Storage;
+using Newtonsoft.Json;
 
 namespace Swappa.Server.Filters
 {
@@ -53,7 +54,8 @@ namespace Swappa.Server.Filters
             var failedState = context.CandidateState as FailedState;
             if (failedState != null)
             {
-                Logger.ErrorFormat($"Job {context.BackgroundJob.Id} failed due to an exception {failedState.Exception}");
+                var json = JsonConvert.SerializeObject(failedState.Exception, Formatting.Indented);
+                Logger.ErrorFormat($"Job {context.BackgroundJob.Id} failed due to an exception", json);
             }
         }
     }

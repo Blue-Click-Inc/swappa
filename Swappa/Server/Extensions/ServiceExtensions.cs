@@ -1,5 +1,6 @@
 ﻿using Hangfire;
 using Hangfire.Console;
+using Hangfire.InMemory;
 using Hangfire.RecurringJobExtensions;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,7 +30,13 @@ namespace Swappa.Server.Extensions
                 .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
                 .UseSimpleAssemblyNameTypeSerializer()
                 .UseRecommendedSerializerSettings()
-                .UseSqlServerStorage(configuration.GetSection("Hangfire").GetValue<string>("Database"))
+                .UseInMemoryStorage(new Hangfire.InMemory.InMemoryStorageOptions
+                {
+                    MaxExpirationTime = TimeSpan.FromDays(7),
+                    StringComparer = StringComparer.Ordinal,
+                    IdType = InMemoryStorageIdType.Guid
+                })
+                //.UseSqlServerStorage(configuration.GetSection("Hangfire").GetValue<string>("Database"))
                 .WithJobExpirationTimeout(TimeSpan.FromMinutes(5))
                 .UseConsole()
                 .UseRecurringJob(typeof(IRecurringJobService))
@@ -64,7 +71,7 @@ namespace Swappa.Server.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", builder =>
-                    builder.WithOrigins("https://localhost:7027")
+                    builder.WithOrigins("https://localhost:7027", "http://localhost:5027")
                         .AllowCredentials()
                         .AllowAnyMethod()
                         .AllowAnyHeader());
