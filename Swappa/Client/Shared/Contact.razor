@@ -1,6 +1,58 @@
 ﻿@page "/contact"
-<h3>Contact</h3>
-
-@code {
-
-}
+<div class="container">
+    <div class="row mb-5">
+        <!-- Contact Info -->
+        <div class="col-md-12 col-lg-5">
+            <div class="box-shadow-inset border-radius-2rem p-3 mb-3">
+                <p class="h4">Contact Us</p>
+                <p>
+                    We’re here to assist you with your vehicle purchase, sales, and any other inquiries you might have. Get in touch with us today!
+                </p>
+                <ul style="list-style: none; margin: 0;padding: 0;">
+                    <li>
+                        <strong>
+                            <Icon Name="IconName.TelephoneOutboundFill" Size="IconSize.x5" Color="IconColor.Dark" />
+                        </strong> <a href="tel:+2348035222858">+234 803 522 2858</a>
+                    </li>
+                    <li>
+                        <strong>
+                            <Icon Name="IconName.EnvelopeAt" Size="IconSize.x5" Color="IconColor.Dark" />
+                        </strong> <a href="mailto:support@blue-click.com">support@blue-wall.com</a>
+                    </li>
+                    <li class="d-flex justify-content-start mt-2">
+                        <a href="https://facebook.com/AutoSale" class="mr-5" target="_blank">
+                            <Icon Name="IconName.Facebook" Color="IconColor.Primary" Size="IconSize.x5" />
+                        </a>
+                        <a href="https://instagram.com/AutoSaleCars" class="mx-2" target="_blank">
+                            <Icon Name="IconName.Instagram" Color="IconColor.Danger" Size="IconSize.x5" />
+                        </a>
+                        <a href="https://twitter.com/AutoSaleCo" class="mx-2 fw-bold" target="_blank">
+                            <Icon Name="IconName.TwitterX" Color="IconColor.Dark" Size="IconSize.x5" />
+                        </a>
+                        <a href="https://twitter.com/AutoSaleCo" class="mx-2" target="_blank">
+                            <Icon Name="IconName.Linkedin" Color="IconColor.Primary" Size="IconSize.x5" />
+                        </a>
+                        <a href="https://twitter.com/AutoSaleCo" class="ml-5">
+                            <Icon Name="IconName.Whatsapp" Color="IconColor.Success" Size="IconSize.x5" />
+                        </a>
+                    </li>
+                    <li class="mt-1">
+                        <p>Have questions? Check out our <a href="/faq">FAQs</a> for more info.</p>
+                    </li>
+                    <AuthorizeView Roles="User, Merchant">
+                        <li class="mt-1">
+                            <p>
+                                Let's know what you think about our services.
+                                <a class="px-1" style="cursor: pointer;" @onclick="(async () => await LeaveAFeedback())"> Leave us a feedback</a>
+                            </p>
+                        </li>
+                    </AuthorizeView>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-7">
+            <!-- Contact Form -->
+            <ContactMessageForm />
+        </div>
+    </div>
+</div>
