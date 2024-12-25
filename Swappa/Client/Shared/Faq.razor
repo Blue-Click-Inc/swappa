@@ -1,6 +1,54 @@
 ﻿@page "/faq"
-<h3>Faq</h3>
-
+<div class="container">
+    <div class="box-shadow-inset border-radius-2rem p-3 mb-3">
+        <h3>
+            <span class="oi oi-question-mark text-muted fw-bold" aria-hidden="true"> Frequently Asked Questions.</span>
+        </h3>
+        <hr />
+        <EditForm Model="Query" method="post" OnValidSubmit="Search" FormName="searchVehicle">
+            <BaseSearch ClearSearch="Clear" Query="Query"/>
+        </EditForm>
+        <hr />
+        <Accordion Flush="true">
+            @if (_isLoading)
+            {
+                <div class="text-center align-self-center top-50 m-auto mt-5">
+                    <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
+                </div>
+            }
+            else if (!_isLoading && _hasError)
+            {
+                <Alert Color="AlertColor.Danger">
+                    <h4 class="alert-heading text-center">An error Occurred!</h4>
+                    <p class="text-center">
+                        <Icon Name="IconName.Bug"></Icon> Something went wrong. Please contact support if issue persists.
+                    </p>
+                </Alert>
+            }
+            else if (Faqs.Data.IsNotNullOrEmpty())
+            {
+                @foreach (var faq in Faqs.Data)
+                {
+                    <AccordionItem>
+                        <TitleTemplate>
+                            <b>@faq.Title</b>
+                        </TitleTemplate>
+                        <Content>@faq.Details</Content>
+                    </AccordionItem>
+                }
+            }
+            else
+            {
+                <Alert Color="AlertColor.Info">
+                    <h4 class="alert-heading text-center">No record found!</h4>
+                    <p class="text-center">
+                        <Icon Name="IconName.InfoCircle"></Icon>  Your search criteria returned no record. Please modify and try again.
+                    </p>
+                </Alert>
+            }
+        </Accordion>
+    </div>
+</div>
 @code {
 
 }
