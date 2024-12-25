@@ -3,7 +3,7 @@
     <p class="display-6 fs-3 fw-bold text-center">@Data.Make @Data.Model @Data.Trim @Data.Year</p>
     <div class="row justify-content-center">
         <div class="col-sm-12 col-md-5 border">
-            <img src="@Data.Images.FirstOrDefault(i => i.IsMain)?.Url" class="img-fluid img-thumbnail mx-auto d-block" alt="@Data.Make @Data.Model @Data.Trim @Data.Year">
+            <BlueWallCarousel Urls="Urls" />
         </div>
         <div class="col-sm-12 col-md-7 border text-start">
             <p class="my-1"><span class="fs-6 fw-bold">Transmission:</span> @Data.Transmission.GetDescription()</p>
