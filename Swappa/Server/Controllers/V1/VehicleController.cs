@@ -71,6 +71,18 @@ namespace Swappa.Server.Controllers.V1
                 VehicleId = request.Id
             }));
 
+        [HttpGet("{userId}/favorites")]
+        public async Task<IActionResult> GeFavorites([FromRoute] Guid userId, [FromQuery] GetAllVehiclesQuery query) =>
+            Ok(await _mediator.Send(new GetFavoriteVehiclesQuery
+            {
+                UserId = userId,
+                Request = new PageDto
+                {
+                    PageNumber = query.PageNumber,
+                    PageSize = query.PageSize,
+                    SearchTerm = query.SearchTerm
+            }}));
+
         [Authorize]
         [HttpGet("favorite-count/{userId}")]
         public async Task<IActionResult> FavoriteCount([FromRoute] Guid userId) =>
