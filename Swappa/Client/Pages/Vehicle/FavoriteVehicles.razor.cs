@@ -38,6 +38,12 @@ namespace Swappa.Client.Pages.Vehicle
             isLoading = false;
         }
 
+        private async Task OnPageChangedAsync(int newPageNumber)
+        {
+            Query.PageNumber = newPageNumber;
+            await GetDataAsync(LoggedInUserId);
+        }
+
         private async Task Search()
         {
             await GetDataAsync(LoggedInUserId);

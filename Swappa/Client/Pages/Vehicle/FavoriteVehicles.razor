@@ -20,6 +20,18 @@
             else
             {
                 <VehicleTableList Data="Data" DataCount="@NumberOfVehicles" />
+                @if (Data.IsNotNull())
+                {
+                    <Pagination ActivePageNumber="@Data.MetaData.CurrentPage"
+                                TotalPages="@Data.MetaData.TotalPages"
+                                Alignment="Alignment.Center"
+                                FirstLinkIcon="IconName.ChevronDoubleLeft"
+                                PreviousLinkIcon="IconName.ChevronLeft"
+                                NextLinkIcon="IconName.ChevronRight"
+                                LastLinkIcon="IconName.ChevronDoubleRight"
+                                PageChanged="OnPageChangedAsync"
+                                Class="mt-3" />
+                }
             }
         </div>
     </div>

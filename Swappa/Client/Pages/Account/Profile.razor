@@ -71,7 +71,7 @@ else if (!isLoading && Data != null)
                         </p>
                     </div>
                 </div>
-                <AuthorizeView Roles="User">
+                <AuthorizeView Roles="User, Merchant">
                     <div class="mb-3">
                         <MutedUnderlinedLeftAligned Text="Support" />
                         <div class="mb-2">
@@ -81,7 +81,10 @@ else if (!isLoading && Data != null)
                                 </a>
                             </p>
                             <p class="m-0">
-                                <a class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" style="font-size: 0.9rem;cursor: pointer;" @onclick=@(async () => await LeaveFeedback(Data.Id))>
+                                <a 
+                                    class="text-muted fw-lighter text-decoration-none fst-italic d-flex align-items-center justify-content-between" 
+                                    style="font-size: 0.9rem;cursor: pointer;" 
+                                    @onclick=@(async () => await LeaveFeedback(Data.Id))>
                                     <span>Feedback</span> <span class="fa fa-chevron-right" style="font-weight: 100;"></span>
                                 </a>
                             </p>

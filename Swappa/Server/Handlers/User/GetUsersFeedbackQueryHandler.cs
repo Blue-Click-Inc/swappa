@@ -26,19 +26,13 @@ namespace Swappa.Server.Handlers.User
 
         public async Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>> Handle(GetUsersFeedbackQuery request, CancellationToken cancellationToken)
         {
-            if (request.StartDate.IsLaterThan(request.EndDate))
-            {
-                return response
-                    .Process<PaginatedListDto<UserFeedbackDto>>(new BadRequestResponse("The End Date must be later than the Start Date"));
-            }
-
             var feedbacks = repository.Feedback
                     .FindAsQueryable(f => true)
                     .OrderByDescending((f) => f.CreatedAt)
-                    .FilterByDate(request.StartDate, request.EndDate);
+                    .Search(request.Dto.SearchTerm);
 
             var pagedList = await Task.Run(() => 
-                PagedList<UserFeedback>.ToPagedList(feedbacks, request.PageNumber, request.PageSize));
+                PagedList<UserFeedback>.ToPagedList(feedbacks, request.Dto.PageNumber, request.Dto.PageSize));
 
             var dataList = mapper.Map<IEnumerable<UserFeedbackDto>>(pagedList);
             var pagedData = PaginatedListDto<UserFeedbackDto>.Paginate(dataList, pagedList.MetaData);

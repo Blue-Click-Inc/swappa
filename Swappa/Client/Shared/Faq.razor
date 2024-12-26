@@ -47,6 +47,18 @@
                 </Alert>
             }
         </Accordion>
+        @if (Faqs.IsNotNull() && Faqs.Data.IsNotNull())
+        {
+            <Pagination ActivePageNumber="@Faqs.MetaData.CurrentPage"
+                        TotalPages="@Faqs.MetaData.TotalPages"
+                        Alignment="Alignment.Center"
+                        FirstLinkIcon="IconName.ChevronDoubleLeft"
+                        PreviousLinkIcon="IconName.ChevronLeft"
+                        NextLinkIcon="IconName.ChevronRight"
+                        LastLinkIcon="IconName.ChevronDoubleRight"
+                        PageChanged="OnPageChangedAsync"
+                        Class="mt-3" />
+        }
     </div>
 </div>
 @code {

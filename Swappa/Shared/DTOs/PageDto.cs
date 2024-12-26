@@ -6,7 +6,7 @@
         const int maxPageSize = 200;
 
         private int _pageNumber = 1;
-        private int _pageSize = 20;
+        private int _pageSize = 10;
 
         public int PageNumber
         {

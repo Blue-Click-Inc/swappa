@@ -30,6 +30,18 @@
             {
                 <VehicleCard Vehicle="vehicle"></VehicleCard>
             }
+           
+            <Pagination 
+                ActivePageNumber="@Vehicles.MetaData.CurrentPage"
+                TotalPages="@Vehicles.MetaData.TotalPages"
+                Alignment="Alignment.Center"
+                FirstLinkIcon="IconName.ChevronDoubleLeft"
+                PreviousLinkIcon="IconName.ChevronLeft"
+                NextLinkIcon="IconName.ChevronRight"
+                LastLinkIcon="IconName.ChevronDoubleRight"
+                PageChanged="OnPageChangedAsync"
+                Class="mt-3"
+            />
         }
         else
         {
@@ -42,5 +54,4 @@
         }
   </div>
 </div>
-
 @*(&#x20A6;)*@

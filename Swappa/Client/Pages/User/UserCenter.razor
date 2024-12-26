@@ -36,44 +36,29 @@
                     </SinglePillCardDash>
                 </div>
             </div>
-            <div class="table-responsive">
-                <Button Color="ButtonColor.Primary" Outline="true" Class="mx-1 float-end" @onclick=@( async () => await ShowAddUserModal())><Icon Name="IconName.Plus" /></Button>
-                <table class="table table-striped table-hover table-borderless caption-top">
-                    <caption>User Manager</caption>
-                    <thead>
-                        <tr>
-                            <th style="background: #002147; color: white;"></th>
-                            <th style="background: #002147; color: white;">Name</th>
-                            <th style="background: #002147; color: white;">Email</th>
-                            <th style="background: #002147; color: white;">Registered On</th>
-                            <th style="background: #002147; color: white;">Last Login</th>
-                            <th style="background: #002147; color: white;">Deactivated On</th>
-                            <th style="background: #002147; color: white;"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                       @foreach(var user in UserData.Data)
-                        {
-                            <tr class="text-decoration-none">
-                                <td class="text-@GetStatusClass(user.Status) text-center p-0 m-0" style="font-size: 2rem;">&#8226;</td>
-                                <td>@user.Name</td>
-                                <td>@user.Email</td>
-                                <td>@user.CreatedOn.ToString("g")</td>
-                                <td>@user.LastLogin.CommaSeparatedDateTime()</td>
-                                <td>@user.DeactivatedOn.CommaSeparatedDateTime()</td>
-                                <td class="d-flex justify-content-end">
-                                    <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1" @onclick=@(async () => await OpenUserDetailModal(user.Id))>
-                                        <Icon Name="IconName.Eye" />
-                                    </Button>
-                                    <Button Color="ButtonColor.Dark" Outline="true" Class="mx-1" @onclick="(async () => await OpenRoleManagerModal(user.Id))">
-                                        <Icon Name="IconName.ShieldShaded" />
-                                    </Button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+            <div class="box-shadow-inset m-auto mt-1">
+                <EditForm Model="Query" method="post" OnValidSubmit="Search" FormName="searchVehicle">
+                    <BaseSearch ClearSearch="Clear" Query="@Query" />
+                </EditForm>
             </div>
+            <UserTableList UserData="UserData" 
+                ShowAddUserModal="ShowAddUserModal"
+                GetDashboard="GetDashboard"
+                GetPagedUserList="GetPagedUserList"
+                IsLoading="isLoading"
+            />
+            @if (UserData.IsNotNull())
+            {
+                <Pagination ActivePageNumber="@UserData.MetaData.CurrentPage"
+                            TotalPages="@UserData.MetaData.TotalPages"
+                            Alignment="Alignment.Center"
+                            FirstLinkIcon="IconName.ChevronDoubleLeft"
+                            PreviousLinkIcon="IconName.ChevronLeft"
+                            NextLinkIcon="IconName.ChevronRight"
+                            LastLinkIcon="IconName.ChevronDoubleRight"
+                            PageChanged="OnPageChangedAsync"
+                            Class="mt-3" />
+            }
         }
     </div>
 </div>

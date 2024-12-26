@@ -3,7 +3,7 @@
     public static class DateExtensions
     {
         private static readonly DateTime MinDate = new DateTime(1700, 1, 1);
-        private static readonly DateTime MaxDate = new DateTime(9999, 12, 31, 23, 59, 59, 0);
+        private static readonly DateTime MaxDate = new DateTime(9999, 12, 31, 23, 59, 58, 999);
 
         public static bool IsMaxOrLess(this DateTime target) =>
             target == DateTime.MaxValue || target.AddDays(90) > DateTime.Now;
