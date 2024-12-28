@@ -50,7 +50,7 @@
                 <Button Color="ButtonColor.Danger"
                         Outline="true"
                         Class="m-1"
-                        @onclick="(async () => await SharedService.GoBackAsync())"
+                        @onclick="(async () => await ConfirmDelete())"
                         Disabled="@_isBusy">
                     <Icon Name="IconName.Trash"></Icon>
                 </Button>

@@ -2,7 +2,7 @@
 @attribute [Authorize(Roles = "Admin, SuperAdmin")]
 
 <PageTitle>Admin. Center</PageTitle>
-<div class="container">
+<div class="container mb-3">
   <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
         <BackButton></BackButton>
         @if(_isFeedbackLoading || _isUserLoading || _isVehicleLoading)
@@ -13,8 +13,8 @@
         }
         else
         {
-            <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
-                <div class="col-12 col-lg-4">
+            <div class="row g-1 my-lg-0 my-md-1 d-flex justify-content-evenly flex-wrap align-items-center">
+                <div class="col-12 col-lg-4 m-0">
                     <a class="px-1" style="cursor: pointer;text-decoration: none" href="admin/users">
                         <div class="card box-shadow-inset">
                             <div class="card-body d-flex">
@@ -29,7 +29,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-12 col-lg-4">
+                <div class="col-12 col-lg-4 m-0">
                     <a class="px-1" style="cursor: pointer;text-decoration: none" href="admin/vehicles">
                         <div class="card box-shadow-inset">
                             <div class="card-body d-flex">
@@ -44,7 +44,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-12 col-lg-4">
+                <div class="col-12 col-lg-4 m-0">
                     <a class="px-1" style="cursor: pointer;text-decoration: none" href="admin/feedbacks">
                         <div class="card box-shadow-inset">
                             <div class="card-body d-flex">
@@ -69,4 +69,7 @@
             </div>
         }
     </div>
+    <hr />
+    <PriceRangeAndEngineLineCharts />
+    <TopFiveVehiclesDoughnutChart />
 </div>

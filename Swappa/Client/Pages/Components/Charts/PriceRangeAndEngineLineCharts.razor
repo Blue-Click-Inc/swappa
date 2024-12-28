@@ -1,0 +1,22 @@
+﻿@if (_isLoading)
+{
+    <div class="text-center align-self-center top-50 m-auto">
+        <BlueWallPlaceholder />
+    </div>
+}
+else if (!_isLoading && _hasError)
+{
+    <Alert Color="AlertColor.Danger">
+        <h4 class="alert-heading text-center">An error Occurred!</h4>
+        <p class="text-center">
+            <Icon Name="IconName.Bug"></Icon> Could not load chart. Please contact support if issue persists.
+        </p>
+    </Alert>
+}
+else if (lineChart.IsNotNull())
+{
+    <div class="row d-flex overflow-x-auto justify-content-center m-auto">
+        <LineChart @ref="lineChart" Width="800" Class="m-auto" />
+        <hr class="mt-3" />
+    </div>
+}

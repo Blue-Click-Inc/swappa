@@ -1,6 +1,6 @@
-﻿using Blazored.Modal;
+﻿using BlazorBootstrap;
+using Blazored.Modal;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Http;
 using Swappa.Entities.Enums;
 
 namespace Swappa.Client.Services.Interfaces
@@ -8,6 +8,7 @@ namespace Swappa.Client.Services.Interfaces
     public interface ISharedService
     {
         Task CancelModalAsync(BlazoredModalInstance instance);
+        ModalParameters GetDialogParameters(string title, string message, string styleClass = "text-danger", ButtonColor buttonColor = ButtonColor.Danger, AlertColor alertColor = AlertColor.Danger);
         Task GoBackAsync();
         void GoTo(string url, bool reload = false, bool replace = false);
         Task LogoutAsync();

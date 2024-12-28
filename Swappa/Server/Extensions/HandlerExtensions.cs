@@ -27,11 +27,11 @@ namespace Swappa.Server.Extensions
             return vehicles;
         }
 
-        public static PagedList<Vehicle> MapImages(this PagedList<Vehicle> vehicles, Dictionary<Guid, List<Image>> images)
+        public static PagedList<Vehicle> MapImages(this PagedList<Vehicle> vehicles, Dictionary<Guid, List<Entities.Models.Image>> images)
         {
             vehicles.ForEach(v =>
             {
-                v.Images = images.GetValueOrDefault(v.Id) ?? new List<Image>();
+                v.Images = images.GetValueOrDefault(v.Id) ?? new List<Entities.Models.Image>();
             });
 
             return vehicles;
