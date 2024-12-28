@@ -38,7 +38,8 @@ namespace Swappa.Client.Pages.Components.Charts
                 _isLoading = false;
                 backgroundColors = ColorUtility.CategoricalTwelveColors;
                 var bgColors = SharedService.GetRandomBackgroundColors(data.Count, backgroundColors);
-                var dataSets = SharedService.GetDatasetsNoLabel(data.Values.ToList(), bgColors);
+                var dataSets = GetDatasetsNoLabel(data.Values.ToList(), bgColors);
+
                 chartData = new ChartData { Labels = data.Keys.ToList(), Datasets = dataSets };
 
                 doughnutChartOptions = new();
@@ -54,6 +55,20 @@ namespace Swappa.Client.Pages.Components.Charts
             }
 
             _isLoading = false;
+        }
+
+        private List<IChartDataset> GetDatasetsNoLabel(List<double?> data, List<string> bgColor)
+        {
+            return new List<IChartDataset>
+            {
+                GetDataSet(data, bgColor)
+            };
+        }
+
+        private DoughnutChartDataset GetDataSet(List<double?> data, List<string> bgColor)
+        {
+            var result = new DoughnutChartDataset { Label = $"", Data = data, BackgroundColor = bgColor };
+            return result;
         }
     }
 }

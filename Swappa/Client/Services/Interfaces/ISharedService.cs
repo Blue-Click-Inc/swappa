@@ -14,6 +14,5 @@ namespace Swappa.Client.Services.Interfaces
         Task LogoutAsync();
         List<string> GetRandomBackgroundColors(int dataLabelsCount, string[]? backgroundColors);
         MultipartFormDataContent OnInputFilesChange(InputFileChangeEventArgs e, FileTypes fileType, string formFileName, long maxAllowedMaximumSize, out bool isValidInputs);
-        List<IChartDataset> GetDatasetsNoLabel(List<double?> data, List<string> bgColor);
     }
 }
