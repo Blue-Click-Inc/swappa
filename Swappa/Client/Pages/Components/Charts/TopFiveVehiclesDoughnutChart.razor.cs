@@ -37,12 +37,13 @@ namespace Swappa.Client.Pages.Components.Charts
                 var data = response.Data.TopFiveVehicles;
                 _isLoading = false;
                 backgroundColors = ColorUtility.CategoricalTwelveColors;
-                var dataSets = GetDatasets(data.Values.ToList());
-                chartData = new ChartData { Labels = data.Keys.ToList(), Datasets = GetDatasets(data.Values.ToList()) };
+                var bgColors = SharedService.GetRandomBackgroundColors(data.Count, backgroundColors);
+                var dataSets = SharedService.GetDatasetsNoLabel(data.Values.ToList(), bgColors);
+                chartData = new ChartData { Labels = data.Keys.ToList(), Datasets = dataSets };
 
                 doughnutChartOptions = new();
                 doughnutChartOptions.Responsive = true;
-                doughnutChartOptions.Plugins.Title!.Text = "Top Five Vehicles";
+                doughnutChartOptions.Plugins.Title!.Text = $"Top Five Vehicles - {DateTime.Now.Year}";
                 doughnutChartOptions.Plugins.Title.Display = true;
                 return;
             }
@@ -53,32 +54,6 @@ namespace Swappa.Client.Pages.Components.Charts
             }
 
             _isLoading = false;
-        }
-
-        private DoughnutChartDataset GetDataSet(List<double?> data)
-        {
-            var result = new DoughnutChartDataset { Label = $"", Data = data, BackgroundColor = GetRandomBackgroundColors(data.Count) };
-            result.Datalabels.Anchor = Anchor.Start;
-            return result;
-        }
-
-        private List<string> GetRandomBackgroundColors(int labelsCount)
-        {
-            var colors = new List<string>();
-            for (var index = 0; index < labelsCount; index++)
-            {
-                colors.Add(backgroundColors![index]);
-            }
-
-            return colors;
-        }
-
-        private List<IChartDataset> GetDatasets(List<double?> data)
-        {
-            return new List<IChartDataset>
-            {
-                GetDataSet(data)
-            };
         }
     }
 }

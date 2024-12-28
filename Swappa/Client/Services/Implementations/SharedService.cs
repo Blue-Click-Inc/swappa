@@ -64,6 +64,31 @@ namespace Swappa.Client.Services.Implementations
             };
         }
 
+        public List<string> GetRandomBackgroundColors(int dataLabelsCount, string[]? backgroundColors)
+        {
+            var colors = new List<string>();
+            for (var index = 0; index < dataLabelsCount; index++)
+            {
+                colors.Add(backgroundColors![index]);
+            }
+
+            return colors;
+        }
+
+        public List<IChartDataset> GetDatasetsNoLabel(List<double?> data, List<string> bgColor)
+        {
+            return new List<IChartDataset>
+            {
+                GetDataSet(data, bgColor)
+            };
+        }
+
+        private DoughnutChartDataset GetDataSet(List<double?> data, List<string> bgColor)
+        {
+            var result = new DoughnutChartDataset { Label = $"", Data = data, BackgroundColor = bgColor };
+            return result;
+        }
+
         public async Task CancelModalAsync(BlazoredModalInstance instance)
         {
             await instance.CancelAsync();

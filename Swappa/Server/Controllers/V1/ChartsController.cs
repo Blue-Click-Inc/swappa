@@ -25,5 +25,10 @@ namespace Swappa.Server.Controllers.V1
         [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> GetPriceRangeAndEngineCharts() =>
             Ok(await mediator.Send(new PriceRangesAndEngineLineChartsQuery()));
+
+        [HttpGet("feedback-piechart")]
+        //[Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> FeedbackPieCharts() =>
+            Ok(await mediator.Send(new FeedbackPiechartQuery()));
     }
 }

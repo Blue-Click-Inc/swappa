@@ -42,7 +42,7 @@ namespace Swappa.Client.Pages.Components.Charts
                 // set ticks color
                 lineChartOptions.Scales.X!.Ticks = new ChartAxesTicks { Color = "red" };
                 lineChartOptions.Scales.Y!.Ticks = new ChartAxesTicks { Color = ColorUtility.CategoricalTwelveColors[4] };
-                lineChartOptions.Plugins.Title!.Text = "Price Range (₦) By Engine Types";
+                lineChartOptions.Plugins.Title!.Text = $"Price Range (₦) By Engine Types - {DateTime.Now.Year}";
                 lineChartOptions.Plugins.Title.Display = true;
                 _isLoading = false;
                 return;

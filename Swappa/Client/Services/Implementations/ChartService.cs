@@ -26,5 +26,11 @@ namespace Swappa.Client.Services.Implementations
             var response = await httpClient.GetAsync($"charts/price-range-and-engine");
             return await httpInterceptor.Process<ResponseModel<PriceRangesAndEngineLineChartsDto>>(response);
         }
+
+        public async Task<ResponseModel<Dictionary<string, double?>>?> GetFeedbackPiechartData()
+        {
+            var response = await httpClient.GetAsync($"charts/feedback-piechart");
+            return await httpInterceptor.Process<ResponseModel<Dictionary<string, double?>>>(response);
+        }
     }
 }
