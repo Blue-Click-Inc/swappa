@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Swappa.Data.Contracts;
-using Swappa.Entities.Models;
 using Swappa.Entities.Responses;
 using Swappa.Server.Extensions;
 using Swappa.Server.Queries.Faq;
