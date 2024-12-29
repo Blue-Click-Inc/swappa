@@ -18,6 +18,9 @@ namespace Swappa.Data.Implementations
         public async Task DeleteAsync(Expression<Func<FavoriteVehicles, bool>> predicate) =>
             await RemoveAsync(predicate);
 
+        public IQueryable<FavoriteVehicles> FindAsQueryable(Expression<Func<FavoriteVehicles, bool>> expression = null!) =>
+            expression != null ? GetAsQueryable(expression) : GetAsQueryable();
+
         public async Task<bool> Exists(Expression<Func<FavoriteVehicles, bool>> expression) =>
             await ExistsAsync(expression);
 

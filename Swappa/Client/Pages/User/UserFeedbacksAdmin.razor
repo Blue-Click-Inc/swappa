@@ -28,7 +28,11 @@
                         CardTitle="Average Rating">
                     </SinglePillCardDash>
                 </div>
-                
+            </div>
+            <div class="box-shadow-inset m-auto mt-1">
+                <EditForm Model="Query" method="post" OnValidSubmit="Search" FormName="searchFeedbacks">
+                    <BaseSearch ClearSearch="Clear" Query="@Query" />
+                </EditForm>
             </div>
             <div class="table-responsive">
                 <table class="table table-striped table-hover table-borderless caption-top">
@@ -45,41 +49,78 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var feedback in Data.Data.Data)
+                        @if (_isLoading)
                         {
-                            <tr class="box-shadow-inset">
-                                <th>
-                                    <UserStatus Status="@GetStatus(feedback.IsDeprecated)"></UserStatus>
-                                </th>
-                                <td>@feedback.UserName</td>
-                                <td>
-                                    <a href="mailto:@(feedback.UserEmail)">@feedback.UserEmail</a>
-                                </td>
-                                <td>@feedback.Feedback</td>
-                                <td>@feedback.Rating.GetDescription()</td>
-                                <td>@feedback.CreatedAt.ToString("g")</td>
-                                <td>
-                                    <Dropdown Direction="DropdownDirection.DropdownCentered">
-                                        <DropdownToggleButton Color="ButtonColor.Primary"></DropdownToggleButton>
-                                        <DropdownMenu>
-                                            <DropdownItem Type="DropdownItemType.Link" @onclick="@(async () => await DeprecateFeedback(feedback.Id, DepText(feedback).Trim()))">
-                                                <Button Color="ButtonColor.Warning" Outline="true">
-                                                    <Icon Name="IconName.ArrowCounterclockwise" />@DepText(feedback)
-                                                </Button>
-                                            </DropdownItem>
-                                            <AuthorizeView Roles="SuperAdmin">
-                                                <Authorized>
-                                                    <DropdownItem Type="DropdownItemType.Link" @onclick="@(async () => await DeleteFeedback(feedback.Id))">
-                                                        <Button Color="ButtonColor.Danger" Outline="true">
-                                                            <Icon Name="IconName.Trash" /> Delete 
-                                                        </Button>
-                                                    </DropdownItem>
-                                                </Authorized>
-                                            </AuthorizeView>
-                                        </DropdownMenu>
-                                    </Dropdown>
-                                </td>
+                            <tr class="text-center align-self-center top-50 m-auto mt-5">
+                                <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
                             </tr>
+                        }
+                        else if (_hasError)
+                        {
+                            <Alert Color="AlertColor.Danger">
+                                <h4 class="alert-heading text-center">An error Occurred!</h4>
+                                <p class="text-center">
+                                    <Icon Name="IconName.Bug"></Icon> Something went wrong. Please contact support if issue persists.
+                                </p>
+                            </Alert>
+                        }
+                        else if (Data.IsNotNull() && Data.Data.Data.IsNotNullOrEmpty())
+                        {
+                            @foreach (var feedback in Data.Data.Data)
+                            {
+                                <tr class="box-shadow-inset">
+                                    <th>
+                                        <UserStatus Status="@GetStatus(feedback.IsDeprecated)"></UserStatus>
+                                    </th>
+                                    <td>@feedback.UserName</td>
+                                    <td>
+                                        <a href="mailto:@(feedback.UserEmail)">@feedback.UserEmail</a>
+                                    </td>
+                                    <td>@feedback.Feedback</td>
+                                    <td>@feedback.Rating.GetDescription()</td>
+                                    <td>@feedback.CreatedAt.ToString("g")</td>
+                                    <td>
+                                        <Dropdown Direction="DropdownDirection.DropdownCentered">
+                                            <DropdownToggleButton Color="ButtonColor.Primary"></DropdownToggleButton>
+                                            <DropdownMenu>
+                                                <DropdownItem Type="DropdownItemType.Link" @onclick="@(async () => await DeprecateFeedback(feedback.Id, DepText(feedback).Trim()))">
+                                                    <Button Color="ButtonColor.Warning" Outline="true">
+                                                        <Icon Name="IconName.ArrowCounterclockwise" />@DepText(feedback)
+                                                    </Button>
+                                                </DropdownItem>
+                                                <AuthorizeView Roles="SuperAdmin">
+                                                    <Authorized>
+                                                        <DropdownItem Type="DropdownItemType.Link" @onclick="@(async () => await DeleteFeedback(feedback.Id))">
+                                                            <Button Color="ButtonColor.Danger" Outline="true">
+                                                                <Icon Name="IconName.Trash" /> Delete
+                                                            </Button>
+                                                        </DropdownItem>
+                                                    </Authorized>
+                                                </AuthorizeView>
+                                            </DropdownMenu>
+                                        </Dropdown>
+                                    </td>
+                                </tr>
+                            }
+
+                            <Pagination ActivePageNumber="@Data.Data.MetaData.CurrentPage"
+                                        TotalPages="@Data.Data.MetaData.TotalPages"
+                                        Alignment="Alignment.Center"
+                                        FirstLinkIcon="IconName.ChevronDoubleLeft"
+                                        PreviousLinkIcon="IconName.ChevronLeft"
+                                        NextLinkIcon="IconName.ChevronRight"
+                                        LastLinkIcon="IconName.ChevronDoubleRight"
+                                        PageChanged="OnPageChangedAsync"
+                                        Class="mt-3" />
+                        }
+                        else
+                        {
+                            <Alert Color="AlertColor.Info">
+                                <h4 class="alert-heading text-center">No record found!</h4>
+                                <p class="text-center">
+                                    <Icon Name="IconName.InfoCircle"></Icon>  No record!.
+                                </p>
+                            </Alert>
                         }
                     </tbody>
                 </table>

@@ -1,4 +1,5 @@
 ﻿using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Client.Pages.Admin
 {
@@ -7,10 +8,12 @@ namespace Swappa.Client.Pages.Admin
         private bool _isUserLoading = false;
         private bool _isFeedbackLoading = false;
         private bool _isVehicleLoading = false;
+        private bool _isChartLoading = false;
 
         public UserDashboardDataDto? UserDashboard { get; set; }
         public FeedbackDashboardDto? FeedbackDashboard { get; set; }
         public VehicleDashboardDto? VehicleDashboard { get; set; }
+        public Dictionary<string, double>? TopFive { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

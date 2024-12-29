@@ -1,0 +1,42 @@
+﻿<div class="row">
+    <div class="box-shadow-inset border-radius-2rem p-3">
+        <h3>
+            <span class="@Class" aria-hidden="true">@Title</span>
+        </h3>
+        <hr />
+        <Alert Color="AlertColor">
+            <ChildContent>
+                <span class="fa fa-exclamation--triangle"></span> @Message
+            </ChildContent>
+        </Alert>
+        <div class="row">
+            <div class="col-md-0 col-lg-3"></div>
+            <div class="col-md-12 col-lg-6 d-flex justify-content-center">
+                <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                    <Button Color="ButtonColor" Outline="true" Class="mx-1 mt-1" @onclick="(async () => await Instance.CloseAsync())">
+                        <Icon Name="IconName.CheckCircle"></Icon> Confirm
+                    </Button>
+                    <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 mt-1" @onclick="( async () => await Instance.CancelAsync())">
+                        <Icon Name="IconName.Back"></Icon> Cancel
+                    </Button>
+                </div>
+            </div>
+            <div class="col-md-0 col-lg-3"></div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter]
+    public BlazoredModalInstance Instance { get; set; } = new();
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+    [Parameter]
+    public ButtonColor ButtonColor { get; set; } = ButtonColor.Danger;
+    [Parameter]
+    public string Class { get; set; } = "text-danger";
+    [Parameter]
+    public AlertColor AlertColor { get; set; } = AlertColor.Danger;
+}

@@ -31,6 +31,7 @@ namespace Swappa.Client.Pages.Modals.Accounts
                     var userId = AccountService
                         .GetUserIdFromToken(Response.Data?.AccessToken ?? string.Empty)
                         .ToGuid();
+
                     await LocalStorage.SetItemAsync("userId", userId);
                     await LocalStorage.SetItemAsync("accessToken", Response.Data?.AccessToken);
                     await LocalStorage.SetItemAsync("refreshToken", Response.Data?.RefreshToken);

@@ -1,6 +1,36 @@
 ﻿@page "/about"
-<h3>About</h3>
 
-@code {
+<div class="container mb-5 mx-0">
+  <div class="card box-shadow-inset m-auto">
+        <div class="content p-3">
+            <p class="h4">About Us</p>
+            <p>
+                At <strong>Blue Wall Inc.</strong>, we revolutionize the way vehicles are bought and sold online. Our platform connects merchants and buyers, creating a seamless and secure marketplace where trusted sellers showcase their vehicles to a wide audience of prospective buyers.
+            </p>
 
-}
+            <p>
+                We understand that buying or selling a vehicle is a significant decision. That's why we've built a user-friendly, transparent, and innovative ecosystem where merchants can easily list their inventory, and buyers can explore a wide range of options with confidence.
+            </p>
+
+            <p class="h4">Why Choose Blue Wall?</p>
+            <ul>
+                <li><strong>Extensive Listings:</strong> Access a diverse range of vehicles to suit every preference and budget.</li>
+                <li><strong>User-Centric Design:</strong> Our platform is designed to make listing and searching effortless.</li>
+                <li><strong>Secure Transactions:</strong> We prioritize safety and transparency for both buyers and sellers.</li>
+                <li><strong>Global Reach:</strong> Reach a broad audience and connect with buyers or sellers from anywhere.</li>
+            </ul>
+            <AuthorizeView>
+                <Authorized>
+                    <p>
+                        Thank you for being part of the Blue Wall community, where vehicles find their perfect owners. Together, we're driving the future of online automotive sales.
+                    </p>
+                </Authorized>
+                <NotAuthorized>
+                    <p>
+                        <UserRegisterDialogue></UserRegisterDialogue>, where vehicles find their perfect owners. Together, we're driving the future of online automotive sales.
+                    </p>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+  </div>
+</div>

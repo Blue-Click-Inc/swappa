@@ -28,10 +28,10 @@ namespace Swappa.Server.Handlers.User
         {
             var userQuery = userManager.Users
                 .OrderByDescending(u => u.CreatedOn)
-                .Search(request.SearchBy);
+                .Search(request.Query.SearchTerm);
 
             var pageList = await Task.Run(() => 
-                PagedList<AppUser>.ToPagedList(userQuery, request.PageNumber, request.PageSize));
+                PagedList<AppUser>.ToPagedList(userQuery, request.Query.PageNumber, request.Query.PageSize));
 
             var data = mapper.Map<IEnumerable<LeanUserDetailsDto>>(pageList);
             var pagedDataList = PaginatedListDto<LeanUserDetailsDto>.Paginate(data, pageList.MetaData);

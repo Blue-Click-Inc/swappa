@@ -29,6 +29,12 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<VehicleToReturnDto>>>(response);
         }
 
+        public async Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>?> GetFavoriteDataAsync(Guid userId, VehicleQueryDto query)
+        {
+            var response = await httpClient.GetAsync($"vehicle/{userId}/favorites{GetQuery(query)}");
+            return await httpInterceptor.Process<ResponseModel<PaginatedListDto<VehicleToReturnDto>>>(response);
+        }
+
         public async Task<ResponseModel<string>?> AddAsync(MultipartFormDataContent request)
         {
             var response = await httpClient.PostAsync($"vehicle", request);

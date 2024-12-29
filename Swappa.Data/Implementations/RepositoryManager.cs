@@ -21,6 +21,7 @@ namespace Swappa.Data.Implementations
         private readonly Lazy<ICommonRepository> _commonRepository;
         private readonly Lazy<IVehicleViewsRepository> _vehicleViewRepository;
         private readonly Lazy<IFavoriteVehiclesRepository> _favoriteVehiclesRepository;
+        private readonly Lazy<IFaqRepository> _faqRepository;
 
         public RepositoryManager(IOptions<MongoDbSettings> mongoSetting, 
             IOptions<CloudinarySettings> cloudSetting, IConfiguration configuration,
@@ -45,6 +46,8 @@ namespace Swappa.Data.Implementations
                 new VehicleViewsRepository(mongoSetting));
             _favoriteVehiclesRepository = new Lazy<IFavoriteVehiclesRepository>(() =>
                 new FavoriteVehiclesRepository(mongoSetting));
+            _faqRepository = new Lazy<IFaqRepository>(() =>
+                new FaqRepository(mongoSetting));
         }
 
         public ITokenRepository Token => _tokenRepository.Value;
@@ -56,5 +59,6 @@ namespace Swappa.Data.Implementations
         public ICommonRepository Common => _commonRepository.Value;
         public IVehicleViewsRepository VehicleViews => _vehicleViewRepository.Value;
         public IFavoriteVehiclesRepository FavoriteVehicles => _favoriteVehiclesRepository.Value;
+        public IFaqRepository Faq => _faqRepository.Value;
     }
 }

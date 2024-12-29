@@ -2,6 +2,7 @@
 using Swappa.Client.Pages.Modals.User;
 using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Client.Pages.User
 {
@@ -9,7 +10,9 @@ namespace Swappa.Client.Pages.User
     {
         private string count = string.Empty;
         private FeedbackRating averageRating = FeedbackRating.None;
-        public PageAndDateDto Query { get; set; } = new();
+        private bool _isLoading = false;
+        private bool _hasError = false;
+        public PageDto Query { get; set; } = new();
         public ResponseModel<PaginatedListDto<UserFeedbackDto>>? Data { get; set; }
         public ResponseModel<FeedbackDashboardDto>? FeedbackDashboard { get; set; }
 
@@ -22,8 +25,35 @@ namespace Swappa.Client.Pages.User
 
         private async Task GetFeedbacks()
         {
+            _isLoading = true;
             var feedbacks = await UserService.GetUsersFeedbacks(Query);
-            Data = feedbacks;
+            if(feedbacks.IsNotNull() && feedbacks.IsSuccessful)
+            {
+                Data = feedbacks;
+            }
+            else
+            {
+                _hasError = true;
+            }
+
+            _isLoading = false;
+        }
+
+        private async Task Search()
+        {
+            await GetFeedbacks();
+        }
+
+        private async Task Clear()
+        {
+            Query = new();
+            await GetFeedbacks();
+        }
+
+        private async Task OnPageChangedAsync(int newPageNumber)
+        {
+            Query.PageNumber = newPageNumber;
+            await GetFeedbacks();
         }
 
         private async Task GetDashboard()
