@@ -11,5 +11,6 @@
         ICommonRepository Common { get; }
         IVehicleViewsRepository VehicleViews { get; }
         IFavoriteVehiclesRepository FavoriteVehicles { get; }
+        IFaqRepository Faq { get; }
     }
 }

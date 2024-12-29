@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+﻿using BlazorBootstrap;
+using Blazored.LocalStorage;
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -47,6 +48,31 @@ namespace Swappa.Client.Services.Implementations
         public void GoTo(string url, bool reload = false, bool replace = false)
         {
             navigationManager.NavigateTo(url, reload, replace);
+        }
+
+        public ModalParameters GetDialogParameters(string title, string message, 
+            string styleClass = "text-danger", ButtonColor buttonColor = ButtonColor.Danger,
+            AlertColor alertColor = AlertColor.Danger)
+        {
+            return new ModalParameters
+            {
+                { "Title", title },
+                { "Message", message },
+                { "Class", styleClass },
+                { "ButtonColor", buttonColor },
+                { "AlertColor", alertColor}
+            };
+        }
+
+        public List<string> GetRandomBackgroundColors(int dataLabelsCount, string[]? backgroundColors)
+        {
+            var colors = new List<string>();
+            for (var index = 0; index < dataLabelsCount; index++)
+            {
+                colors.Add(backgroundColors![index]);
+            }
+
+            return colors;
         }
 
         public async Task CancelModalAsync(BlazoredModalInstance instance)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Swappa.Client.Services.Interfaces;
+using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
 using System.Net;
@@ -53,10 +54,9 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<UserDashboardDataDto>>(response);
         }
 
-        public async Task<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>?> GetPagedUsersAsync(SearchDto request)
+        public async Task<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>?> GetPagedUsersAsync(PageDto request)
         {
-            //https://localhost:7027/api/v1/user?SearchBy=u&PageNumber=1&PageSize=100
-            var response = await httpClient.GetAsync($"user");
+            var response = await httpClient.GetAsync($"user{GetQuery(request)}");
 
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>>(response);
         }
@@ -85,9 +85,9 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
-        public async Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>?> GetUsersFeedbacks(PageAndDateDto request)
+        public async Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>?> GetUsersFeedbacks(PageDto request)
         {
-            var response = await httpClient.GetAsync($"user/feedback/all?PageSize={request.PageSize}&PageNumber={request.PageNumber}&StartDate={request.StartDate}&EndDate={request.EndDate}");
+            var response = await httpClient.GetAsync($"user/feedback/all{GetQuery(request)}");
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<UserFeedbackDto>>>(response);
         }
 
@@ -95,6 +95,24 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.GetAsync($"user/feedback/dashboard");
             return await httpInterceptor.Process<ResponseModel<FeedbackDashboardDto>>(response);
+        }
+
+        private string GetQuery(PageDto query)
+        {
+            var queryStr = string.Empty;
+            if (query.SearchTerm.IsNotNullOrEmpty())
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&SearchTerm={query.SearchTerm}" : $"?SearchTerm={query.SearchTerm}";
+            }
+            if (query.PageSize != default)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&PageSize={query.PageSize}" : $"?PageSize={query.PageSize}";
+            }
+            if (query.PageNumber != default)
+            {
+                queryStr += queryStr.IsNotNullOrEmpty() ? $"&PageNumber={query.PageNumber}" : $"?PageNumber={query.PageNumber}";
+            }
+            return queryStr;
         }
 
         #endregion

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Swappa.Client.Pages.Modals.Accounts;
 using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Client.Pages.Components.Account
 {
@@ -11,15 +12,19 @@ namespace Swappa.Client.Pages.Components.Account
         [CascadingParameter] 
         BlazoredModalInstance Instance { get; set; } = new();
         [Parameter]
-        public RegistrationType Type { get; set; }
+        public SystemRole Type { get; set; }
         public RegisterDto RegisterModel { get; set; } = new();
         public ResponseModel<string>? Response { get; set; }
         private bool isLoading = false;
         private string message = string.Empty;
         private string buttonLabel = "Register";
-        private string pageTitle => Type == RegistrationType.Regular ?
-            "Register User" :
-            "Register Privileged User";
+        private string pageTitle => $"Register {Type.GetDescription()}";
+
+        protected override async Task OnParametersSetAsync()
+        {
+            RegisterModel.Role = Type;
+            await base.OnParametersSetAsync();
+        }
 
         private async Task RegisterAsync()
         {

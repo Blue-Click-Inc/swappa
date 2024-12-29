@@ -36,6 +36,26 @@ namespace Swappa.Server.Extensions
                         || u.Make.ToLower().Contains(lowerCaseTerm));
         }
 
+        public static IQueryable<UserFeedback> Search(this IQueryable<UserFeedback> faqs, string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return faqs;
+
+            var lowerCaseTerm = searchTerm.Trim().ToLower();
+            return faqs.Where(uf => uf.UserName.ToLower().Contains(lowerCaseTerm)
+                        || uf.UserEmail.ToLower().Contains(lowerCaseTerm));
+        }
+
+        public static IQueryable<Faq> Search(this IQueryable<Faq> faqs, string searchTerm)
+        {
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return faqs;
+
+            var lowerCaseTerm = searchTerm.Trim().ToLower();
+            return faqs.Where(u => u.Title.ToLower().Contains(lowerCaseTerm)
+                        || u.Details.ToLower().Contains(lowerCaseTerm));
+        }
+
         public static IQueryable<Vehicle> Filter(this IQueryable<Vehicle> vehicles, VehicleQueryDto filter)
         {
             if (filter.IsAllDefault())

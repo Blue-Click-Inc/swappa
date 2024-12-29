@@ -1,10 +1,16 @@
-﻿using AutoMapper;
+﻿using BlazorBootstrap;
+using CloudinaryDotNet.Actions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using MongoDB.Driver;
+using Pipelines.Sockets.Unofficial.Buffers;
+using Swappa.Data.Contracts;
 using Swappa.Entities.Models;
+using Swappa.Server.Commands.Faq;
 using Swappa.Server.Commands.Role;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Swappa.Server.Extensions
 {
@@ -21,11 +27,11 @@ namespace Swappa.Server.Extensions
             return vehicles;
         }
 
-        public static PagedList<Vehicle> MapImages(this PagedList<Vehicle> vehicles, Dictionary<Guid, List<Image>> images)
+        public static PagedList<Vehicle> MapImages(this PagedList<Vehicle> vehicles, Dictionary<Guid, List<Entities.Models.Image>> images)
         {
             vehicles.ForEach(v =>
             {
-                v.Images = images.GetValueOrDefault(v.Id) ?? new List<Image>();
+                v.Images = images.GetValueOrDefault(v.Id) ?? new List<Entities.Models.Image>();
             });
 
             return vehicles;
@@ -36,6 +42,63 @@ namespace Swappa.Server.Extensions
             using var scope = app.Services.CreateScope();
             await scope.DoSeedSystemRoles(logger);
             await scope.SeedUsers(logger);
+            await scope.DoSeedFaqs(logger);
+        }
+
+        private static async Task DoSeedFaqs(this IServiceScope scope, ILogger<Program> logger)
+        {
+            var mediatr = scope.ServiceProvider.GetRequiredService<IMediator>();
+            if (mediatr.IsNotNull())
+            {
+                var faqs = GetFaqsToCreate();
+                if (faqs.IsNotNullOrEmpty())
+                {
+                    var repo = scope.ServiceProvider.GetRequiredService<IRepositoryManager>();
+                    if(await repo.Faq.Exists(f => !f.IsDeprecated))
+                    {
+                        logger.LogInformation("Skipping FAQs seeding...");
+                        return;
+                    }
+                    logger.LogInformation($"Starting FAQs seeding...");
+                    logger.LogInformation($"Adding {faqs.Count} FAQs to the database");
+                    var res = await mediatr.Send(new CreateFaqsCommand
+                    {
+                        Requests = faqs
+                    });
+
+                    if (res.IsSuccessful)
+                    {
+                        logger.LogInformation(res.Data);
+                    }
+                    else
+                    {
+                        logger.LogError(res.Message);
+                    }
+                }
+                else
+                {
+                    logger.LogInformation("Seeding skipped.... FAQs already exist in the database.");
+                }
+            }
+        }
+
+        private static List<FaqToCreateDto> GetFaqsToCreate()
+        {
+            return new List<FaqToCreateDto>
+            {
+                new() {
+                    Title = "How do I list my car for sale?",
+                    Details = "Log in to your account, click \"Sell a Car,\" and follow the step-by-step instructions."
+                },
+                new() {
+                    Title = "What warranties are offered?",
+                    Details = "We provide manufacturer warranties for new cars and extended warranties for certified pre-owned vehicles."
+                },
+                new() {
+                    Title = " How do I reset my password?",
+                    Details = "Go to the login page and click \"Forgot Password.\" Follow the instructions to reset it."
+                }
+            };
         }
 
         private static async Task DoSeedSystemRoles(this IServiceScope scope, ILogger<Program> logger)

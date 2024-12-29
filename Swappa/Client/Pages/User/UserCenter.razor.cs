@@ -17,7 +17,7 @@ namespace Swappa.Client.Pages.User
         public long ActiveUsers { get; set; }
         public long InactiveUsers { get; set; }
         public PaginatedListDto<LeanUserDetailsDto>? UserData { get; set; }
-        public SearchDto Search { get; set; } = new();
+        public PageDto Query { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -47,7 +47,7 @@ namespace Swappa.Client.Pages.User
 
         private async Task GetPagedUserList()
         {
-            var response = await UserService.GetPagedUsersAsync(Search);
+            var response = await UserService.GetPagedUsersAsync(Query);
             if (response != null && response.IsSuccessful)
             {
                 UserData = response.Data;
@@ -59,52 +59,31 @@ namespace Swappa.Client.Pages.User
             }
         }
 
-        private async Task OpenUserDetailModal(Guid id)
+        private async Task Search()
         {
-            var parameters = new ModalParameters
-            {
-                { "Id", id }
-            };
-
-            var confirm = Modal.Show<ViewUserDetailsModal>("", parameters);
-            var result = await confirm.Result;
-            if (result.Confirmed || result.Cancelled)
-            {
-                isLoading = true;
-                await GetDashboard();
-                await GetPagedUserList();
-                isLoading = false;
-            }
+            await GetPagedUserList();
         }
 
-        private async Task OpenRoleManagerModal(Guid id)
+        private async Task Clear()
         {
-            var parameters = new ModalParameters
-            {
-                { "Id", id }
-            };
+            Query = new();
+            await GetPagedUserList();
+        }
 
-            var confirm = Modal.Show<RoleManagerModal>("", parameters);
-            var result = await confirm.Result;
+        private async Task OnPageChangedAsync(int newPageNumber)
+        {
+            Query.PageNumber = newPageNumber;
+            await GetPagedUserList();
         }
 
         private async Task ShowAddUserModal()
         {
-            var confirmation = Modal.Show<AddUserModal>("");
-            await confirmation.Result;
-        }
-
-        private string GetStatusClass(Status status)
-        {
-            switch (status)
+            var parameters = new ModalParameters
             {
-                case Status.Inactive:
-                    return "danger";
-                case Status.Active:
-                    return "success";
-                default:
-                    return "secondary";
-            }
+                { "ForSuperUser", true }
+            };
+            var confirmation = Modal.Show<RegisterDialogue>("", parameters);
+            await confirmation.Result;
         }
     }
 }

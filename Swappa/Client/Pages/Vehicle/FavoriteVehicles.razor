@@ -1,7 +1,38 @@
 ﻿@page "/vehicle/favorites"
+@attribute [Authorize]
 
-<h3>FavoriteVehicles</h3>
-
-@code {
-
-}
+<PageTitle>Favorite Vehicles</PageTitle>
+<div class="container">
+    <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
+        <BackButton></BackButton>
+        <div class="card box-shadow-inset m-auto mt-1">
+            <EditForm Model="Query" method="post" OnValidSubmit="Search" FormName="searchVehicle">
+                <VehicleSearch ClearSearch="Clear" Query="@Query" />
+            </EditForm>
+        </div>
+        <div class="table-responsive mt-5">
+            @if (isLoading)
+            {
+                <div class="text-center align-self-center top-50 m-auto">
+                    <Spinner Type="SpinnerType.Grow" Size="SpinnerSize.Large" Color="SpinnerColor.Primary" />
+                </div>
+            }
+            else
+            {
+                <VehicleTableList Data="Data" DataCount="@NumberOfVehicles" />
+                @if (Data.IsNotNull())
+                {
+                    <Pagination ActivePageNumber="@Data.MetaData.CurrentPage"
+                                TotalPages="@Data.MetaData.TotalPages"
+                                Alignment="Alignment.Center"
+                                FirstLinkIcon="IconName.ChevronDoubleLeft"
+                                PreviousLinkIcon="IconName.ChevronLeft"
+                                NextLinkIcon="IconName.ChevronRight"
+                                LastLinkIcon="IconName.ChevronDoubleRight"
+                                PageChanged="OnPageChangedAsync"
+                                Class="mt-3" />
+                }
+            }
+        </div>
+    </div>
+</div>

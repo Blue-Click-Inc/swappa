@@ -10,6 +10,7 @@ namespace Swappa.Client.Services.Interfaces
         Task<ResponseModel<VehicleDashboardDto>?> GetDashboard();
         Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>?> GetDataAsync(VehicleQueryDto query);
         Task<ResponseModel<long>?> GetFavoriteCount(Guid userId);
+        Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>?> GetFavoriteDataAsync(Guid userId, VehicleQueryDto query);
         Task<ResponseModel<bool>> IsFavorite(Guid id);
         Task<HttpResponseMessage?> PrintPDF();
         Task<ResponseModel<FavoriteVehicleResponseDto>?> ToggleFavorite(IdDto request);

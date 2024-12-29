@@ -20,8 +20,11 @@ namespace Swappa.Server.Controllers.V1
 
         [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpGet("")]
-        public async Task<IActionResult> GetUsers([FromQuery] GetPagedUserListQuery request) =>
-            Ok(await mediator.Send(request));
+        public async Task<IActionResult> GetUsers([FromQuery] PageDto request) =>
+            Ok(await mediator.Send(new GetPagedUserListQuery
+            {
+                Query = request
+            }));
 
         [HttpGet("dashboard")]
         [Authorize(Roles = "Admin, SuperAdmin")]
@@ -43,7 +46,7 @@ namespace Swappa.Server.Controllers.V1
                 Command = command
             }));
 
-        [Authorize(Roles = "User")]
+        [Authorize(Roles = "User, Merchant")]
         [HttpPost("feedback/send")]
         public async Task<IActionResult> SendFeedback([FromBody] FeedbackForAddDto request) =>
             Ok(await mediator.Send(new SendUserFeedbackCommand
@@ -53,8 +56,11 @@ namespace Swappa.Server.Controllers.V1
 
         [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpGet("feedback/all")]
-        public async Task<IActionResult> GetUsersFeedbacks([FromQuery] GetUsersFeedbackQuery request) =>
-            Ok(await mediator.Send(request));
+        public async Task<IActionResult> GetUsersFeedbacks([FromQuery] PageDto request) =>
+            Ok(await mediator.Send(new GetUsersFeedbackQuery
+            {
+                Dto = request
+            }));
 
         [Authorize(Roles = "SuperAdmin, Admin")]
         [HttpGet("feedback/user")]

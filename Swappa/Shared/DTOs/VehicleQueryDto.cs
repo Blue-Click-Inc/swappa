@@ -15,7 +15,6 @@ namespace Swappa.Shared.DTOs
         private int _maxYear = default;
         private double _maxPrice = default;
 
-        public string SearchTerm { get; set; } = string.Empty;
         public int MinYear 
         { 
             get { return _year;  }

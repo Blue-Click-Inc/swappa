@@ -1,0 +1,36 @@
+﻿<PageTitle>Registration Dialogue</PageTitle>
+<CascadingAuthenticationState>
+    <div class="row">
+        <div class="box-shadow-inset border-radius-2rem p-3">
+            <EditForm Model="RegType" OnValidSubmit="GoToRegistrationPage">
+                <h3>
+                    <span class="text-muted fw-bold" aria-hidden="true"> Register As...</span>
+                </h3>
+                <hr />
+                @if (ForSuperUser)
+                {
+                    <SuperUserOptions RegType="RegType" />
+                }
+                else
+                {
+                    <RegularUserOptions RegType="RegType" />
+                }
+                <hr />
+                <div class="row">
+                    <div class="col-md-0 col-lg-3"></div>
+                    <div class="col-md-12 col-lg-6 d-flex justify-content-center">
+                        <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                            <Button Color="ButtonColor.Primary" Outline="true" Class="mx-1 mt-1" Type="ButtonType.Submit">
+                                <span class="fa fa-user-plus" aria-hidden="true"></span> Proceed
+                            </Button>
+                            <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1 mt-1" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
+                                <span class="oi oi-arrow-left" aria-hidden="true"></span> Cancel
+                            </Button>
+                        </div>
+                    </div>
+                    <div class="col-md-0 col-lg-3"></div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</CascadingAuthenticationState>

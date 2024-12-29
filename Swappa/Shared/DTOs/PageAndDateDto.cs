@@ -5,7 +5,7 @@ namespace Swappa.Shared.DTOs
 {
     public class PageAndDateDto : BasePageDto, IDateRangeDto
     {
-        public DateTime StartDate { get; set; } = DateExtensions.MinimumDate();
-        public DateTime EndDate { get; set; } = DateExtensions.MaximumDate();
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; } = DateTime.UtcNow;
     }
 }

@@ -16,6 +16,8 @@ namespace Swappa.Client.Extensions
             services.AddScoped<ILocationService, LocationService>();
             services.AddScoped<IToolsService, ToolsService>();
             services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<IFaqService, FaqService>();
+            services.AddScoped<IChartService, ChartService>();
         }
 
         public static void ConfigureInterceptor(this IServiceCollection services)
