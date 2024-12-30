@@ -43,7 +43,25 @@ namespace Swappa.Client.Services.Implementations
 
         public async Task<ResponseModel<string>?> DeprecateManyAsync(List<Guid> ids)
         {
-            var response = await httpClient.PutAsJsonAsync($"contact-message/deprecated-many", ids);
+            var response = await httpClient.PutAsJsonAsync($"contact-message/deprecate-selected", ids);
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> DeprecateAsync(Guid id)
+        {
+            var response = await httpClient.PutAsJsonAsync($"contact-message/deprecate/{id}", new object());
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> MarkManyAsReadAsync(List<Guid> ids)
+        {
+            var response = await httpClient.PutAsJsonAsync($"contact-message/mark-many-as-read", ids);
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> SendReply(ResponseMessageDto request)
+        {
+            var response = await httpClient.PostAsJsonAsync($"contact-message/reply", request);
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
     }

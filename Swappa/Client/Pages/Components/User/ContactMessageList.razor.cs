@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal;
+using Microsoft.AspNetCore.Components;
 using Swappa.Client.Pages.Modals;
+using Swappa.Client.Pages.Modals.User;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
 
@@ -19,6 +21,18 @@ namespace Swappa.Client.Pages.Components.User
         public bool HasError { get; set; }
         public HashSet<Guid> Selected { get; set; } = new();
 
+        private async Task ShowMessageDetails(Guid id)
+        {
+            var param = new ModalParameters
+            {
+                { "Id", id }
+            };
+
+            var modal = Modal.Show<ContactMessageModal>("", param);
+            await modal.Result;
+            await ReloadList.InvokeAsync();
+        }
+
         private async Task ConfirmAndDelete(Guid id)
         {
             var parameters = SharedService.GetDialogParameters($"Confirm Delete",
@@ -28,7 +42,16 @@ namespace Swappa.Client.Pages.Components.User
             var result = await dialog.Result;
             if (result.Confirmed)
             {
-                await ReloadList.InvokeAsync();
+                var response = await ContactMessageService.DeprecateAsync(id);
+                if(response.IsNotNull() && response.IsSuccessful)
+                {
+                    Toast.ShowSuccess(response?.Data ?? "Operation successful.");
+                    await ReloadList.InvokeAsync();
+                }
+                else
+                {
+                    Toast.ShowError(response?.Message ?? "Operation not successful. Please try again later");
+                }
             }
         }
 
@@ -45,7 +68,16 @@ namespace Swappa.Client.Pages.Components.User
                 var result = await dialog.Result;
                 if (result.Confirmed)
                 {
-                    await ReloadList.InvokeAsync();
+                    var response = await ContactMessageService.DeprecateManyAsync(Selected.ToList());
+                    if (response.IsNotNull() && response.IsSuccessful)
+                    {
+                        Toast.ShowSuccess(response?.Data ?? "Operation successful.");
+                        await ReloadList.InvokeAsync();
+                    }
+                    else
+                    {
+                        Toast.ShowError(response?.Message ?? "Operation not successful. Please try again later");
+                    }
                 }
             }
         }
@@ -54,7 +86,17 @@ namespace Swappa.Client.Pages.Components.User
         {
             if (Selected.IsNotNullOrEmpty())
             {
-                await ReloadList.InvokeAsync();
+                var response = await ContactMessageService.MarkManyAsReadAsync(Selected.ToList());
+                if (response.IsNotNull() && response.IsSuccessful)
+                {
+                    Toast.ShowSuccess(response?.Data ?? "Operation successful.");
+                    await ReloadList.InvokeAsync();
+                    Selected.Clear();
+                }
+                else
+                {
+                    Toast.ShowError(response?.Message ?? "Operation not successful. Please try again later");
+                }
             }
         }
 

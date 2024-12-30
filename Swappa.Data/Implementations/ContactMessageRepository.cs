@@ -20,6 +20,14 @@ namespace Swappa.Data.Implementations
             ContactMessage entity) =>
             await UpdateAsync(expression, entity);
 
+        public async Task EditManyAsync(List<ContactMessage> entities)
+        {
+            foreach (var entity in entities)
+            {
+                await UpdateAsync(x => x.Id.Equals(entity.Id), entity);
+            }
+        }
+
         public async Task DeleteAsync(Expression<Func<ContactMessage, bool>> expression) =>
             await RemoveAsync(expression);
 

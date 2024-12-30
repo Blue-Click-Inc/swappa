@@ -32,7 +32,7 @@ namespace Swappa.Server.Handlers.ContactsMessages
                 return response.Process<ContactMessageToReturnDto>(new BadRequestResponse("Could not find the requested record"));
             }
 
-            message.IsRead = !message.IsRead;
+            message.IsRead = true;
             message.UpdatedAt = DateTime.UtcNow;
             await repository.ContactMessage.EditAsync(c => c.Id.Equals(request.Id), message);
             return response.Process<ContactMessageToReturnDto>(new ApiOkResponse<ContactMessageToReturnDto>(new ContactMessageToReturnDto

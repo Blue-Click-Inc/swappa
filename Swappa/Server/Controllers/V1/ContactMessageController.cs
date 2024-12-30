@@ -29,6 +29,30 @@ namespace Swappa.Server.Controllers.V1
                 Id = id
             }));
 
+        [HttpPut("deprecate-selected")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> DeleteSelected([FromBody] List<Guid> ids) =>
+            Ok(await mediator.Send(new DeprecateSelectedMessagesCommand
+            {
+                SelectedIds = ids
+            }));
+
+        [HttpPut("mark-many-as-read")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> MarkSelectedAsRead([FromBody] List<Guid> ids) =>
+            Ok(await mediator.Send(new MarkSelectedMessagesAsReadCommand
+            {
+                SelectedIds = ids
+            }));
+
+        [HttpPut("deprecate/{id}")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> Deprecate([FromRoute] Guid id) =>
+            Ok(await mediator.Send(new DeprecateMessageCommand
+            {
+                Id = id
+            }));
+
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> GetPaginatedList([FromQuery] PageDto request) =>
@@ -36,6 +60,17 @@ namespace Swappa.Server.Controllers.V1
             {
                 Query = request
             }));
+
+        [HttpPost("reply")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> SendReply([FromBody] ResponseMessageDto request)
+        {
+            return Ok(await mediator.Send(new SendReplyCommand
+            {
+                Message = request,
+                Origin = HttpContext.Request.Headers["Origin"]
+            }));
+        }
 
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin, SuperAdmin")]

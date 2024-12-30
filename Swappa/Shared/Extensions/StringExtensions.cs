@@ -45,6 +45,9 @@ namespace Swappa.Shared.Extensions
             return uriBuilder.ToString();
         }
 
+        public static string BuildBaseUrl(this StringValues origin) =>
+            origin.IsNotNull() ? (new UriBuilder(origin!)).ToString() : string.Empty;
+
         public static string BuildAccountUrl(this StringValues origin, string token, TokenType tokenType)
         {
             var uriBuilder = new UriBuilder($"{origin}/accounts");

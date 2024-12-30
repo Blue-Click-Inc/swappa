@@ -15,10 +15,32 @@ namespace Swappa.Client.Pages.Modals.User
         [CascadingParameter]
         BlazoredModalInstance Instance { get; set; } = new();
         public ContactMessageToReturnDto? Data { get; set; }
+        public ResponseMessageDto Reply { get; set; } = new();
 
         protected override async Task OnParametersSetAsync()
         {
+            await GetDataByIdAsync();
             await base.OnParametersSetAsync();
+        }
+
+        public async Task ReplyAsync()
+        {
+            _isLoading = true;
+            Reply.Name = Data.Name;
+            Reply.Email = Data.Email;
+            var response = await ContactMessageService.SendReply(Reply);
+            if(response.IsNotNull() && response.IsSuccessful)
+            {
+                Toast.ShowSuccess(response?.Data ?? "Operation successful");
+                await Instance.CloseAsync();
+            }
+            else
+            {
+                _hasError = true;
+                Toast.ShowError(response?.Message ?? "An error occurred. Please try again later.");
+            }
+            _isLoading = false;
+            await Task.Run(() => true);
         }
 
         public async Task GetDataByIdAsync()
