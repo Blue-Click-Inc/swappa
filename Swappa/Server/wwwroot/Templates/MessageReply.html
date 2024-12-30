@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 0;
+                background-color: #f9f9f9;
+                color: #333;
+            }
+
+            .email-container {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #ffffff;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .email-header {
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .email-body {
+                font-size: 16px;
+            }
+
+            .email-footer {
+                text-align: center;
+                margin-top: 20px;
+                font-size: 14px;
+                color: #777;
+            }
+
+            a {
+                color: #007BFF;
+                text-decoration: none;
+            }
+
+                a:hover {
+                    text-decoration: underline;
+                }
+        </style>
+    </head>
+    <body>
+        <div class="email-container">
+            <!--<div class="email-header">
+                <h2>Welcome to [Your Company]</h2>
+            </div>-->
+            <div class="email-body">
+                <p>Dear [[recipient_name]],</p>
+                <p>[[main_message]]</p>
+                <p>If you have any questions or need further information, feel free to reply to this mail.</p>
+                <p>You can also refer to our <a href="[[base_url]]/faqs">FAQs</a> section to learn more about our services or go to our <a href="[[base_url]]/contact">Contact</a> section for more contact options</p>
+                <p>Best regards,</p>
+                <p>[[sender_name]] <br> [[company_name]]</p>
+            </div>
+            <div class="email-footer">
+                <p>&copy; [[curr_year]] [[company_name]]. All rights reserved.</p>
+                <p><a href="[[base_url]]/faqs">FAQs</a> | <a href="[[base_url]]/contact">Contact Us</a></p>
+            </div>
+        </div>
+    </body>
+</html>

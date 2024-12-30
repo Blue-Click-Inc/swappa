@@ -50,20 +50,20 @@
                     <ValidationMessage For="() => Reply.Body" class="text-danger" />
                 </div>
             </div>
-        </EditForm>
-        <div class="row">
-            <div class="col-md-0 col-lg-2"></div>
-            <div class="col-md-12 col-lg-8 d-flex justify-content-center">
-                <div class="d-flex justify-content-center flex-column flex-md-row w-100">
-                    <Button Color="ButtonColor.Success" Class="mx-1 mt-1" Outline="true" disabled="@_isLoading">
-                        <Icon Name="IconName.ChatDots" /> Reply
-                    </Button>
-                    <Button Color="ButtonColor.Secondary" Class="mx-1 mt-1" Outline="true" disabled="@_isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
-                        <Icon Name="IconName.ArrowLeft" /> Back
-                    </Button>
+            <div class="row">
+                <div class="col-md-0 col-lg-2"></div>
+                <div class="col-md-12 col-lg-8 d-flex justify-content-center">
+                    <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                        <Button Color="ButtonColor.Success" Class="mx-1 mt-1" Type="ButtonType.Submit" Outline="true" disabled="@_isLoading">
+                            <Icon Name="IconName.ChatDots" /> Reply
+                        </Button>
+                        <Button Color="ButtonColor.Secondary" Class="mx-1 mt-1" Outline="true" disabled="@_isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
+                            <Icon Name="IconName.ArrowLeft" /> Back
+                        </Button>
+                    </div>
                 </div>
+                <div class="col-md-0 col-lg-2"></div>
             </div>
-            <div class="col-md-0 col-lg-2"></div>
-        </div>
+        </EditForm>
     </div>
 </div>

@@ -86,7 +86,17 @@ namespace Swappa.Client.Pages.Components.User
         {
             if (Selected.IsNotNullOrEmpty())
             {
-                await ReloadList.InvokeAsync();
+                var response = await ContactMessageService.MarkManyAsReadAsync(Selected.ToList());
+                if (response.IsNotNull() && response.IsSuccessful)
+                {
+                    Toast.ShowSuccess(response?.Data ?? "Operation successful.");
+                    await ReloadList.InvokeAsync();
+                    Selected.Clear();
+                }
+                else
+                {
+                    Toast.ShowError(response?.Message ?? "Operation not successful. Please try again later");
+                }
             }
         }
 

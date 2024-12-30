@@ -25,6 +25,21 @@ namespace Swappa.Client.Pages.Modals.User
 
         public async Task ReplyAsync()
         {
+            _isLoading = true;
+            Reply.Name = Data.Name;
+            Reply.Email = Data.Email;
+            var response = await ContactMessageService.SendReply(Reply);
+            if(response.IsNotNull() && response.IsSuccessful)
+            {
+                Toast.ShowSuccess(response?.Data ?? "Operation successful");
+                await Instance.CloseAsync();
+            }
+            else
+            {
+                _hasError = true;
+                Toast.ShowError(response?.Message ?? "An error occurred. Please try again later.");
+            }
+            _isLoading = false;
             await Task.Run(() => true);
         }
 
