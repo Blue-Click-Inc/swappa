@@ -1,5 +1,69 @@
-﻿<h3>ContactMessageModal</h3>
+﻿<PageTitle>Contact Message View</PageTitle>
 
-@code {
-
-}
+<div class="row">
+    <div class="box-shadow-inset border-radius-2rem p-3">
+        <h5>
+            <span caria-hidden="true">Message Detail</span>
+        </h5>
+        <hr />
+        @if (_isLoading)
+        {
+            <BlueWallPlaceholder />
+        }
+        else if(!_isLoading && _hasError)
+        {
+            <Alert Style="AlertStyle.Danger">
+                <ChildContent>
+                    <span class="fa fa-exclamation--triangle"></span> This action will delete this record.
+                </ChildContent>
+            </Alert>
+        }
+        else if (Data.IsNotNull())
+        {
+            <div class="row">
+                <p class="h5">@Data.Name: <span class="h5 fw-normal">@Data.Email</span></p>
+                <hr />
+                <p>@Data.Message</p>
+            </div>
+        }
+        <hr />
+        <EditForm Model="Reply" method="post" OnValidSubmit="ReplyAsync" FormName="message">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <div class="form-floating mb-3 px-1">
+                    <InputText @bind-Value="Reply.Subject"
+                               class="form-control"
+                               autocomplete="Subject"
+                               placeholder="John Doe"
+                               aria-required="true"
+                               type="text" />
+                    <label for="Subject" class="form-label">Subject</label>
+                    <ValidationMessage For="() => Reply.Subject" class="text-danger" />
+                </div>
+                <div class="form-floating mb-3 px-1">
+                    <InputTextArea @bind-Value="Reply.Body"
+                                   class="form-control h-100"
+                                   rows="7"
+                                   placeholder="Let's hear from you'"
+                                   aria-required="true"></InputTextArea>
+                    <label for="Body" class="form-label">Enter your message</label>
+                    <ValidationMessage For="() => Reply.Body" class="text-danger" />
+                </div>
+            </div>
+        </EditForm>
+        <div class="row">
+            <div class="col-md-0 col-lg-2"></div>
+            <div class="col-md-12 col-lg-8 d-flex justify-content-center">
+                <div class="d-flex justify-content-center flex-column flex-md-row w-100">
+                    <Button Color="ButtonColor.Success" Class="mx-1 mt-1" Outline="true" disabled="@_isLoading">
+                        <Icon Name="IconName.ChatDots" /> Reply
+                    </Button>
+                    <Button Color="ButtonColor.Secondary" Class="mx-1 mt-1" Outline="true" disabled="@_isLoading" @onclick="( async () => await SharedService.CancelModalAsync(Instance))">
+                        <Icon Name="IconName.ArrowLeft" /> Back
+                    </Button>
+                </div>
+            </div>
+            <div class="col-md-0 col-lg-2"></div>
+        </div>
+    </div>
+</div>

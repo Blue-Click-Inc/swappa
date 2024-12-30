@@ -29,6 +29,22 @@ namespace Swappa.Server.Controllers.V1
                 Id = id
             }));
 
+        [HttpPut("deprecate-selected")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> DeleteSelected([FromBody] List<Guid> ids) =>
+            Ok(await mediator.Send(new DeprecateSelectedMessagesCommand
+            {
+                SelectedIds = ids
+            }));
+
+        [HttpPut("deprecate/{id}")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
+        public async Task<IActionResult> Deprecate([FromRoute] Guid id) =>
+            Ok(await mediator.Send(new DeprecateMessageCommand
+            {
+                Id = id
+            }));
+
         [HttpGet]
         [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> GetPaginatedList([FromQuery] PageDto request) =>

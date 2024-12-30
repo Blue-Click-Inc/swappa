@@ -15,10 +15,17 @@ namespace Swappa.Client.Pages.Modals.User
         [CascadingParameter]
         BlazoredModalInstance Instance { get; set; } = new();
         public ContactMessageToReturnDto? Data { get; set; }
+        public ResponseMessageDto Reply { get; set; } = new();
 
         protected override async Task OnParametersSetAsync()
         {
+            await GetDataByIdAsync();
             await base.OnParametersSetAsync();
+        }
+
+        public async Task ReplyAsync()
+        {
+            await Task.Run(() => true);
         }
 
         public async Task GetDataByIdAsync()

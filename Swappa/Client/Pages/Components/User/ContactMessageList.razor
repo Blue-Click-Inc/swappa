@@ -73,15 +73,16 @@
                             <td class="text-center p-0 m-0 @GetReadIndicator(data.IsRead)" style="font-size: 2rem;">&#8226;</td>
                             <td>@data.Name</td>
                             <td>
-                                <a href="mailto:@(data.Email)">@data.Email</a>
+                                <a style="cursor: pointer;color: royalblue;text-decoration: underline" @onclick="async () => await ShowMessageDetails(data.Id)">@data.Email</a>
                             </td>
                             <td>@GetMessage(data.Message)</td>
                             <td>@data.DateAdded.CommaSeparatedDateTime()</td>
                             <td class="d-flex justify-content-end">
-                                <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1">
+                                <Button Color="ButtonColor.Secondary" Outline="true" Class="mx-1"
+                                        @onclick="async () => await ShowMessageDetails(data.Id)">
                                     <Icon Name="IconName.Eye" />
                                 </Button>
-                                <Button Color="ButtonColor.Danger" Outline="true" Class="mx-1"
+                                <Button Color="ButtonColor.Success" Outline="true" Class="mx-1"
                                         @onclick="async () => await ConfirmAndDelete(data.Id)">
                                     <Icon Name="IconName.Trash" />
                                 </Button>
