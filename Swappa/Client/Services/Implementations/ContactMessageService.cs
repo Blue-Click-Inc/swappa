@@ -35,10 +35,16 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<bool>>(response);
         }
 
-        public async Task<ResponseModel<FaqToReturnDto>?> GetAsync(Guid id)
+        public async Task<ResponseModel<ContactMessageToReturnDto>?> GetAsync(Guid id)
         {
             var response = await httpClient.GetAsync($"contact-message/{id}");
-            return await httpInterceptor.Process<ResponseModel<FaqToReturnDto>>(response);
+            return await httpInterceptor.Process<ResponseModel<ContactMessageToReturnDto>>(response);
+        }
+
+        public async Task<ResponseModel<string>?> DeprecateManyAsync(List<Guid> ids)
+        {
+            var response = await httpClient.PutAsJsonAsync($"contact-message/deprecated-many", ids);
+            return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
     }
 }
