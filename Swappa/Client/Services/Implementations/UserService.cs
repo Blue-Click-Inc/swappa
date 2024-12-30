@@ -54,9 +54,9 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<UserDashboardDataDto>>(response);
         }
 
-        public async Task<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>?> GetPagedUsersAsync(PageDto request)
+        public async Task<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>?> GetPagedUsersAsync(string request)
         {
-            var response = await httpClient.GetAsync($"user{GetQuery(request)}");
+            var response = await httpClient.GetAsync($"user{request}");
 
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>>(response);
         }
@@ -85,9 +85,9 @@ namespace Swappa.Client.Services.Implementations
             return await httpInterceptor.Process<ResponseModel<string>>(response);
         }
 
-        public async Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>?> GetUsersFeedbacks(PageDto request)
+        public async Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>?> GetUsersFeedbacks(string request)
         {
-            var response = await httpClient.GetAsync($"user/feedback/all{GetQuery(request)}");
+            var response = await httpClient.GetAsync($"user/feedback/all{request}");
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<UserFeedbackDto>>>(response);
         }
 
@@ -96,25 +96,6 @@ namespace Swappa.Client.Services.Implementations
             var response = await httpClient.GetAsync($"user/feedback/dashboard");
             return await httpInterceptor.Process<ResponseModel<FeedbackDashboardDto>>(response);
         }
-
-        private string GetQuery(PageDto query)
-        {
-            var queryStr = string.Empty;
-            if (query.SearchTerm.IsNotNullOrEmpty())
-            {
-                queryStr += queryStr.IsNotNullOrEmpty() ? $"&SearchTerm={query.SearchTerm}" : $"?SearchTerm={query.SearchTerm}";
-            }
-            if (query.PageSize != default)
-            {
-                queryStr += queryStr.IsNotNullOrEmpty() ? $"&PageSize={query.PageSize}" : $"?PageSize={query.PageSize}";
-            }
-            if (query.PageNumber != default)
-            {
-                queryStr += queryStr.IsNotNullOrEmpty() ? $"&PageNumber={query.PageNumber}" : $"?PageNumber={query.PageNumber}";
-            }
-            return queryStr;
-        }
-
         #endregion
     }
 }

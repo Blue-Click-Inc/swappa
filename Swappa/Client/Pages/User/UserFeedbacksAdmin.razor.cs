@@ -26,7 +26,8 @@ namespace Swappa.Client.Pages.User
         private async Task GetFeedbacks()
         {
             _isLoading = true;
-            var feedbacks = await UserService.GetUsersFeedbacks(Query);
+            var queryString = SharedService.GetQuery(Query);
+            var feedbacks = await UserService.GetUsersFeedbacks(queryString);
             if(feedbacks.IsNotNull() && feedbacks.IsSuccessful)
             {
                 Data = feedbacks;
@@ -39,6 +40,10 @@ namespace Swappa.Client.Pages.User
             _isLoading = false;
         }
 
+        private string GetFeedback(string str)
+        {
+            return SharedService.GetSubstring(str);
+        }
         private async Task Search()
         {
             await GetFeedbacks();

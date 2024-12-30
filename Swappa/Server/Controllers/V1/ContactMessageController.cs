@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swappa.Server.Commands.ContactMessage;
 using Swappa.Server.Queries.ContactMessages;
@@ -20,7 +21,8 @@ namespace Swappa.Server.Controllers.V1
         public async Task<IActionResult> Add([FromBody] CreateContactMessageCommand request) =>
             Ok(await mediator.Send(request));
 
-        [HttpPut("{id}")]
+        [HttpPut("toggle-read/{id}")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> ToggleRead([FromRoute] Guid id) =>
             Ok(await mediator.Send(new ToggleContactMessageIsReadCommand
             {
@@ -28,6 +30,7 @@ namespace Swappa.Server.Controllers.V1
             }));
 
         [HttpGet]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> GetPaginatedList([FromQuery] PageDto request) =>
             Ok(await mediator.Send(new GetContactMessageQuery
             {
@@ -35,6 +38,7 @@ namespace Swappa.Server.Controllers.V1
             }));
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin, SuperAdmin")]
         public async Task<IActionResult> GetById([FromRoute] Guid id) =>
             Ok(await mediator.Send(new GetContactMessageByIdQuery
             {

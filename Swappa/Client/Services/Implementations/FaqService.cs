@@ -18,9 +18,9 @@ namespace Swappa.Client.Services.Implementations
             this.httpInterceptor = httpInterceptor;
         }
 
-        public async Task<ResponseModel<PaginatedListDto<FaqToReturnDto>>?> GetDataAsync(PageDto query)
+        public async Task<ResponseModel<PaginatedListDto<FaqToReturnDto>>?> GetDataAsync(string query)
         {
-            var response = await httpClient.GetAsync($"faq{GetQuery(query)}");
+            var response = await httpClient.GetAsync($"faq{query}");
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<FaqToReturnDto>>>(response);
         }
 
@@ -46,25 +46,6 @@ namespace Swappa.Client.Services.Implementations
         {
             var response = await httpClient.GetAsync($"faq/{id}");
             return await httpInterceptor.Process<ResponseModel<FaqToReturnDto>>(response);
-        }
-
-        private string GetQuery(PageDto query)
-        {
-            var queryStr = string.Empty;
-            if (query.SearchTerm.IsNotNullOrEmpty())
-            {
-                queryStr += queryStr.IsNotNullOrEmpty() ? $"&SearchTerm={query.SearchTerm}" : $"?SearchTerm={query.SearchTerm}";
-            }
-            if (query.PageSize != default)
-            {
-                queryStr += queryStr.IsNotNullOrEmpty() ? $"&PageSize={query.PageSize}" : $"?PageSize={query.PageSize}";
-            }
-            if (query.PageNumber != default)
-            {
-                queryStr += queryStr.IsNotNullOrEmpty() ? $"&PageNumber={query.PageNumber}" : $"?PageNumber={query.PageNumber}";
-            }
-
-            return queryStr;
         }
     }
 }
