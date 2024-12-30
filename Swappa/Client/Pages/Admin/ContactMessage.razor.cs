@@ -1,13 +1,14 @@
 ﻿using Swappa.Shared.DTOs;
 
-namespace Swappa.Client.Shared
+namespace Swappa.Client.Pages.Admin
 {
-    public partial class Faq
+    public partial class ContactMessage
     {
         private bool _isLoading = false;
         private bool _hasError = false;
         public PageDto Query { get; set; } = new();
-        public PaginatedListDto<FaqToReturnDto>? Faqs { get; set; }
+        public HashSet<Guid> SelectedValues { get; set; } = new();
+        public PaginatedListDto<ContactMessageToReturnDto>? Messages { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -17,12 +18,12 @@ namespace Swappa.Client.Shared
 
         private async Task GetDataAsync()
         {
-            _isLoading = Faqs == null;
+            _isLoading = Messages == null;
             var query = SharedService.GetQuery(Query);
-            var response = await FaqService.GetDataAsync(query);
+            var response = await ContactMessageService.GetDataAsync(query);
             if (response is { IsSuccessful: true })
             {
-                Faqs = response.Data;
+                Messages = response.Data;
             }
             else
             {

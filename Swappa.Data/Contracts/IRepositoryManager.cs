@@ -12,5 +12,6 @@
         IVehicleViewsRepository VehicleViews { get; }
         IFavoriteVehiclesRepository FavoriteVehicles { get; }
         IFaqRepository Faq { get; }
+        IContactMessageRepository ContactMessage { get; }
     }
 }

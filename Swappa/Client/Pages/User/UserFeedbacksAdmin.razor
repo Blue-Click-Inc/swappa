@@ -76,7 +76,7 @@
                                     <td>
                                         <a href="mailto:@(feedback.UserEmail)">@feedback.UserEmail</a>
                                     </td>
-                                    <td>@feedback.Feedback</td>
+                                    <td>@GetFeedback(feedback.Feedback)</td>
                                     <td>@feedback.Rating.GetDescription()</td>
                                     <td>@feedback.CreatedAt.ToString("g")</td>
                                     <td>

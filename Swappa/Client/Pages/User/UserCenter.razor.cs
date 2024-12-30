@@ -47,7 +47,8 @@ namespace Swappa.Client.Pages.User
 
         private async Task GetPagedUserList()
         {
-            var response = await UserService.GetPagedUsersAsync(Query);
+            var queryString = SharedService.GetQuery(Query);
+            var response = await UserService.GetPagedUsersAsync(queryString);
             if (response != null && response.IsSuccessful)
             {
                 UserData = response.Data;
