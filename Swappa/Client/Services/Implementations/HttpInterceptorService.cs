@@ -1,6 +1,7 @@
 ﻿using Blazored.Toast.Services;
 using Microsoft.AspNetCore.Components;
 using Swappa.Client.Services.Interfaces;
+using Swappa.Shared.Extensions;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -37,6 +38,7 @@ namespace Swappa.Client.Services.Implementations
 
             return result;
         }
+
         private void ProcessResponse(HttpStatusCode statusCode)
         {
             string? message;
@@ -60,7 +62,10 @@ namespace Swappa.Client.Services.Implementations
                     break;
             }
 
-            toastService.ShowError(message);
+            if (message.IsNotNullOrEmpty())
+            {
+                toastService.ShowError(message);
+            }
         }
     }
 }

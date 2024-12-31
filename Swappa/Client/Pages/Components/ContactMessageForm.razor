@@ -17,24 +17,24 @@
                 <ValidationMessage For="() => Message.FullName" class="text-danger" />
             </div>
             <div class="form-floating mb-3 px-1">
-                <InputText @bind-Value="Message.EmailAddress"
+                <InputText @bind-Value="Message.Email"
                            class="form-control"
                            autocomplete="EmailAddress"
                            placeholder="email@example.com"
                            aria-required="true"
                            type="email" />
                 <label for="EmailAddress" class="form-label">Email Address</label>
-                <ValidationMessage For="() => Message.EmailAddress" class="text-danger" />
+                <ValidationMessage For="() => Message.Email" class="text-danger" />
             </div>
             <div class="form-floating mb-3 px-1">
-                <InputText @bind-Value="Message.PhoneNumber"
+                <InputText @bind-Value="Message.Phone"
                            class="form-control"
                            autocomplete="PhoneNumber"
                            placeholder="+2348012345678"
                            aria-required="false"
                            type="phone" />
                 <label for="PhoneNumber" class="form-label">Contact Phone</label>
-                <ValidationMessage For="() => Message.PhoneNumber" class="text-danger" />
+                <ValidationMessage For="() => Message.Phone" class="text-danger" />
             </div>
             <div class="form-floating mb-3 px-1">
                 <InputTextArea @bind-Value="Message.Message"
@@ -49,7 +49,7 @@
         <div class="row mt-1">
             <div class="d-flex justify-content-center">
                 <button class="btn btn-primary mt-1 w-50" disabled="@false">
-                    <span class="fa fa-paper-plane" aria-hidden="true"></span> Send
+                    <span class="fa fa-paper-plane" aria-hidden="true" disabled="@_isLoading"></span> Send
                 </button>
             </div>
         </div>

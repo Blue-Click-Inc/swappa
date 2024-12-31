@@ -18,7 +18,8 @@ namespace Swappa.Client.Shared
         private async Task GetDataAsync()
         {
             _isLoading = Faqs == null;
-            var response = await FaqService.GetDataAsync(Query);
+            var query = SharedService.GetQuery(Query);
+            var response = await FaqService.GetDataAsync(query);
             if (response is { IsSuccessful: true })
             {
                 Faqs = response.Data;
@@ -46,7 +47,5 @@ namespace Swappa.Client.Shared
         {
             await GetDataAsync();
         }
-
-
     }
 }

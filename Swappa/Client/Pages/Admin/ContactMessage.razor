@@ -1,0 +1,19 @@
+﻿@page "/admin/messages"
+@attribute [Authorize(Roles = "Admin, SuperAdmin")]
+<div class="container">
+    <div class="row g-3 my-3 d-flex justify-content-evenly flex-wrap align-items-center">
+        <BackButton></BackButton>
+        <div class="card box-shadow-inset m-auto mt-1">
+            <EditForm Model="Query" method="post" OnValidSubmit="Search" FormName="searchMessages">
+                <BaseSearch ClearSearch="Clear" Query="Query" />
+            </EditForm>
+        </div>
+        <ContactMessageList 
+            Data="Messages" 
+            HasError="_hasError" 
+            IsLoading="_isLoading" 
+            Query="Query" 
+            ReloadList="GetDataAsync" 
+        />
+    </div>
+</div>

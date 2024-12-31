@@ -43,6 +43,26 @@ namespace Swappa.Shared.Extensions
             return msgBody;
         }
 
+        public static string GetReplyMessageTemplate(string baseUrl, string recipientName, 
+            string senderName, string message)
+        {
+            string body = string.Empty;
+            var folderName = Path.Combine("wwwroot", "Templates", "MessageReply.html");
+            var filepath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            if (File.Exists(filepath))
+                body = File.ReadAllText(filepath);
+            else
+                return body;
+
+            return body
+                .Replace("[[recipient_name]]", recipientName)
+                .Replace("[[main_message]]", message)
+                .Replace("[[base_url]]", baseUrl)
+                .Replace("[[sender_name]]", senderName)
+                .Replace("[[company_name]]", "Blue Wall Inc.")
+                .Replace("[[curr_year]]", DateTime.Now.Year.ToString());
+        }
+
         public static string GetInvoicePdf(TestDetailsClass details)
         {
             string body = string.Empty;

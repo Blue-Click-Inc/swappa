@@ -8,11 +8,11 @@ namespace Swappa.Client.Services.Interfaces
         Task<Guid> GetLoggedInUserId();
         Task<ResponseModel<string>?> UpdateDetailsAsync(Guid id, UserDetailsForUpdateDto request);
         Task<ResponseModel<string>?> SendFeedbackAsync(FeedbackForAddDto request);
-        Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>?> GetUsersFeedbacks(PageDto request);
+        Task<ResponseModel<PaginatedListDto<UserFeedbackDto>>?> GetUsersFeedbacks(string request);
         Task<ResponseModel<FeedbackDashboardDto>?> FeedbackDashboardData();
         Task<ResponseModel<string>?> ToggleFeedbackAsync(Guid id);
         Task<ResponseModel<string>?> DeleteFeedbackAsync(Guid id);
         Task<ResponseModel<UserDashboardDataDto>?> GetUserDashboardAsync();
-        Task<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>?> GetPagedUsersAsync(PageDto request);
+        Task<ResponseModel<PaginatedListDto<LeanUserDetailsDto>>?> GetPagedUsersAsync(string request);
     }
 }

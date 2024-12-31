@@ -1,5 +1,6 @@
 ﻿using Blazored.Modal;
 using Microsoft.JSInterop;
+using Swappa.Client.Extensions;
 using Swappa.Client.Pages.Modals.Vehicle;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
@@ -63,14 +64,8 @@ namespace Swappa.Client.Pages.Vehicle
 
         private async Task ShowAddVehicleModal()
         {
-            var idParam = new ModalParameters
-            {
-                { "UserId", LoggedInUserId }
-            };
-
-            var confirmationModal = Modal.Show<AddVehicleModal>("", idParam);
-            var result = await confirmationModal.Result;
-            if (result.Confirmed)
+            var confirmed = await Modal.ShowAddVehicleModal(LoggedInUserId);
+            if (confirmed)
             {
                 await GetDataAsync();
             }

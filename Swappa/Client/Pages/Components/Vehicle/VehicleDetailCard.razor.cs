@@ -24,6 +24,12 @@ namespace Swappa.Client.Pages.Components.Vehicle
             await base.OnParametersSetAsync();
         }
 
+        private async Task ProcessPayment()
+        {
+            await Task.Run(() =>
+                Toast.ShowInfo("Feature coming soon. Watch out!!!")
+            );
+        }
         private async Task ConfirmDelete()
         {
             var parameters = SharedService.GetDialogParameters("Confirm Delete",

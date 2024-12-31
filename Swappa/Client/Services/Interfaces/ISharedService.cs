@@ -2,6 +2,7 @@
 using Blazored.Modal;
 using Microsoft.AspNetCore.Components.Forms;
 using Swappa.Entities.Enums;
+using Swappa.Shared.DTOs;
 
 namespace Swappa.Client.Services.Interfaces
 {
@@ -14,5 +15,7 @@ namespace Swappa.Client.Services.Interfaces
         Task LogoutAsync();
         List<string> GetRandomBackgroundColors(int dataLabelsCount, string[]? backgroundColors);
         MultipartFormDataContent OnInputFilesChange(InputFileChangeEventArgs e, FileTypes fileType, string formFileName, long maxAllowedMaximumSize, out bool isValidInputs);
+        string GetQuery(PageDto query);
+        string GetSubstring(string str);
     }
 }
