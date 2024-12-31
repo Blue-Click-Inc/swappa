@@ -34,7 +34,7 @@
         <Button 
             Color="ButtonColor.Primary" Outline="true" 
             Class="m-1" 
-            @onclick="(async () => await SharedService.GoBackAsync())"
+            @onclick="(async () => await ProcessPayment())"
             Disabled="@_isBusy">Buy Now</Button>
         <Button 
             Color="ButtonColor.Secondary" 

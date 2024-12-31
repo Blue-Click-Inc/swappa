@@ -1,2 +1,5 @@
 ﻿@page "/merchant"
-<h3>MerchantCenter</h3>
+@attribute [Authorize(Roles = "Merchant")]
+
+<PageTitle>Merchant Center</PageTitle>
+<VehiclesTableListWithSearch Data="Data" GetData="GetDataAsync" Query="Query" IsLoading="isLoading" UserId="LoggedInUserId"/>
