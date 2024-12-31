@@ -1,4 +1,7 @@
-﻿using Swappa.Client.Services.Interfaces;
+﻿using BlazorBootstrap;
+using Blazored.Modal;
+using Swappa.Client.Pages.Modals.Vehicle;
+using Swappa.Client.Services.Interfaces;
 using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
@@ -32,6 +35,12 @@ namespace Swappa.Client.Services.Implementations
         public async Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>?> GetFavoriteDataAsync(Guid userId, VehicleQueryDto query)
         {
             var response = await httpClient.GetAsync($"vehicle/{userId}/favorites{GetQuery(query)}");
+            return await httpInterceptor.Process<ResponseModel<PaginatedListDto<VehicleToReturnDto>>>(response);
+        }
+
+        public async Task<ResponseModel<PaginatedListDto<VehicleToReturnDto>>?> GetMerchantVehicleDataAsync(Guid merchantId, VehicleQueryDto query)
+        {
+            var response = await httpClient.GetAsync($"vehicle/{merchantId}/merchant{GetQuery(query)}");
             return await httpInterceptor.Process<ResponseModel<PaginatedListDto<VehicleToReturnDto>>>(response);
         }
 

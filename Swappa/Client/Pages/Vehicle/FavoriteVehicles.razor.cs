@@ -17,15 +17,15 @@ namespace Swappa.Client.Pages.Vehicle
 
         protected override async Task OnInitializedAsync()
         {
-            LoggedInUserId = await UserService.GetLoggedInUserId();
-            await GetDataAsync(LoggedInUserId);
+            await GetDataAsync();
             await base.OnInitializedAsync();
         }
 
-        private async Task GetDataAsync(Guid userId)
+        private async Task GetDataAsync()
         {
             isLoading = Data == null;
-            var response = await VehicleService.GetFavoriteDataAsync(userId, Query);
+            LoggedInUserId = await UserService.GetLoggedInUserId();
+            var response = await VehicleService.GetFavoriteDataAsync(LoggedInUserId, Query);
             if (response != null && response.IsSuccessful)
             {
                 Data = response.Data;
@@ -36,23 +36,6 @@ namespace Swappa.Client.Pages.Vehicle
                 Toast.ShowError(message);
             }
             isLoading = false;
-        }
-
-        private async Task OnPageChangedAsync(int newPageNumber)
-        {
-            Query.PageNumber = newPageNumber;
-            await GetDataAsync(LoggedInUserId);
-        }
-
-        private async Task Search()
-        {
-            await GetDataAsync(LoggedInUserId);
-        }
-
-        private async Task Clear()
-        {
-            Query = new();
-            await GetDataAsync(LoggedInUserId);
         }
     }
 }
