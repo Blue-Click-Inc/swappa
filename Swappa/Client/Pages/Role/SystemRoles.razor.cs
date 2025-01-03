@@ -1,19 +1,22 @@
 ﻿using Blazored.Modal;
 using Swappa.Client.Pages.Modals.Role;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Client.Pages.Role
 {
     public partial class SystemRoles
     {
         private bool isLoading = false;
+        private bool hasError = false;
+        private string message = string.Empty;
         public long TotalNumberOfUsers { get; set; }
 
         public PaginatedListDto<RoleDto>? RoleData { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await GetData();
-            TotalNumberOfUsers = RoleData.Data.Sum(r => r.NumberOfUser);
+            TotalNumberOfUsers = RoleData?.Data.Sum(r => r.NumberOfUser) ?? 0;
             await base.OnInitializedAsync();
         }
 
@@ -22,9 +25,14 @@ namespace Swappa.Client.Pages.Role
             isLoading = RoleData == null;
 
             var result = await RoleService.GetAsync();
-            if (result != null)
+            if (result.IsNotNull() && result.IsSuccessful)
             {
-                RoleData = result;
+                RoleData = result.Data;
+            }
+            else
+            {
+                hasError = true;
+                message = result?.Message ?? "An unexpected error occurred. Please try again later. Contact support if issue persists.";
             }
 
             isLoading = false;
