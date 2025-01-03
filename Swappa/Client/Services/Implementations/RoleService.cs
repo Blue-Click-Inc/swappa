@@ -16,10 +16,10 @@ namespace Swappa.Client.Services.Implementations
             this.httpInterceptor = httpInterceptor;
         }
 
-        public async Task<PaginatedListDto<RoleDto>?> GetAsync(int page = 1, int pageSize = 100)
+        public async Task<ResponseModel<PaginatedListDto<RoleDto>>?> GetAsync(int page = 1, int pageSize = 100)
         {
             var response = await httpClient.GetAsync($"role?PageNumber={page}&PageSize={pageSize}");
-            return await httpInterceptor.Process<PaginatedListDto<RoleDto>>(response);
+            return await httpInterceptor.Process<ResponseModel<PaginatedListDto<RoleDto>>>(response);
         }
 
         public async Task<ResponseModel<string>?> AddAsync(RoleForCreateDto request)
