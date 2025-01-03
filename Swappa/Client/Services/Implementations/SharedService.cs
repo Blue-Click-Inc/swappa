@@ -66,6 +66,21 @@ namespace Swappa.Client.Services.Implementations
             };
         }
 
+        public string MaskVin(string? text)
+        {
+            var result = "**********";
+            if (!text.IsNotNullOrEmpty() || text.Length <= 10)
+            {
+                return result;
+            }
+     
+            for (var i = 10; i < text.Length; i++)
+            {
+                result += text[i];
+            }
+            return result;
+        }
+
         public List<string> GetRandomBackgroundColors(int dataLabelsCount, string[]? backgroundColors)
         {
             var colors = new List<string>();
