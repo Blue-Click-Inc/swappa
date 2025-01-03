@@ -15,6 +15,7 @@ namespace Swappa.Client.Services.Interfaces
         Task LogoutAsync();
         List<string> GetRandomBackgroundColors(int dataLabelsCount, string[]? backgroundColors);
         MultipartFormDataContent OnInputFilesChange(InputFileChangeEventArgs e, FileTypes fileType, string formFileName, long maxAllowedMaximumSize, out bool isValidInputs);
+        string MaskVin(string? text);
         string GetQuery(PageDto query);
         string GetSubstring(string str);
     }

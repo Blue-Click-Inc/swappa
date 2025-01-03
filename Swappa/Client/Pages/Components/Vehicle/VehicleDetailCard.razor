@@ -21,7 +21,7 @@
                 <div class="circle border p-2" style="background: @Data.Interior.ToLower().Trim()"></div>
             </p>
             <p class="my-1"><span class="fw-bold">Odometer:</span> @Data.Odometer.ToString("N0") km</p>
-            <p class="my-1"><span class="fw-bold">VIN:</span> @Data.VIN</p>
+            <p class="my-1"><span class="fw-bold">VIN:</span> @SharedService.MaskVin(Data?.VIN)</p>
             <p class="my-1"><span class="fw-bold">Views:</span> @Data.Views</p>
             <AuthorizeView>
                 <p class="d-flex my-1 justify-content-end">
