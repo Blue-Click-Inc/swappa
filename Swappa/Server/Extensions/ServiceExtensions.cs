@@ -36,7 +36,6 @@ namespace Swappa.Server.Extensions
                     StringComparer = StringComparer.Ordinal,
                     IdType = InMemoryStorageIdType.Guid
                 })
-                //.UseSqlServerStorage(configuration.GetSection("Hangfire").GetValue<string>("Database"))
                 .WithJobExpirationTimeout(TimeSpan.FromMinutes(5))
                 .UseConsole()
                 .UseRecurringJob(typeof(IRecurringJobService))
