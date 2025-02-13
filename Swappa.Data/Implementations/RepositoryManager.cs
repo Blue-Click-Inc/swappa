@@ -36,7 +36,7 @@ namespace Swappa.Data.Implementations
             _feedbackRepository = new Lazy<IUserFeedbackRepository>(() =>
                 new UserFeedbackRepository(mongoSetting));
             _locationService = new Lazy<ILocationService>(() =>
-                new LocationService(configuration, mongoSetting, redisCache));
+                new LocationService(mongoSetting));
             _vehicleRepository = new Lazy<IVehicleRepository>(() =>
                  new VehicleRepository(mongoSetting));
             _imageRepository = new Lazy<IImageRepository>(() =>

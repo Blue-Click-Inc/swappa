@@ -11,7 +11,7 @@ namespace Swappa.Data.Contracts
         Task DeleteAsync(Expression<Func<Faq, bool>> predicate);
         Task EditAsync(Expression<Func<Faq, bool>> expression, Faq entity);
         Task<bool> Exists(Expression<Func<Faq, bool>> expression);
-        IQueryable<Faq> FindAsQueryable(Expression<Func<Faq, bool>> expression = null);
+        IQueryable<Faq> FindAsQueryable(Expression<Func<Faq, bool>> expression = null!);
         Task<Faq?> FindByIdAsync(Guid id);
     }
 }

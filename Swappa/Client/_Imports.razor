@@ -33,6 +33,7 @@
 @using Swappa.Client.Pages.Components.Vehicle
 @using Swappa.Client.Pages.Components.User
 @using Swappa.Client.Pages.Components.Charts
+@using Swappa.Shared.Interface
 
 @inject IJSRuntime JSRuntime
 @inject AuthenticationStateProvider AuthStateProvider
@@ -52,3 +53,4 @@
 @inject IFaqService FaqService
 @inject IChartService ChartService
 @inject IContactMessageService ContactMessageService
+@inject IExternalLocation LocationsService

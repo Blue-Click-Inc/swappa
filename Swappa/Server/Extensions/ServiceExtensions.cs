@@ -38,7 +38,7 @@ namespace Swappa.Server.Extensions
                 })
                 .WithJobExpirationTimeout(TimeSpan.FromMinutes(5))
                 .UseConsole()
-                .UseRecurringJob(typeof(IRecurringJobService))
+                //.UseRecurringJob(typeof(IRecurringJobService))
                 .UseFilter(provider.GetRequiredService<HangfireLogAttribute>())
                 .UseFilter(new AutomaticRetryAttribute()
                 {
@@ -144,7 +144,7 @@ namespace Swappa.Server.Extensions
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<ApiResponseDto>();
             services.AddSingleton<HangfireLogAttribute>();
-            services.AddScoped<IRecurringJobService, RecurringJobService>();
+            //services.AddScoped<IRecurringJobService, RecurringJobService>();
             services.AddScoped<IServiceManager, ServiceManager>();
         }
 
