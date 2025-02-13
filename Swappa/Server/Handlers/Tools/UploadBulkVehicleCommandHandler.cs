@@ -39,9 +39,9 @@ namespace Swappa.Server.Handlers.Tools
 
                 using var package = new ExcelPackage(stream);
                 var worksheet = package.Workbook.Worksheets.FirstOrDefault();
-                var rowCount = worksheet.Dimension.Rows;
                 if (worksheet != null)
                 {
+                    var rowCount = worksheet.Dimension.Rows;
                     var vehicles = new List<Vehicle>();
                     var images = new List<Image>();
                     for (int row = 2; row <= rowCount; row++) // Omit the header

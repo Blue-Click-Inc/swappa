@@ -9,6 +9,6 @@ namespace Swappa.Data.Contracts
         Task<long> Count(Expression<Func<FavoriteVehicles, bool>> expression);
         Task DeleteAsync(Expression<Func<FavoriteVehicles, bool>> predicate);
         Task<bool> Exists(Expression<Func<FavoriteVehicles, bool>> expression);
-        IQueryable<FavoriteVehicles> FindAsQueryable(Expression<Func<FavoriteVehicles, bool>> expression = null);
+        IQueryable<FavoriteVehicles> FindAsQueryable(Expression<Func<FavoriteVehicles, bool>> expression = null!);
     }
 }

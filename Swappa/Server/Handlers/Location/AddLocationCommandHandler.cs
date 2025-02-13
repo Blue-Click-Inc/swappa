@@ -6,6 +6,7 @@ using Swappa.Server.Commands.Location;
 using Swappa.Server.Validations.Location;
 using Swappa.Shared.DTOs;
 using Swappa.Shared.Extensions;
+using Swappa.Shared.Interface;
 
 namespace Swappa.Server.Handlers.Location
 {
@@ -13,12 +14,14 @@ namespace Swappa.Server.Handlers.Location
     {
         private readonly IRepositoryManager repository;
         private readonly ApiResponseDto response;
+        private readonly IExternalLocation location;
 
         public AddLocationCommandHandler(IRepositoryManager repository,
-            ApiResponseDto response)
+            ApiResponseDto response, IExternalLocation location)
         {
             this.repository = repository;
             this.response = response;
+            this.location = location;
         }
 
         public async Task<ResponseModel<string>> Handle(AddLocationCommand request, CancellationToken cancellationToken)
@@ -30,19 +33,19 @@ namespace Swappa.Server.Handlers.Location
                 return response.Process<string>(new BadRequestResponse(validationResult.Errors?.FirstOrDefault()?.ErrorMessage ?? string.Empty));
             }
 
-            var country = await repository.Location.GetAsync(request.CountryId);
+            var country = await location.GetCountry(request.CountryId.ToGuid());
             if(country == null)
             {
                 return response.Process<string>(new NotFoundResponse($"No country record found with the Id: {request.CountryId}"));
             }
 
-            var state = await repository.Location.GetOneAsync(request.StateId);
+            var state = await location.GetState(request.CountryId.ToGuid(), request.StateId.ToGuid());
             if (state == null)
             {
                 return response.Process<string>(new NotFoundResponse($"No state record found with the Id: {request.StateId}"));
             }
 
-            if(state.Country != country._Id)
+            if(!state.CountryId.Equals(country.Id))
             {
                 return response.Process<string>(new BadRequestResponse($"{state.Name} is not in {country.Name}."));
             }
@@ -58,18 +61,23 @@ namespace Swappa.Server.Handlers.Location
             return response.Process<string>(new ApiOkResponse<string>("Location record successfully added."));
         }
 
-        private EntityLocation MapLocation(AddLocationCommand request, CountryDataToReturnDto country, StateDataToReturnDto state)
+        private EntityLocation MapLocation(AddLocationCommand request, CountryData country, StateData state)
         {
             return new EntityLocation
             {
                 EntityId = request.EntityId,
                 EntityType = request.EntityType,
-                StateId = state._Id,
+                StateId = state.Id.ToString(),
                 Country = country.Name,
                 State = state.Name,
-                CountryId = country._Id,
+                CountryId = country.Id.ToString(),
                 City = request.City,
-                PostalCode = request.PostalCode
+                PostalCode = request.PostalCode,
+                Coordinate = new Coordinate
+                {
+                    Latitude = state.Latitude,
+                    Longitude = state.Latitude
+                }
             };
         }
     }
