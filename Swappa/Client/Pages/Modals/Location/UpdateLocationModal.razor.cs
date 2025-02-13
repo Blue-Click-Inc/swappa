@@ -20,8 +20,8 @@ namespace Swappa.Client.Pages.Modals.Location
         [Parameter]
         public EntityType EntityType { get; set; }
         public BaseLocationDto? Location { get; set; }
-        public List<CountryDataToReturnDto>? Countries { get; set; }
-        public List<StateDataToReturnDto>? States { get; set; }
+        public List<CountryData>? Countries { get; set; }
+        public List<StateData>? States { get; set; }
         public ResponseModel<string>? Response { get; set; }
 
         protected override async Task OnInitializedAsync()
@@ -39,19 +39,19 @@ namespace Swappa.Client.Pages.Modals.Location
                 if (locationResponse != null && locationResponse.IsSuccessful)
                 {
                     Location = locationResponse.Data;
-                    var countryResponse = await LocationService.GetCountriesAsync();
-                    if (countryResponse != null && countryResponse.IsSuccessful)
+                    var countryResponse = await LocationsService.GetCountriesAsync();
+                    if (countryResponse != null)
                     {
                         Countries = countryResponse.Data;
-                        var stateResponse = await LocationService.GetStatesAsync(Location.CountryId);
-                        if (stateResponse != null && stateResponse.IsSuccessful)
+                        var stateResponse = await LocationsService.GetStatesAsync(Location.CountryId.ToGuid());
+                        if (stateResponse != null)
                         {
-                            States = stateResponse.Data;
+                            States = stateResponse;
                         }
                     }
                     else
                     {
-                        Toast.ShowError(countryResponse?.Message ?? "Something went wrong. Please try again later.");
+                        Toast.ShowError("Something went wrong. Please try again later.");
                     }
                 }
                 else
@@ -71,23 +71,20 @@ namespace Swappa.Client.Pages.Modals.Location
             Location.StateId = string.Empty;
             Location.City = string.Empty;
             Location.PostalCode = string.Empty;
-            States = new List<StateDataToReturnDto>();
+            States = new List<StateData>();
 
             if (!string.IsNullOrWhiteSpace(e.Value.ToString()))
             {
                 Location.CountryId = e.Value.ToString() ?? string.Empty;
 
-                var response = await LocationService.GetStatesAsync(Location.CountryId);
+                var response = await LocationsService.GetStatesAsync(Location.CountryId.ToGuid());
                 if (response != null)
                 {
-                    if (response.IsSuccessful)
-                    {
-                        States = response.Data;
-                    }
-                    else
-                    {
-                        Toast.ShowError(response.Message ?? "An error occurred. Please try again later.");
-                    }
+                    States = response;
+                }
+                else
+                {
+                    Toast.ShowError("An error occurred. Please try again later.");
                 }
             }
             else

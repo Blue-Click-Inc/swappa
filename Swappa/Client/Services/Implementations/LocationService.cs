@@ -16,16 +16,10 @@ namespace Swappa.Client.Services.Implementations
             this.httpInterceptor = httpInterceptor;
         }
 
-        public async Task<ResponseModel<List<CountryDataToReturnDto>>?> GetCountriesAsync()
+        public async Task<ResponseModel<CountryPaged>?> GetCountriesAsync()
         {
             var response = await httpClient.GetAsync($"location/countries");
-            return await httpInterceptor.Process<ResponseModel<List<CountryDataToReturnDto>>>(response);
-        }
-
-        public async Task<ResponseModel<List<StateDataToReturnDto>>?> GetStatesAsync(string countryId)
-        {
-            var response = await httpClient.GetAsync($"location/states/{countryId}");
-            return await httpInterceptor.Process<ResponseModel<List<StateDataToReturnDto>>>(response);
+            return await httpInterceptor.Process<ResponseModel<CountryPaged>>(response);
         }
 
         public async Task<ResponseModel<string>?> AddAsync(BaseLocationDto request)

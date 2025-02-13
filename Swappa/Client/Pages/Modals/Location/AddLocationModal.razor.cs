@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Swappa.Entities.Enums;
 using Swappa.Shared.DTOs;
+using Swappa.Shared.Extensions;
 
 namespace Swappa.Client.Pages.Modals.Location
 {
@@ -18,24 +19,22 @@ namespace Swappa.Client.Pages.Modals.Location
         [Parameter]
         public EntityType EntityType { get; set; }
         public BaseLocationDto Location { get; set; } = new();
-        public List<CountryDataToReturnDto>? Countries { get; set; } = new();
-        public List<StateDataToReturnDto>? States { get; set; } = new();
+        public List<CountryData>? Countries { get; set; } = new();
+        public List<StateData>? States { get; set; } = new();
         public ResponseModel<string>? Response { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var countryResponse = await LocationService.GetCountriesAsync();
+            var countryResponse = await LocationsService.GetCountriesAsync();
             if(countryResponse != null)
             {
-                if (countryResponse.IsSuccessful)
-                {
-                    Countries = countryResponse.Data;
-                }
-                else
-                {
-                    Toast.ShowError(countryResponse?.Message ?? "Something went wrong. Please try again later.");
-                }
+                Countries = countryResponse.Data;
             }
+            else
+            {
+                Toast.ShowError("Something went wrong. Please try again later.");
+            }
+
             Location.EntityId = EntityId;
             Location.EntityType = EntityType;
             await base.OnInitializedAsync();
@@ -46,23 +45,20 @@ namespace Swappa.Client.Pages.Modals.Location
             Location.StateId = string.Empty;
             Location.City = string.Empty;
             Location.PostalCode = string.Empty;
-            States = new List<StateDataToReturnDto>();
+            States = new List<StateData>();
 
             if (!string.IsNullOrWhiteSpace(e.Value.ToString()))
             {
                 Location.CountryId = e.Value.ToString() ?? string.Empty;
 
-                var response = await LocationService.GetStatesAsync(Location.CountryId);
+                var response = await LocationsService.GetStatesAsync(Location.CountryId.ToGuid());
                 if(response != null)
                 {
-                    if (response.IsSuccessful)
-                    {
-                        States = response.Data;
-                    }
-                    else
-                    {
-                        Toast.ShowError(response.Message ?? "An error occurred. Please try again later.");
-                    }
+                    States = response;
+                }
+                else
+                {
+                    Toast.ShowError("An error occurred. Please try again later.");
                 }
             }
             else

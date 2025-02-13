@@ -30,7 +30,7 @@ namespace Swappa.Entities.Models
 
     public class Coordinate
     {
-        public float Longitude { get; set; }
-        public float Latitude { get; set; }
+        public string Longitude { get; set; } = string.Empty;
+        public string Latitude { get; set; } = string.Empty;
     }
 }

@@ -4,10 +4,12 @@ using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Mongo.Common.MongoDB;
 using RedisCache.Common.Repository.Extensions;
+using Refit;
 using Serilog;
 using Swappa.Server.Configurations;
 using Swappa.Server.Extensions;
 using Swappa.Server.Filters;
+using Swappa.Shared.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 Configurations.ConfigureLogging();
@@ -45,6 +47,9 @@ builder.Services.ConfigureHangfireClient(builder.Configuration);
 builder.Services.ConfigureHangfireServer();
 
 builder.Services.AddHttpContextAccessor();
+builder.Services
+    .AddRefitClient<IExternalLocation>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://locations-marker.onrender.com/api/v1/location"));
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
