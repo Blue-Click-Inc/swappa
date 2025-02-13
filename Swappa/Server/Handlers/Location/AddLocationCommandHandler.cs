@@ -76,7 +76,7 @@ namespace Swappa.Server.Handlers.Location
                 Coordinate = new Coordinate
                 {
                     Latitude = state.Latitude,
-                    Longitude = state.Latitude
+                    Longitude = state.Longitude
                 }
             };
         }
